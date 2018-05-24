@@ -40,7 +40,7 @@ public class TeacherFormPresenter {
 			teacher.getSubjectCollection().add(new Subject(aux));
 		}
 		teacherDto.Insert(teacher);
-
+		cleanForm();
 	}
 
 	public void UpdateTeacher(String name, String surname, DefaultListModel<String> assignedSubjectModel, int id) {
@@ -54,7 +54,7 @@ public class TeacherFormPresenter {
 		}
 
 		teacherDto.Update(teacher);
-
+		cleanForm();
 	}
 
 	public void NotifyUpdateSubjectList() {
@@ -64,9 +64,8 @@ public class TeacherFormPresenter {
 
 	private void UpdateSubjectList(List<String> teacherSubjectCollection) {
 		teacherFormView.setUnassignedSubjectModel(new DefaultListModel<>());
-		
+
 		teacherFormView.setAssignedSubjectModel(new DefaultListModel<>());
-		
 
 		for (int i = 0; i < loadSubjects(); i++) {
 			String subject = getSubjectByPosition(i);
@@ -78,6 +77,15 @@ public class TeacherFormPresenter {
 		}
 		teacherFormView.getUnassignSubjectCollection().setModel(teacherFormView.getUnassignedSubjectModel());
 		teacherFormView.getAssignSubjectCollection().setModel(teacherFormView.getAssignedSubjectModel());
+	}
+
+	private void cleanForm() {
+		teacherFormView.getTeacherFormLabel().setText(NewTeacherLabelText);
+		teacherFormView.getNameInput().setText("");
+		teacherFormView.getSurnameInput().setText("");
+		UpdateSubjectList(null);
+		TeacherSelectedId = 0;
+		EditMode = false;
 	}
 
 	public void NotifyAddSubject() {
@@ -100,6 +108,7 @@ public class TeacherFormPresenter {
 			teacherFormView.getUnassignedSubjectModel().addElement(item);
 			teacherFormView.getAssignedSubjectModel().remove(index);
 		}
+		cleanForm();
 	}
 
 	public void NotifySaveForm() {
@@ -116,12 +125,7 @@ public class TeacherFormPresenter {
 	}
 
 	public void NotifyNewTeacherMode() {
-		teacherFormView.getTeacherFormLabel().setText(NewTeacherLabelText);
-		teacherFormView.getNameInput().setText("");
-		teacherFormView.getSurnameInput().setText("");
-		UpdateSubjectList(null);
-		TeacherSelectedId = 0;
-		EditMode = false;
+		cleanForm();
 	}
 
 	public void NotifyEditTeacherMode(int id) {

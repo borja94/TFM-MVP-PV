@@ -14,67 +14,67 @@ import java.util.logging.Logger;
  *
  * @author borja
  */
-public class SubjectDto extends Dto{
+public class SubjectDto extends Dto {
 
 	public SubjectDto() {
 		super();
 	}
-	public ResultSet Insert(Subject subject) {
+
+	public void Insert(Subject subject) {
 		Connection conexion = null;
-		ResultSet aux = null;
+		ResultSet result = null;
+		PreparedStatement sentencia1 = null;
+
 		try {
 			conexion = basicDataSource.getConnection();
 
 			String sql = "INSERT INTO SUBJECT (TITLE,COURSE) VALUES(?,?)";
-			PreparedStatement sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-					ResultSet.CONCUR_UPDATABLE, Statement.RETURN_GENERATED_KEYS);
+			sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE,
+					Statement.RETURN_GENERATED_KEYS);
 			sentencia1.setString(1, subject.getTitle());
 			sentencia1.setInt(2, subject.getCourse());
 
 			sentencia1.executeUpdate();
-			aux = sentencia1.getGeneratedKeys();
-
+			
 			sentencia1.close();
 		} catch (SQLException ex) {
-			Logger.getLogger(SubjectDto.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 
 		} finally {
+			if (result != null)
+				CloseResultSet(result);
+			if (sentencia1 != null)
+				ClosePreparedStatement(sentencia1);
 			if (conexion != null)
-				try {
-					conexion.close();
-				} catch (SQLException ex) {
-					Logger.getLogger(SubjectDto.class.getName()).log(Level.SEVERE, null, ex);
-
-				}
+				CloseConnection(conexion);
 		}
 
-		return aux;
 	}
 
 	public List<Subject> GetAll() {
 
 		List<Subject> result = new ArrayList<>();
 		Connection conexion = null;
+		Statement sentencia = null;
+		ResultSet rs = null;
 		try {
 			conexion = basicDataSource.getConnection();
 
-			Statement sentencia = conexion.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			ResultSet rs = sentencia.executeQuery("SELECT * FROM SUBJECT ");
+			sentencia = conexion.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = sentencia.executeQuery("SELECT * FROM SUBJECT ");
 
 			while (rs.next()) {
 				result.add(new Subject(rs.getInt("ID"), rs.getString("TITLE"), rs.getInt("COURSE")));
 			}
 		} catch (SQLException ex) {
-			Logger.getLogger(SubjectDto.class.getName()).log(Level.SEVERE, null, ex);
-
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
+			if (rs != null)
+				CloseResultSet(rs);
+			if (sentencia != null)
+				CloseStatement(sentencia);
 			if (conexion != null)
-				try {
-					conexion.close();
-				} catch (SQLException ex) {
-					Logger.getLogger(SubjectDto.class.getName()).log(Level.SEVERE, null, ex);
-
-				}
+				CloseConnection(conexion);
 		}
 
 		return result;
@@ -83,70 +83,66 @@ public class SubjectDto extends Dto{
 	public Subject Get(int id) {
 		Connection conexion = null;
 		Subject subject = null;
+		ResultSet rs = null;
+		PreparedStatement sentencia1 = null;
 		try {
 			conexion = basicDataSource.getConnection();
-			
+
 			String sql = "SELECT * FROM SUBJECT WHERE ID = ?";
-			PreparedStatement sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
+			sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			sentencia1.setInt(1, id);
 
-			ResultSet rs = sentencia1.executeQuery();
+			rs = sentencia1.executeQuery();
 			subject = new Subject();
 			if (rs.next()) {
 				subject = new Subject(rs.getInt("ID"), rs.getString("TITLE"), rs.getInt("COURSE"));
 			}
 			sentencia1.close();
 		} catch (SQLException ex) {
-			Logger.getLogger(SubjectDto.class.getName()).log(Level.SEVERE, null, ex);
-
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
+			if (rs != null)
+				CloseResultSet(rs);
+			if (sentencia1 != null)
+				CloseStatement(sentencia1);
 			if (conexion != null)
-				try {
-					conexion.close();
-				} catch (SQLException ex) {
-					Logger.getLogger(SubjectDto.class.getName()).log(Level.SEVERE, null, ex);
-
-				}
+				CloseConnection(conexion);
 		}
 		return subject;
 	}
 
 	public void Remove(int id) {
 		Connection conexion = null;
-
+		PreparedStatement sentencia1 = null;
 		try {
 			conexion = basicDataSource.getConnection();
 
 			String sql = "DELETE FROM  SUBJECT WHERE ID = ?";
-			PreparedStatement sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-					ResultSet.CONCUR_UPDATABLE, Statement.RETURN_GENERATED_KEYS);
+			sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE,
+					Statement.RETURN_GENERATED_KEYS);
 			sentencia1.setInt(1, id);
 
 			sentencia1.executeUpdate();
 			sentencia1.close();
 		} catch (SQLException ex) {
-			Logger.getLogger(SubjectDto.class.getName()).log(Level.SEVERE, null, ex);
-
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
-			if (conexion != null)
-				try {
-					conexion.close();
-				} catch (SQLException ex) {
-					Logger.getLogger(SubjectDto.class.getName()).log(Level.SEVERE, null, ex);
 
-				}
+			if (sentencia1 != null)
+				CloseStatement(sentencia1);
+			if (conexion != null)
+				CloseConnection(conexion);
 		}
 	}
 
 	public void Update(Subject subject) {
 		Connection conexion = null;
-
+		PreparedStatement sentencia1 = null;
 		try {
 			conexion = basicDataSource.getConnection();
 
 			String sql = "UPDATE SUBJECT  SET TITLE = ?, COURSE = ? WHERE ID= ?";
-			PreparedStatement sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
+			sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
 					ResultSet.CONCUR_UPDATABLE, Statement.RETURN_GENERATED_KEYS);
 			sentencia1.setString(1, subject.getTitle());
 			sentencia1.setInt(2, subject.getCourse());
@@ -156,16 +152,13 @@ public class SubjectDto extends Dto{
 
 			sentencia1.close();
 		} catch (SQLException ex) {
-			Logger.getLogger(SubjectDto.class.getName()).log(Level.SEVERE, null, ex);
-
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
-			if (conexion != null)
-				try {
-					conexion.close();
-				} catch (SQLException ex) {
-					Logger.getLogger(SubjectDto.class.getName()).log(Level.SEVERE, null, ex);
 
-				}
+			if (sentencia1 != null)
+				CloseStatement(sentencia1);
+			if (conexion != null)
+				CloseConnection(conexion);
 		}
 	}
 

@@ -103,41 +103,32 @@ public class TeacherDto extends Dto {
 
 		List<Teacher> result = new ArrayList<Teacher>();
 		Connection conexion = null;
-		PreparedStatement sentenciaSubject = null;
-		ResultSet rsSuebjects = null;
+		Statement sentencia = null;
+		ResultSet rs = null;
 
 		try {
 			conexion = basicDataSource.getConnection();
 
-			Statement sentencia = conexion.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-			ResultSet rs = sentencia.executeQuery("SELECT * FROM TEACHER ");
+			sentencia = conexion.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = sentencia.executeQuery("SELECT * FROM TEACHER ");
 
 			rs.afterLast();
 			while (rs.previous()) {
 
 				Teacher teacher = new Teacher(rs.getInt("ID"), rs.getString(2), rs.getString(3));
-				String sql = "SELECT * FROM SUBJECT S " + "INNER JOIN TEACHER_SUBJECT TS " + "ON S.ID = TS.ID_SUBJECT "
-						+ "WHERE TS.ID_TEACHER = ?";
+				SubjectDto subjectDto = new SubjectDto();
+				teacher.setSubjectCollection(subjectDto.GetByTeacher(teacher.getId()));
 
-				sentenciaSubject = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-						ResultSet.CONCUR_UPDATABLE);
-				sentenciaSubject.setInt(1, rs.getInt("ID"));
-
-				rsSuebjects = sentenciaSubject.executeQuery();
-				while (rsSuebjects.next()) {
-					teacher.getSubjectCollection().add(new Subject(rsSuebjects.getInt("ID"),
-							rsSuebjects.getString("TITLE"), rsSuebjects.getInt("COURSE")));
-				}
 				result.add(teacher);
 
 			}
 		} catch (SQLException ex) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
-			if (rsSuebjects != null)
-				CloseResultSet(rsSuebjects);
-			if (sentenciaSubject != null)
-				ClosePreparedStatement(sentenciaSubject);
+			if (rs != null)
+				CloseResultSet(rs);
+			if (sentencia != null)
+				CloseStatement(sentencia);
 			if (conexion != null)
 				CloseConnection(conexion);
 		}

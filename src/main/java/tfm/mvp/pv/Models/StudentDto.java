@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class StudentDto extends Dto {
 
 	public ResultSet Insert(Student student) {
@@ -51,7 +50,7 @@ public class StudentDto extends Dto {
 			if (sentencia1 != null)
 				ClosePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);			
+				CloseConnection(conexion);
 		}
 
 		return resultSet;
@@ -59,13 +58,13 @@ public class StudentDto extends Dto {
 
 	public void Update(Student student) {
 		Connection conexion = null;
-		PreparedStatement sentencia1=null;
+		PreparedStatement sentencia1 = null;
 		try {
 			conexion = basicDataSource.getConnection();
 
 			String sql = "UPDATE STUDENT  SET NAME = ?, SURNAME = ? WHERE ID= ?";
-			sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-					ResultSet.CONCUR_UPDATABLE, Statement.RETURN_GENERATED_KEYS);
+			sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE,
+					Statement.RETURN_GENERATED_KEYS);
 			sentencia1.setString(1, student.getName());
 			sentencia1.setString(2, student.getSurname());
 			sentencia1.setInt(3, student.getId());
@@ -81,11 +80,11 @@ public class StudentDto extends Dto {
 		} catch (SQLException ex) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
-			
+
 			if (sentencia1 != null)
 				ClosePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);			
+				CloseConnection(conexion);
 		}
 	}
 
@@ -93,10 +92,8 @@ public class StudentDto extends Dto {
 
 		List<Student> result = new ArrayList<>();
 		Connection conexion = null;
-		ResultSet rsSubjects = null;
 		ResultSet rs = null;
-		PreparedStatement sentenciaSubject = null;
-		Statement sentencia=null;
+		Statement sentencia = null;
 
 		try {
 			conexion = basicDataSource.getConnection();
@@ -108,18 +105,8 @@ public class StudentDto extends Dto {
 			while (rs.previous()) {
 
 				Student student = new Student(rs.getInt("ID"), rs.getString(2), rs.getString(3));
-				String sql = "SELECT * FROM SUBJECT S " + "INNER JOIN STUDENT_SUBJECT SS " + "ON S.ID = SS.ID_SUBJECT "
-						+ "WHERE SS.ID_STUDENT = ?";
-
-				sentenciaSubject = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-						ResultSet.CONCUR_UPDATABLE);
-				sentenciaSubject.setInt(1, rs.getInt("ID"));
-
-				rsSubjects = sentenciaSubject.executeQuery();
-				while (rsSubjects.next()) {
-					student.getSubjectCollection().add(new Subject(rsSubjects.getInt("ID"),
-							rsSubjects.getString("TITLE"), rsSubjects.getInt("COURSE")));
-				}
+				SubjectDto subjectDto = new SubjectDto();
+				student.setSubjectCollection(subjectDto.GetByStudent(student.getId()));
 				result.add(student);
 
 			}
@@ -130,14 +117,10 @@ public class StudentDto extends Dto {
 
 			if (result != null)
 				CloseResultSet(rs);
-			if (rsSubjects != null)
-				CloseResultSet(rsSubjects);
-			if (sentenciaSubject != null)
-				ClosePreparedStatement(sentenciaSubject);
 			if (sentencia != null)
 				CloseStatement(sentencia);
 			if (conexion != null)
-				CloseConnection(conexion);			
+				CloseConnection(conexion);
 		}
 
 		return result;
@@ -183,7 +166,7 @@ public class StudentDto extends Dto {
 			if (sentencia1 != null)
 				ClosePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);			
+				CloseConnection(conexion);
 		}
 		return student;
 	}
@@ -254,7 +237,7 @@ public class StudentDto extends Dto {
 				ClosePreparedStatement(sentencia1);
 			if (conexion != null)
 				CloseConnection(conexion);
-			
+
 		}
 	}
 }

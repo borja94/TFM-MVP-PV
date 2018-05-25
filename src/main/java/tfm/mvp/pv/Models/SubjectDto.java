@@ -21,32 +21,30 @@ public class SubjectDto extends Dto {
 	}
 
 	public void Insert(Subject subject) {
-		Connection conexion = null;
-		ResultSet result = null;
+		Connection connection = null;
 		PreparedStatement sentencia1 = null;
 
 		try {
-			conexion = basicDataSource.getConnection();
+			connection = basicDataSource.getConnection();
 
 			String sql = "INSERT INTO SUBJECT (TITLE,COURSE) VALUES(?,?)";
-			sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE,
+			sentencia1 = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE,
 					Statement.RETURN_GENERATED_KEYS);
 			sentencia1.setString(1, subject.getTitle());
 			sentencia1.setInt(2, subject.getCourse());
 
 			sentencia1.executeUpdate();
-			
+
 			sentencia1.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 
 		} finally {
-			if (result != null)
-				CloseResultSet(result);
+			
 			if (sentencia1 != null)
 				ClosePreparedStatement(sentencia1);
-			if (conexion != null)
-				CloseConnection(conexion);
+			if (connection != null)
+				CloseConnection(connection);
 		}
 
 	}
@@ -54,13 +52,13 @@ public class SubjectDto extends Dto {
 	public List<Subject> GetAll() {
 
 		List<Subject> result = new ArrayList<>();
-		Connection conexion = null;
+		Connection connection = null;
 		Statement sentencia = null;
 		ResultSet rs = null;
 		try {
-			conexion = basicDataSource.getConnection();
+			connection = basicDataSource.getConnection();
 
-			sentencia = conexion.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			sentencia = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			rs = sentencia.executeQuery("SELECT * FROM SUBJECT ");
 
 			while (rs.next()) {
@@ -73,23 +71,101 @@ public class SubjectDto extends Dto {
 				CloseResultSet(rs);
 			if (sentencia != null)
 				CloseStatement(sentencia);
-			if (conexion != null)
-				CloseConnection(conexion);
+			if (connection != null)
+				CloseConnection(connection);
 		}
 
 		return result;
 	}
 
+	public List<Subject> GetByTeacher(int idTeacher) {
+		List<Subject> result = new ArrayList<>();
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet rsSuebjects = null;
+
+		try {
+			connection = basicDataSource.getConnection();
+
+			String sql = "SELECT * FROM SUBJECT S " + "INNER JOIN TEACHER_SUBJECT TS " + "ON S.ID = TS.ID_SUBJECT "
+					+ "WHERE TS.ID_TEACHER = ?";
+
+			statement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			statement.setInt(1, idTeacher);
+
+			rsSuebjects = statement.executeQuery();
+			while (rsSuebjects.next()) {
+				result.add(new Subject(rsSuebjects.getInt("ID"), rsSuebjects.getString("TITLE"),
+						rsSuebjects.getInt("COURSE")));
+			}
+
+		} catch (SQLException ex) {
+
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+
+		} finally {
+			if (rsSuebjects != null)
+				CloseResultSet(rsSuebjects);
+			if (statement != null)
+				ClosePreparedStatement(statement);
+			if (connection != null)
+				CloseConnection(connection);
+		}
+		return result;
+	}
+	
+	public List<Subject> GetByStudent(int idStudent) {
+		List<Subject> result = new ArrayList<>();
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet rsSuebjects = null;
+
+		try {
+			connection = basicDataSource.getConnection();
+
+			String sql = "SELECT * FROM SUBJECT S " + "INNER JOIN STUDENT_SUBJECT SS " + "ON S.ID = SS.ID_SUBJECT "
+					+ "WHERE SS.ID_STUDENT = ?";
+
+			statement = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			statement.setInt(1, idStudent);
+
+			rsSuebjects = statement.executeQuery();
+			while (rsSuebjects.next()) {
+				result.add(new Subject(rsSuebjects.getInt("ID"), rsSuebjects.getString("TITLE"),
+						rsSuebjects.getInt("COURSE")));
+			}
+
+		} catch (SQLException ex) {
+
+			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
+
+		} finally {
+			if (rsSuebjects != null)
+				CloseResultSet(rsSuebjects);
+			if (statement != null)
+				ClosePreparedStatement(statement);
+			if (connection != null)
+				CloseConnection(connection);
+		}
+		return result;
+	}
+
+	public List<Subject> GetByStudent() {
+		List<Subject> result = new ArrayList<>();
+
+		return result;
+	}
+
 	public Subject Get(int id) {
-		Connection conexion = null;
+		Connection connection = null;
 		Subject subject = null;
 		ResultSet rs = null;
 		PreparedStatement sentencia1 = null;
 		try {
-			conexion = basicDataSource.getConnection();
+			connection = basicDataSource.getConnection();
 
 			String sql = "SELECT * FROM SUBJECT WHERE ID = ?";
-			sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			sentencia1 = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			sentencia1.setInt(1, id);
 
 			rs = sentencia1.executeQuery();
@@ -105,20 +181,20 @@ public class SubjectDto extends Dto {
 				CloseResultSet(rs);
 			if (sentencia1 != null)
 				CloseStatement(sentencia1);
-			if (conexion != null)
-				CloseConnection(conexion);
+			if (connection != null)
+				CloseConnection(connection);
 		}
 		return subject;
 	}
 
 	public void Remove(int id) {
-		Connection conexion = null;
+		Connection connection = null;
 		PreparedStatement sentencia1 = null;
 		try {
-			conexion = basicDataSource.getConnection();
+			connection = basicDataSource.getConnection();
 
 			String sql = "DELETE FROM  SUBJECT WHERE ID = ?";
-			sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE,
+			sentencia1 = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE,
 					Statement.RETURN_GENERATED_KEYS);
 			sentencia1.setInt(1, id);
 
@@ -130,20 +206,20 @@ public class SubjectDto extends Dto {
 
 			if (sentencia1 != null)
 				CloseStatement(sentencia1);
-			if (conexion != null)
-				CloseConnection(conexion);
+			if (connection != null)
+				CloseConnection(connection);
 		}
 	}
 
 	public void Update(Subject subject) {
-		Connection conexion = null;
+		Connection connection = null;
 		PreparedStatement sentencia1 = null;
 		try {
-			conexion = basicDataSource.getConnection();
+			connection = basicDataSource.getConnection();
 
 			String sql = "UPDATE SUBJECT  SET TITLE = ?, COURSE = ? WHERE ID= ?";
-			sentencia1 = conexion.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE,
-					ResultSet.CONCUR_UPDATABLE, Statement.RETURN_GENERATED_KEYS);
+			sentencia1 = connection.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE,
+					Statement.RETURN_GENERATED_KEYS);
 			sentencia1.setString(1, subject.getTitle());
 			sentencia1.setInt(2, subject.getCourse());
 			sentencia1.setInt(3, subject.getId());
@@ -157,8 +233,8 @@ public class SubjectDto extends Dto {
 
 			if (sentencia1 != null)
 				CloseStatement(sentencia1);
-			if (conexion != null)
-				CloseConnection(conexion);
+			if (connection != null)
+				CloseConnection(connection);
 		}
 	}
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tfm.mvp.pv.models;
 
 import java.sql.Connection;
@@ -16,17 +11,21 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author borja
- */
+
 public class TeacherDto extends Dto {
+
+	private static final String COURSE_COLUMN = "COURSE";
+	private static final String ID_COLUMN = "ID";
+	private static final String TITLE_COLUMN = "TITLE";
+	private static final String SUBJECT_ID_COLUMN = "SUBJECT_ID";
+	private static final String SURNAME_COLUMN = "SURNAME";
+	private static final String NAME_COLUMN = "NAME";
 
 	public TeacherDto() {
 		super();
 	}
 
-	public int Insert(Teacher teacher) {
+	public int insert(Teacher teacher) {
 		Connection conexion = null;
 		ResultSet result = null;
 		PreparedStatement sentencia1 = null;
@@ -48,7 +47,7 @@ public class TeacherDto extends Dto {
 			}
 
 			for (Subject subject : teacher.getSubjectCollection()) {
-				InsertSubjectTeacher(id, subject.getId());
+				insertSubjectTeacher(id, subject.getId());
 			}
 
 		} catch (SQLException ex) {
@@ -57,17 +56,17 @@ public class TeacherDto extends Dto {
 		} finally {
 
 			if (result != null)
-				CloseResultSet(result);
+				closeResultSet(result);
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 
 		return id;
 	}
 
-	public void Update(Teacher teacher) {
+	public void update(Teacher teacher) {
 		Connection conexion = null;
 		PreparedStatement sentencia1 = null;
 		try {
@@ -81,9 +80,9 @@ public class TeacherDto extends Dto {
 			sentencia1.setString(2, teacher.getSurname());
 			sentencia1.setInt(3, teacher.getId());
 
-			RemoveAllTeacherSubjects(teacher.getId());
+			removeAllTeacherSubjects(teacher.getId());
 			for (Subject subject : teacher.getSubjectCollection()) {
-				InsertSubjectTeacher(teacher.getId(), subject.getId());
+				insertSubjectTeacher(teacher.getId(), subject.getId());
 			}
 
 			sentencia1.executeUpdate();
@@ -93,15 +92,15 @@ public class TeacherDto extends Dto {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 	}
 
-	public List<Teacher> GetAll() {
+	public List<Teacher> getAll() {
 
-		List<Teacher> result = new ArrayList<Teacher>();
+		List<Teacher> result = new ArrayList<>();
 		Connection conexion = null;
 		Statement sentencia = null;
 		ResultSet rs = null;
@@ -115,9 +114,10 @@ public class TeacherDto extends Dto {
 			rs.afterLast();
 			while (rs.previous()) {
 
-				Teacher teacher = new Teacher(rs.getInt("ID"), rs.getString(2), rs.getString(3));
+				Teacher teacher = new Teacher(rs.getInt(ID_COLUMN), rs.getString(NAME_COLUMN),
+						rs.getString(SURNAME_COLUMN));
 				SubjectDto subjectDto = new SubjectDto();
-				teacher.setSubjectCollection(subjectDto.GetByTeacher(teacher.getId()));
+				teacher.setSubjectCollection(subjectDto.getByTeacher(teacher.getId()));
 
 				result.add(teacher);
 
@@ -126,17 +126,17 @@ public class TeacherDto extends Dto {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			if (rs != null)
-				CloseResultSet(rs);
+				closeResultSet(rs);
 			if (sentencia != null)
-				CloseStatement(sentencia);
+				closeStatement(sentencia);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 
 		return result;
 	}
 
-	public Teacher Get(int id) {
+	public Teacher get(int id) {
 		Connection conexion = null;
 		Teacher teacher = null;
 		PreparedStatement sentencia1 = null;
@@ -154,12 +154,12 @@ public class TeacherDto extends Dto {
 			teacher = new Teacher();
 			List<Subject> subjectCollection = new ArrayList<>();
 			if (rs.next()) {
-				teacher = new Teacher(rs.getInt("ID"), rs.getString("NAME"), rs.getString("SURNAME"));
+				teacher = new Teacher(rs.getInt(ID_COLUMN), rs.getString(NAME_COLUMN), rs.getString(SURNAME_COLUMN));
 
 				do {
-					if (rs.getString("TITLE") != null) {
-						subjectCollection
-								.add(new Subject(rs.getInt("SUBJECT_ID"), rs.getString("TITLE"), rs.getInt("COURSE")));
+					if (rs.getString(TITLE_COLUMN) != null) {
+						subjectCollection.add(new Subject(rs.getInt(SUBJECT_ID_COLUMN), rs.getString(TITLE_COLUMN),
+								rs.getInt(COURSE_COLUMN)));
 					}
 				} while (rs.next());
 			}
@@ -170,17 +170,17 @@ public class TeacherDto extends Dto {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			if (rs != null)
-				CloseResultSet(rs);
+				closeResultSet(rs);
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 
 		return teacher;
 	}
 
-	public void Remove(int id) {
+	public void remove(int id) {
 		Connection conexion = null;
 		PreparedStatement sentencia1 = null;
 		try {
@@ -198,14 +198,14 @@ public class TeacherDto extends Dto {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 
 	}
 
-	public void RemoveAllTeacherSubjects(int idTeacher) {
+	public void removeAllTeacherSubjects(int idTeacher) {
 		Connection conexion = null;
 		PreparedStatement sentencia1 = null;
 		try {
@@ -219,14 +219,14 @@ public class TeacherDto extends Dto {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 
 	}
 
-	public void InsertSubjectTeacher(int idTeacher, int idSubject) {
+	public void insertSubjectTeacher(int idTeacher, int idSubject) {
 
 		Connection conexion = null;
 		PreparedStatement sentencia1 = null;
@@ -243,9 +243,9 @@ public class TeacherDto extends Dto {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 
 	}

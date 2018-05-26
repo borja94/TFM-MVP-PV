@@ -14,7 +14,7 @@ public class TeachersCollectionPresenter {
 
 	private TeacherDto teacherDto;
 	private List<Teacher> teacherCollection;
-	private final String columnNames[] = { "ID", "Nombre", "Apellidos", "Asignaturas" };
+	private static final String[] COLUMN_NAMES = { "ID", "Nombre", "Apellidos", "Asignaturas" };
 	private TeacherCollectionView teacherCollectionView;
 	private TeacherFormPresenter teacherFormPresenter;
 
@@ -26,15 +26,15 @@ public class TeachersCollectionPresenter {
 	}
 
 	public void loadTableData() {
-		teacherCollection = teacherDto.GetAll();
+		teacherCollection = teacherDto.getAll();
 	}
 
 	public int getNumColumns() {
-		return columnNames.length;
+		return COLUMN_NAMES.length;
 	}
 
 	public String getColumnName(int position) {
-		return columnNames[position];
+		return COLUMN_NAMES[position];
 	}
 
 	public int getNumRows() {
@@ -51,24 +51,24 @@ public class TeachersCollectionPresenter {
 		case 2:
 			return teacherCollection.get(row).getSurname();
 		case 3:
-			String result = "";
+			StringBuilder result = new StringBuilder();
 			for (Subject subject : teacherCollection.get(row).getSubjectCollection()) {
-				if (result == "")
-					result = subject.getTitle();
+				if (result.toString() == "")
+					result.append(subject.getTitle());
 				else
-					result += "," + subject.getTitle();
+					result.append( "," + subject.getTitle());
 			}
-			return result;
+			return result.toString();
 		default:
 			return null;
 		}
 	}
 
-	public void RemoveTeacher(int id) {
-		teacherDto.Remove(id);
+	public void removeTeacher(int id) {
+		teacherDto.remove(id);
 	}
 
-	public void NotifyUpdateTeacherTableData() {
+	public void notifyUpdateTeacherTableData() {
 
 		loadTableData();
 		String[] columns = new String[getNumColumns()];
@@ -85,27 +85,27 @@ public class TeachersCollectionPresenter {
 		teacherCollectionView.getTeachersTable().setModel(teacherCollectionView.getTeachersTableModel());
 	}
 
-	public void NotifyDeleteTeacher() {
+	public void notifyDeleteTeacher() {
 		int selectedRow = teacherCollectionView.getTeachersTable().getSelectedRow();
 		if (selectedRow != -1) {
 			int dialogResult = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar al profesor");
 			if (dialogResult == JOptionPane.YES_OPTION) {
-				RemoveTeacher((Integer.parseInt(
+				removeTeacher((Integer.parseInt(
 						teacherCollectionView.getTeachersTableModel().getValueAt(selectedRow, 0).toString())));
-				NotifyUpdateTeacherTableData();
+				notifyUpdateTeacherTableData();
 			}
 		}
 	}
 
-	public void NotifyEditTeacher() {
+	public void notifyEditTeacher() {
 		int selectedRow = teacherCollectionView.getTeachersTable().getSelectedRow();
 		if (selectedRow != -1)
-			teacherFormPresenter.NotifyEditTeacherMode(Integer
+			teacherFormPresenter.notifyEditTeacherMode(Integer
 					.parseInt(teacherCollectionView.getTeachersTableModel().getValueAt(selectedRow, 0).toString()));
 	}
 
-	public void NotifyNewTeacher() {
-		teacherFormPresenter.NotifyNewTeacherMode();
+	public void notifyNewTeacher() {
+		teacherFormPresenter.notifyNewTeacherMode();
 	}
 
 }

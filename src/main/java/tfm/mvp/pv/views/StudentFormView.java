@@ -1,5 +1,7 @@
 package tfm.mvp.pv.views;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListModel;
@@ -16,77 +18,77 @@ import tfm.mvp.pv.presenters.StudentFormPresenter;
 
 public class StudentFormView extends JPanel {
 
-	private JButton AddSubjectButton;
-	private JList<String> AssignSubjectCollection;
-	private JTextField NameInput;
-	private JButton RemoveSubjectButton;
-	private JButton SaveFormButton;
-	private JLabel StudentFormLabel;
-	private JTextField SurnameInput;
-	private JList<String> UnassignSubjectCollection;
-	private JLabel NameInputLabel;
-	private JLabel SurnameInputLabel;
-	private JScrollPane UnassignSubjectPane;
-	private JScrollPane AssignSubjectPane;
+	private JButton addSubjectButton;
+	private JList<String> assignSubjectCollection;
+	private JTextField nameInput;
+	private JButton removeSubjectButton;
+	private JButton saveFormButton;
+	private JLabel studentFormLabel;
+	private JTextField surnameInput;
+	private JList<String> unassignSubjectCollection;
+	private JLabel nameInputLabel;
+	private JLabel surnameInputLabel;
+	private JScrollPane unassignSubjectPane;
+	private JScrollPane assignSubjectPane;
 	private StudentsCollectionView studentCollectionView;
 
-	private DefaultListModel<String> UnassignedSubjectModel2;
-	private DefaultListModel<String> AssignedSubjectModel;
-	private boolean EditMode;
-	private int StudentSelectedId;
+	private DefaultListModel<String> unassignedSubjectModel2;
+	private DefaultListModel<String> assignedSubjectModel;
+	private boolean editMode;
+	private int studentSelectedId;
 	private StudentFormPresenter studentFormPresenter;
-	private static final String NewStudentLabelText = "Nuevo alumno";
-	private static final String EditStudentLabelText = "Editar alumno";
+	private static final String NEW_STUDENT_LABEL_TEXT = "Nuevo alumno";
+	private static final String EDIT_STUDENT_LABEL_TEXT = "Editar alumno";
 
 	public StudentFormView() {
 		studentFormPresenter = new StudentFormPresenter();
 		initComponents();
-		UpdateSubjectList(null);
+		updateSubjectList(null);
 	}
 
 	private void initComponents() {
 
-		StudentFormLabel = new JLabel();
-		NameInput = new JTextField();
-		SurnameInput = new JTextField();
-		NameInputLabel = new JLabel();
-		SurnameInputLabel = new JLabel();
-		UnassignSubjectPane = new JScrollPane();
-		UnassignSubjectCollection = new JList<>();
-		AssignSubjectCollection = new JList<>();
-		AddSubjectButton = new JButton();
-		RemoveSubjectButton = new JButton();
-		SaveFormButton = new JButton();
-		AssignSubjectPane = new JScrollPane();
+		studentFormLabel = new JLabel();
+		nameInput = new JTextField();
+		surnameInput = new JTextField();
+		nameInputLabel = new JLabel();
+		surnameInputLabel = new JLabel();
+		unassignSubjectPane = new JScrollPane();
+		unassignSubjectCollection = new JList<>();
+		assignSubjectCollection = new JList<>();
+		addSubjectButton = new JButton();
+		removeSubjectButton = new JButton();
+		saveFormButton = new JButton();
+		assignSubjectPane = new JScrollPane();
 
-		StudentFormLabel.setText("Añadir alumno");
+		studentFormLabel.setText(NEW_STUDENT_LABEL_TEXT);
 
-		NameInputLabel.setText("Nombre");
+		nameInputLabel.setText("Nombre");
 
-		SurnameInputLabel.setText("Apellidos");
+		surnameInputLabel.setText("Apellidos");
 
-		UnassignSubjectPane.setViewportView(UnassignSubjectCollection);
+		unassignSubjectPane.setViewportView(unassignSubjectCollection);
 
-		AssignSubjectPane.setViewportView(AssignSubjectCollection);
+		assignSubjectPane.setViewportView(assignSubjectCollection);
 
-		AddSubjectButton.setText("-->");
-		AddSubjectButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				AddSubjectButtonActionPerformed(evt);
+		addSubjectButton.setText("-->");
+		addSubjectButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				addSubjectButtonActionPerformed();
 			}
 		});
 
-		RemoveSubjectButton.setText("<--");
-		RemoveSubjectButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				RemoveSubjectButtonActionPerformed(evt);
+		removeSubjectButton.setText("<--");
+		removeSubjectButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				removeSubjectButtonActionPerformed();
 			}
 		});
 
-		SaveFormButton.setText("Guardar");
-		SaveFormButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				SaveFormButtonActionPerformed(evt);
+		saveFormButton.setText("Guardar");
+		saveFormButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				saveFormButtonActionPerformed();
 			}
 		});
 
@@ -101,124 +103,124 @@ public class StudentFormView extends JPanel {
 				.addGroup(layout.createSequentialGroup().addGroup(layout
 						.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout
-								.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(StudentFormLabel)
+								.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(studentFormLabel)
 								.addGroup(layout.createSequentialGroup()
 										.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-												.addComponent(NameInput, GroupLayout.PREFERRED_SIZE, 72,
+												.addComponent(nameInput, GroupLayout.PREFERRED_SIZE, 72,
 														GroupLayout.PREFERRED_SIZE)
-												.addComponent(NameInputLabel))
+												.addComponent(nameInputLabel))
 										.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 										.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-												.addComponent(SurnameInputLabel).addComponent(SurnameInput,
+												.addComponent(surnameInputLabel).addComponent(surnameInput,
 														GroupLayout.PREFERRED_SIZE, 92, GroupLayout.PREFERRED_SIZE)))
 								.addGroup(layout.createSequentialGroup()
-										.addComponent(UnassignSubjectPane, GroupLayout.PREFERRED_SIZE, 101,
+										.addComponent(unassignSubjectPane, GroupLayout.PREFERRED_SIZE, 101,
 												GroupLayout.PREFERRED_SIZE)
 										.addGap(18, 18, 18)
 										.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-												.addComponent(AddSubjectButton).addComponent(RemoveSubjectButton))
-										.addGap(18, 18, 18).addComponent(AssignSubjectPane, GroupLayout.PREFERRED_SIZE, 101,
+												.addComponent(addSubjectButton).addComponent(removeSubjectButton))
+										.addGap(18, 18, 18).addComponent(assignSubjectPane, GroupLayout.PREFERRED_SIZE, 101,
 												GroupLayout.PREFERRED_SIZE))))
 						.addGroup(layout.createSequentialGroup().addGap(117, 117, 117)
-								.addComponent(SaveFormButton)))
+								.addComponent(saveFormButton)))
 						.addContainerGap(114, Short.MAX_VALUE)));
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup().addGap(26, 26, 26).addComponent(StudentFormLabel)
+				.addGroup(layout.createSequentialGroup().addGap(26, 26, 26).addComponent(studentFormLabel)
 						.addGap(18, 18, 18)
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(NameInputLabel).addComponent(SurnameInputLabel))
+								.addComponent(nameInputLabel).addComponent(surnameInputLabel))
 						.addGap(4, 4, 4)
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(NameInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(nameInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
-								.addComponent(SurnameInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(surnameInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE))
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 								.addGroup(layout.createSequentialGroup().addGap(56, 56, 56)
 										.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-												.addComponent(UnassignSubjectPane, GroupLayout.PREFERRED_SIZE,
+												.addComponent(unassignSubjectPane, GroupLayout.PREFERRED_SIZE,
 														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-												.addComponent(AssignSubjectPane, GroupLayout.PREFERRED_SIZE,
+												.addComponent(assignSubjectPane, GroupLayout.PREFERRED_SIZE,
 														GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 								.addGroup(layout.createSequentialGroup().addGap(95, 95, 95)
-										.addComponent(AddSubjectButton).addGap(33, 33, 33)
-										.addComponent(RemoveSubjectButton)))
-						.addGap(51, 51, 51).addComponent(SaveFormButton).addContainerGap(96, Short.MAX_VALUE)));
+										.addComponent(addSubjectButton).addGap(33, 33, 33)
+										.addComponent(removeSubjectButton)))
+						.addGap(51, 51, 51).addComponent(saveFormButton).addContainerGap(96, Short.MAX_VALUE)));
 
 	}
 
-	public void NewTeacherMode() {
-		StudentFormLabel.setText(NewStudentLabelText);
-		NameInput.setText("");
-		SurnameInput.setText("");
-		UpdateSubjectList(null);
-		StudentSelectedId = 0;
-		EditMode = false;
+	public void newTeacherMode() {
+		studentFormLabel.setText(NEW_STUDENT_LABEL_TEXT);
+		nameInput.setText("");
+		surnameInput.setText("");
+		updateSubjectList(null);
+		studentSelectedId = 0;
+		editMode = false;
 	}
 
-	public void EditTeacherMode(int id) {
-		StudentFormLabel.setText(EditStudentLabelText);
-		StudentSelectedId = id;
-		EditMode = true;
+	public void editTeacherMode(int id) {
+		studentFormLabel.setText(EDIT_STUDENT_LABEL_TEXT);
+		studentSelectedId = id;
+		editMode = true;
 		studentFormPresenter.loadStudent(id);
-		NameInput.setText(studentFormPresenter.getStudentName());
-		SurnameInput.setText(studentFormPresenter.getStudentSurName());
+		nameInput.setText(studentFormPresenter.getStudentName());
+		surnameInput.setText(studentFormPresenter.getStudentSurName());
 		List<String> subject = new ArrayList<>();
 		for (int i = 0; i < studentFormPresenter.getStudentNumSubject(); i++) {
 			subject.add(studentFormPresenter.getStudentSubject(i));
 		}
-		UpdateSubjectList(subject);
+		updateSubjectList(subject);
 	}
 
-	public void UpdateSubjectList(List<String> studentSubjectCollection) {
-		UnassignedSubjectModel2 = new DefaultListModel<>();
-		AssignedSubjectModel = new DefaultListModel<>();
+	public void updateSubjectList(List<String> studentSubjectCollection) {
+		unassignedSubjectModel2 = new DefaultListModel<>();
+		assignedSubjectModel = new DefaultListModel<>();
 
 		for (int i = 0; i < studentFormPresenter.loadSubjects(); i++) {
 			String subject = studentFormPresenter.getSubjectByPosition(i);
-			if (studentSubjectCollection != null && studentSubjectCollection.contains(subject.toString())) {
-				AssignedSubjectModel.addElement(subject);
+			if (studentSubjectCollection != null && studentSubjectCollection.contains(subject)) {
+				assignedSubjectModel.addElement(subject);
 			} else {
-				UnassignedSubjectModel2.addElement(subject);
+				unassignedSubjectModel2.addElement(subject);
 			}
 		}
-		UnassignSubjectCollection.setModel(UnassignedSubjectModel2);
-		AssignSubjectCollection.setModel(AssignedSubjectModel);
+		unassignSubjectCollection.setModel(unassignedSubjectModel2);
+		assignSubjectCollection.setModel(assignedSubjectModel);
 	}
 
-	private void AddSubjectButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		int[] selectedIndex = UnassignSubjectCollection.getSelectedIndices();
+	private void addSubjectButtonActionPerformed() {
+		int[] selectedIndex = unassignSubjectCollection.getSelectedIndices();
 
 		for (int i = selectedIndex.length - 1; i >= 0; i--) {
 			int index = selectedIndex[i];
-			String item = UnassignedSubjectModel2.getElementAt(index).toString();
-			AssignedSubjectModel.addElement(item);
-			UnassignedSubjectModel2.remove(index);
+			String item = unassignedSubjectModel2.getElementAt(index);
+			assignedSubjectModel.addElement(item);
+			unassignedSubjectModel2.remove(index);
 		}
 	}
 
-	private void RemoveSubjectButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		int[] selectedIndex = AssignSubjectCollection.getSelectedIndices();
+	private void removeSubjectButtonActionPerformed() {
+		int[] selectedIndex = assignSubjectCollection.getSelectedIndices();
 
 		for (int i = selectedIndex.length - 1; i >= 0; i--) {
 			int index = selectedIndex[i];
-			String item = AssignedSubjectModel.getElementAt(index).toString();
-			UnassignedSubjectModel2.addElement(item);
-			AssignedSubjectModel.remove(index);
+			String item = assignedSubjectModel.getElementAt(index);
+			unassignedSubjectModel2.addElement(item);
+			assignedSubjectModel.remove(index);
 		}
 	}
 
-	private void SaveFormButtonActionPerformed(java.awt.event.ActionEvent evt) {
+	private void saveFormButtonActionPerformed() {
 
-		String name = NameInput.getText();
-		String surname = SurnameInput.getText();
+		String name = nameInput.getText();
+		String surname = surnameInput.getText();
 
 		if (!name.isEmpty() && !surname.isEmpty()) {
-			if (EditMode)
-				studentFormPresenter.UpdateStudent(name, surname, AssignedSubjectModel, StudentSelectedId);
+			if (editMode)
+				studentFormPresenter.updateStudent(name, surname, assignedSubjectModel, studentSelectedId);
 			else
-				studentFormPresenter.InsertNewStudent(name, surname, AssignedSubjectModel);
-			studentCollectionView.UpdateStudentTableData();
+				studentFormPresenter.insertNewStudent(name, surname, assignedSubjectModel);
+			studentCollectionView.updateStudentTableData();
 		}
 	}
 
@@ -227,123 +229,123 @@ public class StudentFormView extends JPanel {
 	}
 
 	public JButton getAddSubjectButton() {
-		return AddSubjectButton;
+		return addSubjectButton;
 	}
 
 	public void setAddSubjectButton(JButton addSubjectButton) {
-		AddSubjectButton = addSubjectButton;
+		this.addSubjectButton = addSubjectButton;
 	}
 
 	public JList<String> getAssignSubjectCollection() {
-		return AssignSubjectCollection;
+		return assignSubjectCollection;
 	}
 
 	public void setAssignSubjectCollection(JList<String> assignSubjectCollection) {
-		AssignSubjectCollection = assignSubjectCollection;
+		this.assignSubjectCollection = assignSubjectCollection;
 	}
 
 	public JTextField getNameInput() {
-		return NameInput;
+		return nameInput;
 	}
 
 	public void setNameInput(JTextField nameInput) {
-		NameInput = nameInput;
+		this.nameInput = nameInput;
 	}
 
 	public JButton getRemoveSubjectButton() {
-		return RemoveSubjectButton;
+		return removeSubjectButton;
 	}
 
 	public void setRemoveSubjectButton(JButton removeSubjectButton) {
-		RemoveSubjectButton = removeSubjectButton;
+		this.removeSubjectButton = removeSubjectButton;
 	}
 
 	public JButton getSaveFormButton() {
-		return SaveFormButton;
+		return saveFormButton;
 	}
 
 	public void setSaveFormButton(JButton saveFormButton) {
-		SaveFormButton = saveFormButton;
+		this.saveFormButton = saveFormButton;
 	}
 
 	public JLabel getStudentFormLabel() {
-		return StudentFormLabel;
+		return studentFormLabel;
 	}
 
 	public void setStudentFormLabel(JLabel studentFormLabel) {
-		StudentFormLabel = studentFormLabel;
+		this.studentFormLabel = studentFormLabel;
 	}
 
 	public JTextField getSurnameInput() {
-		return SurnameInput;
+		return surnameInput;
 	}
 
 	public void setSurnameInput(JTextField surnameInput) {
-		SurnameInput = surnameInput;
+		this.surnameInput = surnameInput;
 	}
 
 	public JList<String> getUnassignSubjectCollection() {
-		return UnassignSubjectCollection;
+		return unassignSubjectCollection;
 	}
 
 	public void setUnassignSubjectCollection(JList<String> unassignSubjectCollection) {
-		UnassignSubjectCollection = unassignSubjectCollection;
+		this.unassignSubjectCollection = unassignSubjectCollection;
 	}
 
 	public JLabel getNameInputLabel() {
-		return NameInputLabel;
+		return nameInputLabel;
 	}
 
 	public void setNameInputLabel(JLabel nameInputLabel) {
-		NameInputLabel = nameInputLabel;
+		this.nameInputLabel = nameInputLabel;
 	}
 
 	public JLabel getSurnameInputLabel() {
-		return SurnameInputLabel;
+		return surnameInputLabel;
 	}
 
 	public void setSurnameInputLabel(JLabel surnameInputLabel) {
-		SurnameInputLabel = surnameInputLabel;
+		this.surnameInputLabel = surnameInputLabel;
 	}
 
 	public JScrollPane getUnassignSubjectPane() {
-		return UnassignSubjectPane;
+		return unassignSubjectPane;
 	}
 
 	public void setUnassignSubjectPane(JScrollPane unassignSubjectPane) {
-		UnassignSubjectPane = unassignSubjectPane;
+		this.unassignSubjectPane = unassignSubjectPane;
 	}
 
 	public JScrollPane getAssignSubjectPane() {
-		return AssignSubjectPane;
+		return assignSubjectPane;
 	}
 
 	public void setAssignSubjectPane(JScrollPane assignSubjectPane) {
-		AssignSubjectPane = assignSubjectPane;
+		this.assignSubjectPane = assignSubjectPane;
 	}
 
 	public DefaultListModel<String> getUnassignedSubjectModel2() {
-		return UnassignedSubjectModel2;
+		return unassignedSubjectModel2;
 	}
 
 	public void setUnassignedSubjectModel2(DefaultListModel<String> unassignedSubjectModel2) {
-		UnassignedSubjectModel2 = unassignedSubjectModel2;
+		this.unassignedSubjectModel2 = unassignedSubjectModel2;
 	}
 
 	public DefaultListModel<String> getAssignedSubjectModel() {
-		return AssignedSubjectModel;
+		return assignedSubjectModel;
 	}
 
 	public void setAssignedSubjectModel(DefaultListModel<String> assignedSubjectModel) {
-		AssignedSubjectModel = assignedSubjectModel;
+		this.assignedSubjectModel = assignedSubjectModel;
 	}
 
 	public static String getNewstudentlabeltext() {
-		return NewStudentLabelText;
+		return NEW_STUDENT_LABEL_TEXT;
 	}
 
 	public static String getEditstudentlabeltext() {
-		return EditStudentLabelText;
+		return EDIT_STUDENT_LABEL_TEXT;
 	}
 
 	

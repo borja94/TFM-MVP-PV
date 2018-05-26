@@ -2,6 +2,9 @@ package tfm.mvp.pv.views;
 
 
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -13,17 +16,17 @@ import tfm.mvp.pv.presenters.SubjectFormPresenter;
 
 public class SubjectFormView extends JPanel {
 
-	private static final String NewSubjectLabelText = "Nueva asignatura";
-	private static final String EditSubjectLabelText = "Editar asignatura";
-	private boolean EditMode;
-	private int SubjectSelectedId;
+	private static final String NEW_SUBJECT_LABEL_TEXT = "Nueva asignatura";
+	private static final String EDIT_SUBJECT_LABEL_TEXT = "Editar asignatura";
+	private boolean editMode;
+	private int subjectSelectedId;
 
-	private JTextField CourseInput;
-	private JButton SaveButton;
-	private JLabel SubjectFormLabel;
-	private JTextField TitleInput;
-	private JLabel TitleInputLabel;
-	private JLabel CourseInpitLabel;
+	private JTextField courseInput;
+	private JButton saveButton;
+	private JLabel subjectFormLabel;
+	private JTextField titleInput;
+	private JLabel titleInputLabel;
+	private JLabel courseInpitLabel;
 
 	private SubjectFormPresenter subjectFormPresenter;
 	private SubjectsCollectionView subjectCollectionView;
@@ -35,23 +38,23 @@ public class SubjectFormView extends JPanel {
 
 	private void initComponents() {
 
-		SubjectFormLabel = new JLabel();
-		TitleInput = new JTextField();
-		CourseInput = new JTextField();
-		TitleInputLabel = new JLabel();
-		CourseInpitLabel = new JLabel();
-		SaveButton = new JButton();
+		subjectFormLabel = new JLabel();
+		titleInput = new JTextField();
+		courseInput = new JTextField();
+		titleInputLabel = new JLabel();
+		courseInpitLabel = new JLabel();
+		saveButton = new JButton();
 
-		SubjectFormLabel.setText("Nueva asignatura");
+		subjectFormLabel.setText(NEW_SUBJECT_LABEL_TEXT);
 
-		TitleInputLabel.setText("T�tulo");
+		titleInputLabel.setText("Título");
 
-		CourseInpitLabel.setText("Curso");
+		courseInpitLabel.setText("Curso");
 
-		SaveButton.setText("Guardar");
-		SaveButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				SaveButtonActionPerformed(evt);
+		saveButton.setText("Guardar");
+		saveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				saveButtonActionPerformed();
 			}
 		});
 
@@ -65,64 +68,64 @@ public class SubjectFormView extends JPanel {
 		jPanel1Layout
 				.setHorizontalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addGroup(jPanel1Layout.createSequentialGroup().addContainerGap().addGroup(jPanel1Layout
-								.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(SubjectFormLabel)
+								.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(subjectFormLabel)
 								.addGroup(jPanel1Layout.createSequentialGroup()
 										.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-												.addComponent(TitleInput, GroupLayout.PREFERRED_SIZE, 62,
+												.addComponent(titleInput, GroupLayout.PREFERRED_SIZE, 62,
 														GroupLayout.PREFERRED_SIZE)
-												.addComponent(TitleInputLabel))
+												.addComponent(titleInputLabel))
 										.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 										.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-												.addComponent(CourseInpitLabel).addComponent(CourseInput,
+												.addComponent(courseInpitLabel).addComponent(courseInput,
 														GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)))
-								.addComponent(SaveButton)).addContainerGap(225, Short.MAX_VALUE)));
+								.addComponent(saveButton)).addContainerGap(225, Short.MAX_VALUE)));
 		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel1Layout.createSequentialGroup().addGap(33, 33, 33).addComponent(SubjectFormLabel)
+				.addGroup(jPanel1Layout.createSequentialGroup().addGap(33, 33, 33).addComponent(subjectFormLabel)
 						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
 						.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(TitleInputLabel).addComponent(CourseInpitLabel))
+								.addComponent(titleInputLabel).addComponent(courseInpitLabel))
 						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(jPanel1Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(TitleInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(titleInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
-								.addComponent(CourseInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(courseInput, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE))
-						.addGap(30, 30, 30).addComponent(SaveButton)
+						.addGap(30, 30, 30).addComponent(saveButton)
 						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 	}
 
-	private void SaveButtonActionPerformed(java.awt.event.ActionEvent evt) {
+	private void saveButtonActionPerformed() {
 
-		String name = TitleInput.getText();
-		String course = CourseInput.getText();
+		String name = titleInput.getText();
+		String course = courseInput.getText();
 
 		if (!name.isEmpty() && !course.isEmpty()) {
-			if (EditMode) {
-				subjectFormPresenter.UpdateStudent(name, Integer.parseInt(course), SubjectSelectedId);
+			if (editMode) {
+				subjectFormPresenter.updateStudent(name, Integer.parseInt(course), subjectSelectedId);
 			} else {
-				subjectFormPresenter.InsertNewStudent(name, Integer.parseInt(course));
+				subjectFormPresenter.insertNewStudent(name, Integer.parseInt(course));
 			}
 			
-			 subjectCollectionView.UpdateSubjectsTableData();
+			 subjectCollectionView.updateSubjectsTableData();
 			 
 		}
 	}
 	
-	public void NewSubjectMode() {
-		SubjectFormLabel.setText(NewSubjectLabelText);
-		TitleInput.setText("");
-		CourseInput.setText("");
-		SubjectSelectedId = 0;
-		EditMode = false;
+	public void newSubjectMode() {
+		subjectFormLabel.setText(NEW_SUBJECT_LABEL_TEXT);
+		titleInput.setText("");
+		courseInput.setText("");
+		subjectSelectedId = 0;
+		editMode = false;
 	}
-	public void EditSubjectMode(int id) {
-		SubjectFormLabel.setText(EditSubjectLabelText);
-		SubjectSelectedId = id;
-		EditMode = true;
+	public void editSubjectMode(int id) {
+		subjectFormLabel.setText(EDIT_SUBJECT_LABEL_TEXT);
+		subjectSelectedId = id;
+		editMode = true;
 		subjectFormPresenter.loadSubject(id);
-		TitleInput.setText(subjectFormPresenter.getSubjectTitle());
-		CourseInput.setText(subjectFormPresenter.getSubjectCourse());
+		titleInput.setText(subjectFormPresenter.getSubjectTitle());
+		courseInput.setText(subjectFormPresenter.getSubjectCourse());
 	}
 
 	public void setSubjectCollectionView(SubjectsCollectionView subjectCollectionView) {
@@ -130,67 +133,67 @@ public class SubjectFormView extends JPanel {
 	}
 
 	public int getSubjectSelectedId() {
-		return SubjectSelectedId;
+		return subjectSelectedId;
 	}
 
 	public void setSubjectSelectedId(int subjectSelectedId) {
-		SubjectSelectedId = subjectSelectedId;
+		this.subjectSelectedId = subjectSelectedId;
 	}
 
 	public JTextField getCourseInput() {
-		return CourseInput;
+		return courseInput;
 	}
 
 	public void setCourseInput(JTextField courseInput) {
-		CourseInput = courseInput;
+		this.courseInput = courseInput;
 	}
 
 	public JButton getSaveButton() {
-		return SaveButton;
+		return saveButton;
 	}
 
 	public void setSaveButton(JButton saveButton) {
-		SaveButton = saveButton;
+		this.saveButton = saveButton;
 	}
 
 	public JLabel getSubjectFormLabel() {
-		return SubjectFormLabel;
+		return subjectFormLabel;
 	}
 
 	public void setSubjectFormLabel(JLabel subjectFormLabel) {
-		SubjectFormLabel = subjectFormLabel;
+		this.subjectFormLabel = subjectFormLabel;
 	}
 
 	public JTextField getTitleInput() {
-		return TitleInput;
+		return titleInput;
 	}
 
 	public void setTitleInput(JTextField titleInput) {
-		TitleInput = titleInput;
+		this.titleInput = titleInput;
 	}
 
 	public JLabel getTitleInputLabel() {
-		return TitleInputLabel;
+		return titleInputLabel;
 	}
 
 	public void setTitleInputLabel(JLabel titleInputLabel) {
-		TitleInputLabel = titleInputLabel;
+		this.titleInputLabel = titleInputLabel;
 	}
 
 	public JLabel getCourseInpitLabel() {
-		return CourseInpitLabel;
+		return courseInpitLabel;
 	}
 
 	public void setCourseInpitLabel(JLabel courseInpitLabel) {
-		CourseInpitLabel = courseInpitLabel;
+		this.courseInpitLabel = courseInpitLabel;
 	}
 
 	public static String getNewsubjectlabeltext() {
-		return NewSubjectLabelText;
+		return NEW_SUBJECT_LABEL_TEXT;
 	}
 
 	public static String getEditsubjectlabeltext() {
-		return EditSubjectLabelText;
+		return EDIT_SUBJECT_LABEL_TEXT;
 	}
 	
 	

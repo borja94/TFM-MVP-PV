@@ -1,9 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tfm.mvp.pv.views;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -11,24 +9,14 @@ import javax.swing.JFrame;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 
-/**
- *
- * @author borja
- */
+
 public class SubjectsFrame extends JFrame {
 
-	private MenuFrame _menuFrame;
-
-	private JButton ReturnMenuFrameButton;
-
+	private MenuFrame menuFrame;
 	private SubjectFormView subjectFormView;
 	private SubjectsCollectionView subjectCollectionView;
 
-	/**
-	 * Creates new form SubjectsFrame
-	 *
-	 * @param menuFrame
-	 */
+
 	public SubjectsFrame(MenuFrame menuFrame) {
 
 		subjectFormView = new SubjectFormView();
@@ -36,24 +24,19 @@ public class SubjectsFrame extends JFrame {
 		subjectFormView.setSubjectCollectionView(subjectCollectionView);
 		
 		initComponents();
-		_menuFrame = menuFrame;
-	}
-
-	@Override
-	public void setVisible(boolean b) {
-		super.setVisible(b);
+		this.menuFrame = menuFrame;
 	}
 
 	private void initComponents() {
 
-		ReturnMenuFrameButton = new JButton();
+		JButton returnMenuFrameButton = new JButton();
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-		ReturnMenuFrameButton.setText("Volver");
-		ReturnMenuFrameButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				jButton1ActionPerformed(evt);
+		returnMenuFrameButton.setText("Volver");
+		returnMenuFrameButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				returnMenuFrameButtonActionPerformed();
 			}
 		});
 
@@ -64,7 +47,7 @@ public class SubjectsFrame extends JFrame {
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addGroup(GroupLayout.Alignment.TRAILING,
 								layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
-										.addComponent(ReturnMenuFrameButton))
+										.addComponent(returnMenuFrameButton))
 						.addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
 								.addComponent(subjectFormView, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
@@ -80,14 +63,14 @@ public class SubjectsFrame extends JFrame {
 										Short.MAX_VALUE)
 								.addComponent(subjectCollectionView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
 										Short.MAX_VALUE))
-						.addGap(18, 18, 18).addComponent(ReturnMenuFrameButton).addContainerGap()));
+						.addGap(18, 18, 18).addComponent(returnMenuFrameButton).addContainerGap()));
 
 		pack();
 	}
 
-	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+	private void returnMenuFrameButtonActionPerformed() {
 		this.setVisible(false);
-		_menuFrame.setVisible(true);
+		menuFrame.setVisible(true);
 		dispose();
 	}
 

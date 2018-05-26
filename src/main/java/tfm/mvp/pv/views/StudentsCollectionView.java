@@ -1,5 +1,8 @@
 package tfm.mvp.pv.views;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -13,13 +16,13 @@ import tfm.mvp.pv.presenters.StudentsCollectionPresenter;
 
 public class StudentsCollectionView extends JPanel {
 
-	private TableModel StudentsTableModel;
+	private TableModel studentsTableModel;
 
-	private JButton DeleteStudentButton;
-	private JButton EditStudentButton;
-	private JButton NewStudentButton;
-	private JTable StudentsTable;
-	private JScrollPane TableScrollPane;
+	private JButton deleteStudentButton;
+	private JButton editStudentButton;
+	private JButton newStudentButton;
+	private JTable studentsTable;
+	private JScrollPane tableScrollPane;
 	private StudentFormView studentFormView;
 	private StudentsCollectionPresenter studentCollectionPresenter;
 
@@ -31,34 +34,34 @@ public class StudentsCollectionView extends JPanel {
 
 	private void initComponents() {
 
-		TableScrollPane = new JScrollPane();
-		StudentsTable = new JTable();
-		DeleteStudentButton = new JButton();
-		EditStudentButton = new JButton();
-		NewStudentButton = new JButton();
+		tableScrollPane = new JScrollPane();
+		studentsTable = new JTable();
+		deleteStudentButton = new JButton();
+		editStudentButton = new JButton();
+		newStudentButton = new JButton();
 
-		UpdateStudentTableData();
+		updateStudentTableData();
 
-		TableScrollPane.setViewportView(StudentsTable);
+		tableScrollPane.setViewportView(studentsTable);
 
-		DeleteStudentButton.setText("Borrar");
-		DeleteStudentButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				DeleteStudentButtonActionPerformed(evt);
+		deleteStudentButton.setText("Borrar");
+		deleteStudentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				deleteStudentButtonActionPerformed();
 			}
 		});
 
-		EditStudentButton.setText("Modo edici�n");
-		EditStudentButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				EditStudentButtonActionPerformed(evt);
+		editStudentButton.setText("Modo edición");
+		editStudentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				editStudentButtonActionPerformed();
 			}
 		});
 
-		NewStudentButton.setText("Nuevo alumno");
-		NewStudentButton.addActionListener(new java.awt.event.ActionListener() {
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				NewStudentButtonActionPerformed(evt);
+		newStudentButton.setText("Nuevo alumno");
+		newStudentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				newStudentButtonActionPerformed();
 			}
 		});
 
@@ -70,115 +73,112 @@ public class StudentsCollectionView extends JPanel {
 		GroupLayout jPanel2Layout = new GroupLayout(this);
 		this.setLayout(jPanel2Layout);
 		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel2Layout.createSequentialGroup().addContainerGap()
-						.addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addComponent(TableScrollPane, GroupLayout.PREFERRED_SIZE, 384, GroupLayout.PREFERRED_SIZE)
-								.addGroup(jPanel2Layout.createSequentialGroup().addComponent(DeleteStudentButton)
-										.addGap(18, 18, 18).addComponent(EditStudentButton).addGap(18, 18, 18)
-										.addComponent(NewStudentButton)))
+				.addGroup(jPanel2Layout.createSequentialGroup().addContainerGap().addGroup(jPanel2Layout
+						.createParallelGroup(GroupLayout.Alignment.LEADING)
+						.addComponent(tableScrollPane, GroupLayout.PREFERRED_SIZE, 384, GroupLayout.PREFERRED_SIZE)
+						.addGroup(jPanel2Layout.createSequentialGroup().addComponent(deleteStudentButton)
+								.addGap(18, 18, 18).addComponent(editStudentButton).addGap(18, 18, 18)
+								.addComponent(newStudentButton)))
 						.addContainerGap(17, Short.MAX_VALUE)));
 		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(jPanel2Layout.createSequentialGroup().addContainerGap()
-						.addComponent(TableScrollPane, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
+						.addComponent(tableScrollPane, GroupLayout.PREFERRED_SIZE, 176, GroupLayout.PREFERRED_SIZE)
 						.addGap(18, 18, 18)
 						.addGroup(jPanel2Layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(DeleteStudentButton).addComponent(EditStudentButton)
-								.addComponent(NewStudentButton))
+								.addComponent(deleteStudentButton).addComponent(editStudentButton)
+								.addComponent(newStudentButton))
 						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 
 	}
 
-	public void UpdateStudentTableData() {
+	public void updateStudentTableData() {
 		studentCollectionPresenter.loadTableData();
 		String[] columns = new String[studentCollectionPresenter.getNumColumns()];
 		String[][] tableData = new String[studentCollectionPresenter.getNumRows()][studentCollectionPresenter
 				.getNumColumns()];
 		for (int i = 0; i < columns.length; i++) {
-			columns[i]=studentCollectionPresenter.getColumnName(i);
+			columns[i] = studentCollectionPresenter.getColumnName(i);
 		}
 		for (int i = 0; i < studentCollectionPresenter.getNumRows(); i++) {
 			for (int j = 0; j < studentCollectionPresenter.getNumColumns(); j++) {
 				tableData[i][j] = studentCollectionPresenter.getStudentAtribute(j, i);
 			}
 		}
-		StudentsTableModel = new DefaultTableModel(tableData, columns);
-		StudentsTable.setModel(StudentsTableModel);
+		studentsTableModel = new DefaultTableModel(tableData, columns);
+		studentsTable.setModel(studentsTableModel);
 	}
 
-	private void DeleteStudentButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		int selectedRow = StudentsTable.getSelectedRow();
+	private void deleteStudentButtonActionPerformed() {
+		int selectedRow = studentsTable.getSelectedRow();
 		if (selectedRow != -1) {
 			int dialogResult = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar al alumno");
 			if (dialogResult == JOptionPane.YES_OPTION) {
-				studentCollectionPresenter.RemoveStudent((Integer.parseInt(StudentsTableModel.getValueAt(selectedRow, 0).toString())));
-				UpdateStudentTableData();
+				studentCollectionPresenter
+						.removeStudent((Integer.parseInt(studentsTableModel.getValueAt(selectedRow, 0).toString())));
+				updateStudentTableData();
 			}
 		}
 	}
 
-	private void EditStudentButtonActionPerformed(java.awt.event.ActionEvent evt) {
+	private void editStudentButtonActionPerformed() {
 
-		int selectedRow = StudentsTable.getSelectedRow();
+		int selectedRow = studentsTable.getSelectedRow();
 		if (selectedRow != -1) {
-			studentFormView.EditTeacherMode(Integer.parseInt(StudentsTableModel.getValueAt(selectedRow, 0).toString()));
+			studentFormView.editTeacherMode(Integer.parseInt(studentsTableModel.getValueAt(selectedRow, 0).toString()));
 
 		}
 	}
 
-	private void NewStudentButtonActionPerformed(java.awt.event.ActionEvent evt) {
-		studentFormView.NewTeacherMode();
+	private void newStudentButtonActionPerformed() {
+		studentFormView.newTeacherMode();
 	}
 
 	public TableModel getStudentsTableModel() {
-		return StudentsTableModel;
+		return studentsTableModel;
 	}
 
 	public void setStudentsTableModel(TableModel studentsTableModel) {
-		StudentsTableModel = studentsTableModel;
+		this.studentsTableModel = studentsTableModel;
 	}
 
 	public JButton getDeleteStudentButton() {
-		return DeleteStudentButton;
+		return deleteStudentButton;
 	}
 
 	public void setDeleteStudentButton(JButton deleteStudentButton) {
-		DeleteStudentButton = deleteStudentButton;
+		this.deleteStudentButton = deleteStudentButton;
 	}
 
 	public JButton getEditStudentButton() {
-		return EditStudentButton;
+		return editStudentButton;
 	}
 
 	public void setEditStudentButton(JButton editStudentButton) {
-		EditStudentButton = editStudentButton;
+		this.editStudentButton = editStudentButton;
 	}
 
 	public JButton getNewStudentButton() {
-		return NewStudentButton;
+		return newStudentButton;
 	}
 
 	public void setNewStudentButton(JButton newStudentButton) {
-		NewStudentButton = newStudentButton;
+		this.newStudentButton = newStudentButton;
 	}
 
 	public JTable getStudentsTable() {
-		return StudentsTable;
+		return studentsTable;
 	}
 
 	public void setStudentsTable(JTable studentsTable) {
-		StudentsTable = studentsTable;
+		this.studentsTable = studentsTable;
 	}
 
 	public JScrollPane getTableScrollPane() {
-		return TableScrollPane;
+		return tableScrollPane;
 	}
 
 	public void setTableScrollPane(JScrollPane tableScrollPane) {
-		TableScrollPane = tableScrollPane;
+		this.tableScrollPane = tableScrollPane;
 	}
-	
-	
-	
-	
 
 }

@@ -4,13 +4,14 @@ import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class MenuPanel extends JPanel {
 
-	private javax.swing.JButton TeacherFrameButton;
-	private javax.swing.JButton StudentFrameButton;
-	private javax.swing.JButton SubjectFrameButton;
-	private javax.swing.JLabel MenuLabel;
+	private JButton teacherFrameButton;
+	private JButton studentFrameButton;
+	private JButton subjectFrameButton;
+	private JLabel menuLabel;
 
 	public MenuPanel() {
 
@@ -19,15 +20,15 @@ public class MenuPanel extends JPanel {
 
 	private void initComponents() {
 
-		MenuLabel = new javax.swing.JLabel();
-		TeacherFrameButton = new javax.swing.JButton();
-		StudentFrameButton = new javax.swing.JButton();
-		SubjectFrameButton = new javax.swing.JButton();
+		menuLabel = new JLabel();
+		teacherFrameButton = new JButton();
+		studentFrameButton = new JButton();
+		subjectFrameButton = new JButton();
 
-		MenuLabel.setText("Men�");
-		TeacherFrameButton.setText("Profesores");
-		StudentFrameButton.setText("Alumnos");
-		SubjectFrameButton.setText("Asignaturas");
+		menuLabel.setText("Menú");
+		teacherFrameButton.setText("Profesores");
+		studentFrameButton.setText("Alumnos");
+		subjectFrameButton.setText("Asignaturas");
 		initComponentsPosition();
 
 	}
@@ -38,34 +39,34 @@ public class MenuPanel extends JPanel {
 
 		layout.setHorizontalGroup(layout.createSequentialGroup().addGap(23, 23, 23)
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-						.addComponent(MenuLabel, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
-						.addComponent(TeacherFrameButton, javax.swing.GroupLayout.Alignment.LEADING,
+						.addComponent(menuLabel, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
+						.addComponent(teacherFrameButton, GroupLayout.Alignment.LEADING,
 								GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(StudentFrameButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+						.addComponent(studentFrameButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
 								GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(SubjectFrameButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+						.addComponent(subjectFrameButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
 								GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 				.addGap(23, 23, 23));
 
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup().addGap(21, 21, 21).addComponent(MenuLabel)
-						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addComponent(TeacherFrameButton)
-						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(StudentFrameButton)
-						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(SubjectFrameButton)
+				.addGroup(layout.createSequentialGroup().addGap(21, 21, 21).addComponent(menuLabel)
+						.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addComponent(teacherFrameButton)
+						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(studentFrameButton)
+						.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED).addComponent(subjectFrameButton)
 						.addGap(21, 21, 21)));
 
 	}
 
 	public JButton getTeacherFrameButton() {
-		return TeacherFrameButton;
+		return teacherFrameButton;
 	}
 
 	public JButton getStudentFrameButton() {
-		return StudentFrameButton;
+		return studentFrameButton;
 	}
 
 	public JButton getSubjectFrameButton() {
-		return SubjectFrameButton;
+		return subjectFrameButton;
 	}
 
 }

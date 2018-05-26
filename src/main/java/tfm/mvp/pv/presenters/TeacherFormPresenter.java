@@ -18,11 +18,13 @@ public class TeacherFormPresenter {
 	private Teacher teacher;
 	private List<Subject> subjectsCollection;
 	private TeacherFormView teacherFormView;
-	private boolean EditMode;
-	private int TeacherSelectedId;
-	private static final String NewTeacherLabelText = "Nuevo profesor";
-	private static final String EditTeacherLabelText = "Editar profesor";
+	private boolean editMode;
+	private int teacherSelectedId;
+	private static final String NEW_TEACHER_LABEL_TEXT = "Nuevo profesor";
+	private static final String EDIT_TEACHER_LABEL_TEXT = "Editar profesor";
 	private TeachersCollectionPresenter teacherCollectionPresenter;
+	private static final char ID_SUBJECT_SEPARATOR = '#';
+
 
 	public TeacherFormPresenter(TeacherFormView teacherFormView) {
 		this.teacherFormView = teacherFormView;
@@ -30,46 +32,46 @@ public class TeacherFormPresenter {
 		subjectDto = new SubjectDto();
 	}
 
-	public void InsertNewTeacher(String name, String surname, DefaultListModel<String> assignedSubjectModel) {
+	public void insertNewTeacher(String name, String surname, DefaultListModel<String> assignedSubjectModel) {
 
-		Teacher teacher = new Teacher(0, name, surname);
+		Teacher teacherAux = new Teacher(0, name, surname);
 
 		for (int i = 0; i < assignedSubjectModel.size(); i++) {
-			String subjectAux = (String) assignedSubjectModel.getElementAt(i);
-			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf("#")));
-			teacher.getSubjectCollection().add(new Subject(aux));
+			String subjectAux = assignedSubjectModel.getElementAt(i);
+			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf(ID_SUBJECT_SEPARATOR)));
+			teacherAux.getSubjectCollection().add(new Subject(aux));
 		}
-		teacherDto.Insert(teacher);
+		teacherDto.insert(teacherAux);
 		cleanForm();
 	}
 
-	public void UpdateTeacher(String name, String surname, DefaultListModel<String> assignedSubjectModel, int id) {
+	public void updateTeacher(String name, String surname, DefaultListModel<String> assignedSubjectModel, int id) {
 
-		Teacher teacher = new Teacher(id, name, surname);
+		Teacher teacherAux = new Teacher(id, name, surname);
 
 		for (int i = 0; i < assignedSubjectModel.size(); i++) {
-			String subjectAux = (String) assignedSubjectModel.getElementAt(i);
-			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf("#")));
-			teacher.getSubjectCollection().add(new Subject(aux));
+			String subjectAux = assignedSubjectModel.getElementAt(i);
+			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf(ID_SUBJECT_SEPARATOR)));
+			teacherAux.getSubjectCollection().add(new Subject(aux));
 		}
 
-		teacherDto.Update(teacher);
+		teacherDto.update(teacherAux);
 		cleanForm();
 	}
 
-	public void NotifyUpdateSubjectList() {
+	public void notifyUpdateSubjectList() {
 
-		UpdateSubjectList(null);
+		updateSubjectList(null);
 	}
 
-	private void UpdateSubjectList(List<String> teacherSubjectCollection) {
+	private void updateSubjectList(List<String> teacherSubjectCollection) {
 		teacherFormView.setUnassignedSubjectModel(new DefaultListModel<>());
 
 		teacherFormView.setAssignedSubjectModel(new DefaultListModel<>());
 
 		for (int i = 0; i < loadSubjects(); i++) {
 			String subject = getSubjectByPosition(i);
-			if (teacherSubjectCollection != null && teacherSubjectCollection.contains(subject.toString())) {
+			if (teacherSubjectCollection != null && teacherSubjectCollection.contains(subject)) {
 				teacherFormView.getAssignedSubjectModel().addElement(subject);
 			} else {
 				teacherFormView.getUnassignedSubjectModel().addElement(subject);
@@ -80,58 +82,58 @@ public class TeacherFormPresenter {
 	}
 
 	private void cleanForm() {
-		teacherFormView.getTeacherFormLabel().setText(NewTeacherLabelText);
+		teacherFormView.getTeacherFormLabel().setText(NEW_TEACHER_LABEL_TEXT);
 		teacherFormView.getNameInput().setText("");
 		teacherFormView.getSurnameInput().setText("");
-		UpdateSubjectList(null);
-		TeacherSelectedId = 0;
-		EditMode = false;
+		updateSubjectList(null);
+		teacherSelectedId = 0;
+		editMode = false;
 	}
 
-	public void NotifyAddSubject() {
+	public void notifyAddSubject() {
 		int[] selectedIndex = teacherFormView.getUnassignSubjectCollection().getSelectedIndices();
 
 		for (int i = selectedIndex.length - 1; i >= 0; i--) {
 			int index = selectedIndex[i];
-			String item = teacherFormView.getUnassignedSubjectModel().getElementAt(index).toString();
+			String item = teacherFormView.getUnassignedSubjectModel().getElementAt(index);
 			teacherFormView.getAssignedSubjectModel().addElement(item);
 			teacherFormView.getUnassignedSubjectModel().remove(index);
 		}
 	}
 
-	public void NotifyRemoveSubject() {
+	public void notifyRemoveSubject() {
 		int[] selectedIndex = teacherFormView.getAssignSubjectCollection().getSelectedIndices();
 
 		for (int i = selectedIndex.length - 1; i >= 0; i--) {
 			int index = selectedIndex[i];
-			String item = teacherFormView.getAssignedSubjectModel().getElementAt(index).toString();
+			String item = teacherFormView.getAssignedSubjectModel().getElementAt(index);
 			teacherFormView.getUnassignedSubjectModel().addElement(item);
 			teacherFormView.getAssignedSubjectModel().remove(index);
 		}
 		cleanForm();
 	}
 
-	public void NotifySaveForm() {
+	public void notifySaveForm() {
 		String name = teacherFormView.getNameInput().getText();
 		String surname = teacherFormView.getSurnameInput().getText();
 
 		if (!name.isEmpty() && !surname.isEmpty()) {
-			if (EditMode)
-				UpdateTeacher(name, surname, teacherFormView.getAssignedSubjectModel(), TeacherSelectedId);
+			if (editMode)
+				updateTeacher(name, surname, teacherFormView.getAssignedSubjectModel(), teacherSelectedId);
 			else
-				InsertNewTeacher(name, surname, teacherFormView.getAssignedSubjectModel());
-			teacherCollectionPresenter.NotifyUpdateTeacherTableData();
+				insertNewTeacher(name, surname, teacherFormView.getAssignedSubjectModel());
+			teacherCollectionPresenter.notifyUpdateTeacherTableData();
 		}
 	}
 
-	public void NotifyNewTeacherMode() {
+	public void notifyNewTeacherMode() {
 		cleanForm();
 	}
 
-	public void NotifyEditTeacherMode(int id) {
-		teacherFormView.getTeacherFormLabel().setText(EditTeacherLabelText);
-		TeacherSelectedId = id;
-		EditMode = true;
+	public void notifyEditTeacherMode(int id) {
+		teacherFormView.getTeacherFormLabel().setText(EDIT_TEACHER_LABEL_TEXT);
+		teacherSelectedId = id;
+		editMode = true;
 		loadTeacher(id);
 		teacherFormView.getNameInput().setText(getTeacherName());
 		teacherFormView.getSurnameInput().setText(getTeacherSurName());
@@ -139,11 +141,11 @@ public class TeacherFormPresenter {
 		for (int i = 0; i < getTeacherNumSubject(); i++) {
 			subject.add(getTeacherSubject(i));
 		}
-		UpdateSubjectList(subject);
+		updateSubjectList(subject);
 	}
 
 	public void loadTeacher(int id) {
-		teacher = teacherDto.Get(id);
+		teacher = teacherDto.get(id);
 	}
 
 	public String getTeacherName() {
@@ -167,7 +169,7 @@ public class TeacherFormPresenter {
 	}
 
 	public int loadSubjects() {
-		subjectsCollection = subjectDto.GetAll();
+		subjectsCollection = subjectDto.getAll();
 		return subjectsCollection.size();
 	}
 

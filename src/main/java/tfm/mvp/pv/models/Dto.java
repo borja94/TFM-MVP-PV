@@ -22,7 +22,7 @@ public abstract class Dto {
 		basicDataSource.setUrl("jdbc:derby://localhost:1527/TFM");
 	}
 
-	protected void CloseConnection(Connection connection) {
+	protected void closeConnection(Connection connection) {
 
 		try {
 			connection.close();
@@ -31,7 +31,7 @@ public abstract class Dto {
 		}
 	}
 
-	protected void ClosePreparedStatement(PreparedStatement preparedStatement) {
+	protected void closePreparedStatement(PreparedStatement preparedStatement) {
 
 		try {
 			preparedStatement.close();
@@ -40,14 +40,14 @@ public abstract class Dto {
 		}
 	}
 
-	protected void CloseResultSet(ResultSet resultSet) {
+	protected void closeResultSet(ResultSet resultSet) {
 		try {
 			resultSet.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		}
 	}
-	protected void CloseStatement(Statement statement) {
+	protected void closeStatement(Statement statement) {
 
 		try {
 			statement.close();

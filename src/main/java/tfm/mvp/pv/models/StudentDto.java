@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package tfm.mvp.pv.models;
 
 import java.sql.Connection;
@@ -17,7 +13,14 @@ import java.util.logging.Logger;
 
 public class StudentDto extends Dto {
 
-	public ResultSet Insert(Student student) {
+	private static final String COURSE_COLUMN = "COURSE";
+	private static final String ID_COLUMN = "ID";
+	private static final String TITLE_COLUMN = "TITLE";
+	private static final String SUBJECT_ID_COLUMN = "SUBJECT_ID";
+	private static final String SURNAME_COLUMN = "SURNAME";
+	private static final String NAME_COLUMN = "NAME";
+
+	public ResultSet insert(Student student) {
 		Connection conexion = null;
 		ResultSet resultSet = null;
 		PreparedStatement sentencia1 = null;
@@ -37,7 +40,7 @@ public class StudentDto extends Dto {
 			}
 
 			for (Subject subject : student.getSubjectCollection()) {
-				InsertSubjectStudent(id, subject.getId());
+				insertSubjectStudent(id, subject.getId());
 			}
 
 			sentencia1.close();
@@ -46,17 +49,17 @@ public class StudentDto extends Dto {
 		} finally {
 
 			if (resultSet != null)
-				CloseResultSet(resultSet);
+				closeResultSet(resultSet);
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 
 		return resultSet;
 	}
 
-	public void Update(Student student) {
+	public void update(Student student) {
 		Connection conexion = null;
 		PreparedStatement sentencia1 = null;
 		try {
@@ -69,9 +72,9 @@ public class StudentDto extends Dto {
 			sentencia1.setString(2, student.getSurname());
 			sentencia1.setInt(3, student.getId());
 
-			RemoveAllStudentSubjects(student.getId());
+			removeAllStudentSubjects(student.getId());
 			for (Subject subject : student.getSubjectCollection()) {
-				InsertSubjectStudent(student.getId(), subject.getId());
+				insertSubjectStudent(student.getId(), subject.getId());
 			}
 
 			sentencia1.executeUpdate();
@@ -82,13 +85,13 @@ public class StudentDto extends Dto {
 		} finally {
 
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 	}
 
-	public List<Student> GetAll() {
+	public List<Student> getAll() {
 
 		List<Student> result = new ArrayList<>();
 		Connection conexion = null;
@@ -104,9 +107,9 @@ public class StudentDto extends Dto {
 			rs.afterLast();
 			while (rs.previous()) {
 
-				Student student = new Student(rs.getInt("ID"), rs.getString(2), rs.getString(3));
+				Student student = new Student(rs.getInt(ID_COLUMN), rs.getString(NAME_COLUMN), rs.getString(SURNAME_COLUMN));
 				SubjectDto subjectDto = new SubjectDto();
-				student.setSubjectCollection(subjectDto.GetByStudent(student.getId()));
+				student.setSubjectCollection(subjectDto.getByStudent(student.getId()));
 				result.add(student);
 
 			}
@@ -115,18 +118,18 @@ public class StudentDto extends Dto {
 
 		} finally {
 
-			if (result != null)
-				CloseResultSet(rs);
+			if (rs != null)
+				closeResultSet(rs);
 			if (sentencia != null)
-				CloseStatement(sentencia);
+				closeStatement(sentencia);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 
 		return result;
 	}
 
-	public Student Get(int id) {
+	public Student get(int id) {
 		Connection conexion = null;
 		Student student = null;
 		PreparedStatement sentencia1 = null;
@@ -144,12 +147,12 @@ public class StudentDto extends Dto {
 			student = new Student();
 			List<Subject> subjectCollection = new ArrayList<>();
 			if (rs.next()) {
-				student = new Student(rs.getInt("ID"), rs.getString("NAME"), rs.getString("SURNAME"));
+				student = new Student(rs.getInt(ID_COLUMN), rs.getString(NAME_COLUMN), rs.getString(SURNAME_COLUMN));
 
 				do {
-					if (rs.getString("TITLE") != null) {
+					if (rs.getString(TITLE_COLUMN) != null) {
 						subjectCollection
-								.add(new Subject(rs.getInt("SUBJECT_ID"), rs.getString("TITLE"), rs.getInt("COURSE")));
+								.add(new Subject(rs.getInt(SUBJECT_ID_COLUMN), rs.getString(TITLE_COLUMN), rs.getInt(COURSE_COLUMN)));
 					}
 				} while (rs.next());
 			}
@@ -162,16 +165,16 @@ public class StudentDto extends Dto {
 		} finally {
 
 			if (rs != null)
-				CloseResultSet(rs);
+				closeResultSet(rs);
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 		return student;
 	}
 
-	public void Remove(int id) {
+	public void remove(int id) {
 		Connection conexion = null;
 		PreparedStatement sentencia1 = null;
 		try {
@@ -189,14 +192,14 @@ public class StudentDto extends Dto {
 		} finally {
 
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 
 	}
 
-	public void RemoveAllStudentSubjects(int idStudent) {
+	public void removeAllStudentSubjects(int idStudent) {
 		Connection conexion = null;
 		PreparedStatement sentencia1 = null;
 		try {
@@ -211,13 +214,13 @@ public class StudentDto extends Dto {
 
 		} finally {
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 		}
 	}
 
-	public void InsertSubjectStudent(int idStudent, int idSubject) {
+	public void insertSubjectStudent(int idStudent, int idSubject) {
 
 		Connection conexion = null;
 		PreparedStatement sentencia1 = null;
@@ -234,9 +237,9 @@ public class StudentDto extends Dto {
 
 		} finally {
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (conexion != null)
-				CloseConnection(conexion);
+				closeConnection(conexion);
 
 		}
 	}

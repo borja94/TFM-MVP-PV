@@ -10,17 +10,18 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author borja
- */
+
 public class SubjectDto extends Dto {
+
+	private static final String COURSE_COLUMN = "COURSE";
+	private static final String ID_COLUMN = "ID";
+	private static final String TITLE_COLUMN = "TITLE";
 
 	public SubjectDto() {
 		super();
 	}
 
-	public void Insert(Subject subject) {
+	public void insert(Subject subject) {
 		Connection connection = null;
 		PreparedStatement sentencia1 = null;
 
@@ -40,16 +41,16 @@ public class SubjectDto extends Dto {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 
 		} finally {
-			
+
 			if (sentencia1 != null)
-				ClosePreparedStatement(sentencia1);
+				closePreparedStatement(sentencia1);
 			if (connection != null)
-				CloseConnection(connection);
+				closeConnection(connection);
 		}
 
 	}
 
-	public List<Subject> GetAll() {
+	public List<Subject> getAll() {
 
 		List<Subject> result = new ArrayList<>();
 		Connection connection = null;
@@ -62,23 +63,23 @@ public class SubjectDto extends Dto {
 			rs = sentencia.executeQuery("SELECT * FROM SUBJECT ");
 
 			while (rs.next()) {
-				result.add(new Subject(rs.getInt("ID"), rs.getString("TITLE"), rs.getInt("COURSE")));
+				result.add(new Subject(rs.getInt(ID_COLUMN), rs.getString(TITLE_COLUMN), rs.getInt(COURSE_COLUMN)));
 			}
 		} catch (SQLException ex) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			if (rs != null)
-				CloseResultSet(rs);
+				closeResultSet(rs);
 			if (sentencia != null)
-				CloseStatement(sentencia);
+				closeStatement(sentencia);
 			if (connection != null)
-				CloseConnection(connection);
+				closeConnection(connection);
 		}
 
 		return result;
 	}
 
-	public List<Subject> GetByTeacher(int idTeacher) {
+	public List<Subject> getByTeacher(int idTeacher) {
 		List<Subject> result = new ArrayList<>();
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -95,8 +96,8 @@ public class SubjectDto extends Dto {
 
 			rsSuebjects = statement.executeQuery();
 			while (rsSuebjects.next()) {
-				result.add(new Subject(rsSuebjects.getInt("ID"), rsSuebjects.getString("TITLE"),
-						rsSuebjects.getInt("COURSE")));
+				result.add(new Subject(rsSuebjects.getInt(ID_COLUMN), rsSuebjects.getString(TITLE_COLUMN),
+						rsSuebjects.getInt(COURSE_COLUMN)));
 			}
 
 		} catch (SQLException ex) {
@@ -105,16 +106,16 @@ public class SubjectDto extends Dto {
 
 		} finally {
 			if (rsSuebjects != null)
-				CloseResultSet(rsSuebjects);
+				closeResultSet(rsSuebjects);
 			if (statement != null)
-				ClosePreparedStatement(statement);
+				closePreparedStatement(statement);
 			if (connection != null)
-				CloseConnection(connection);
+				closeConnection(connection);
 		}
 		return result;
 	}
-	
-	public List<Subject> GetByStudent(int idStudent) {
+
+	public List<Subject> getByStudent(int idStudent) {
 		List<Subject> result = new ArrayList<>();
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -131,8 +132,8 @@ public class SubjectDto extends Dto {
 
 			rsSuebjects = statement.executeQuery();
 			while (rsSuebjects.next()) {
-				result.add(new Subject(rsSuebjects.getInt("ID"), rsSuebjects.getString("TITLE"),
-						rsSuebjects.getInt("COURSE")));
+				result.add(new Subject(rsSuebjects.getInt(ID_COLUMN), rsSuebjects.getString(TITLE_COLUMN),
+						rsSuebjects.getInt(COURSE_COLUMN)));
 			}
 
 		} catch (SQLException ex) {
@@ -141,22 +142,16 @@ public class SubjectDto extends Dto {
 
 		} finally {
 			if (rsSuebjects != null)
-				CloseResultSet(rsSuebjects);
+				closeResultSet(rsSuebjects);
 			if (statement != null)
-				ClosePreparedStatement(statement);
+				closePreparedStatement(statement);
 			if (connection != null)
-				CloseConnection(connection);
+				closeConnection(connection);
 		}
 		return result;
 	}
 
-	public List<Subject> GetByStudent() {
-		List<Subject> result = new ArrayList<>();
-
-		return result;
-	}
-
-	public Subject Get(int id) {
+	public Subject get(int id) {
 		Connection connection = null;
 		Subject subject = null;
 		ResultSet rs = null;
@@ -171,23 +166,23 @@ public class SubjectDto extends Dto {
 			rs = sentencia1.executeQuery();
 			subject = new Subject();
 			if (rs.next()) {
-				subject = new Subject(rs.getInt("ID"), rs.getString("TITLE"), rs.getInt("COURSE"));
+				subject = new Subject(rs.getInt(ID_COLUMN), rs.getString(TITLE_COLUMN), rs.getInt(COURSE_COLUMN));
 			}
 			sentencia1.close();
 		} catch (SQLException ex) {
 			Logger.getLogger(this.getClass().getName()).log(Level.SEVERE, null, ex);
 		} finally {
 			if (rs != null)
-				CloseResultSet(rs);
+				closeResultSet(rs);
 			if (sentencia1 != null)
-				CloseStatement(sentencia1);
+				closeStatement(sentencia1);
 			if (connection != null)
-				CloseConnection(connection);
+				closeConnection(connection);
 		}
 		return subject;
 	}
 
-	public void Remove(int id) {
+	public void remove(int id) {
 		Connection connection = null;
 		PreparedStatement sentencia1 = null;
 		try {
@@ -205,13 +200,13 @@ public class SubjectDto extends Dto {
 		} finally {
 
 			if (sentencia1 != null)
-				CloseStatement(sentencia1);
+				closeStatement(sentencia1);
 			if (connection != null)
-				CloseConnection(connection);
+				closeConnection(connection);
 		}
 	}
 
-	public void Update(Subject subject) {
+	public void update(Subject subject) {
 		Connection connection = null;
 		PreparedStatement sentencia1 = null;
 		try {
@@ -232,9 +227,9 @@ public class SubjectDto extends Dto {
 		} finally {
 
 			if (sentencia1 != null)
-				CloseStatement(sentencia1);
+				closeStatement(sentencia1);
 			if (connection != null)
-				CloseConnection(connection);
+				closeConnection(connection);
 		}
 	}
 

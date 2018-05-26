@@ -1,17 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tfm.mvp.pv.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- *
- * @author borja
- */
+
 public class Teacher {
 
     public Teacher() {
@@ -53,8 +45,8 @@ public class Teacher {
         return surname;
     }
 
-    public void setSurname(String Surname) {
-        this.surname = Surname;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public List<Subject> getSubjectCollection() {

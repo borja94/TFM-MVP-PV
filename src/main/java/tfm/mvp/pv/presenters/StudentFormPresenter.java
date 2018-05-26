@@ -15,41 +15,42 @@ public class StudentFormPresenter {
 	private SubjectDto subjectDto;
 	private Student student;
 	private List<Subject> subjectsCollection;
+	private static final char ID_SUBJECT_SEPARATOR = '#';
 
 	public StudentFormPresenter() {
 		studentDto = new StudentDto();
 		subjectDto = new SubjectDto();
 	}
 
-	public void InsertNewStudent(String name, String surname, DefaultListModel<String> assignedSubjectModel) {
+	public void insertNewStudent(String name, String surname, DefaultListModel<String> assignedSubjectModel) {
 
-		Student student = new Student(0, name, surname);
+		Student studentAux = new Student(0, name, surname);
 
 		for (int i = 0; i < assignedSubjectModel.size(); i++) {
-			String subjectAux = (String) assignedSubjectModel.getElementAt(i);
-			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf("#")));
-			student.getSubjectCollection().add(new Subject(aux));
+			String subjectAux =  assignedSubjectModel.getElementAt(i);
+			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf(ID_SUBJECT_SEPARATOR)));
+			studentAux.getSubjectCollection().add(new Subject(aux));
 		}
-		studentDto.Insert(student);
+		studentDto.insert(studentAux);
 
 	}
 
-	public void UpdateStudent(String name, String surname, DefaultListModel<String> assignedSubjectModel, int id) {
+	public void updateStudent(String name, String surname, DefaultListModel<String> assignedSubjectModel, int id) {
 
-		Student student = new Student(id, name, surname);
+		Student studentAux = new Student(id, name, surname);
 
 		for (int i = 0; i < assignedSubjectModel.size(); i++) {
-			String subjectAux = (String) assignedSubjectModel.getElementAt(i);
-			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf("#")));
-			student.getSubjectCollection().add(new Subject(aux));
+			String subjectAux =  assignedSubjectModel.getElementAt(i);
+			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf(ID_SUBJECT_SEPARATOR)));
+			studentAux.getSubjectCollection().add(new Subject(aux));
 		}
 
-		studentDto.Update(student);
+		studentDto.update(studentAux);
 
 	}
 
 	public void loadStudent(int id) {
-		student = studentDto.Get(id);
+		student = studentDto.get(id);
 	}
 
 	public String getStudentName() {
@@ -73,7 +74,7 @@ public class StudentFormPresenter {
 	}
 
 	public int loadSubjects() {
-		subjectsCollection = subjectDto.GetAll();
+		subjectsCollection = subjectDto.getAll();
 		return subjectsCollection.size();
 	}
 

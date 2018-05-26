@@ -1,4 +1,4 @@
-package tfm.mvp.pv.Views;
+package tfm.mvp.pv.views;
 
 import java.awt.event.ActionEvent;
 
@@ -12,8 +12,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
-import tfm.mvp.pv.Presenters.TeacherFormPresenter;
-import tfm.mvp.pv.Presenters.TeachersCollectionPresenter;
+import tfm.mvp.pv.presenters.TeacherFormPresenter;
+import tfm.mvp.pv.presenters.TeachersCollectionPresenter;
 
 public class TeacherFormView extends JPanel {
 

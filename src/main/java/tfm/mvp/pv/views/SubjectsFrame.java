@@ -3,38 +3,40 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package tfm.mvp.pv.Views;
+package tfm.mvp.pv.views;
 
-import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
-import javax.swing.JButton;
 
 /**
  *
  * @author borja
  */
-public class TeachersFrame extends JFrame {
+public class SubjectsFrame extends JFrame {
 
 	private MenuFrame _menuFrame;
-	private TeacherFormView teacherFormView;
-	private TeacherCollectionView teacherCollectionView;
+
 	private JButton ReturnMenuFrameButton;
 
+	private SubjectFormView subjectFormView;
+	private SubjectsCollectionView subjectCollectionView;
+
 	/**
-	 * Creates new form TeachersFrame
-	 * 
+	 * Creates new form SubjectsFrame
+	 *
 	 * @param menuFrame
 	 */
-	public TeachersFrame(MenuFrame menuFrame) {
-		_menuFrame = menuFrame;
-		teacherFormView = new TeacherFormView();
-		teacherCollectionView = new TeacherCollectionView(teacherFormView);
-		teacherFormView.setTeacherCollectionPresenter(teacherCollectionView.getTeacherCollectionPresenter());
+	public SubjectsFrame(MenuFrame menuFrame) {
+
+		subjectFormView = new SubjectFormView();
+		subjectCollectionView = new SubjectsCollectionView(subjectFormView);
+		subjectFormView.setSubjectCollectionView(subjectCollectionView);
+		
 		initComponents();
+		_menuFrame = menuFrame;
 	}
 
 	@Override
@@ -45,23 +47,15 @@ public class TeachersFrame extends JFrame {
 	private void initComponents() {
 
 		ReturnMenuFrameButton = new JButton();
-		/* jPanel1 = new JPanel(); */
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		ReturnMenuFrameButton.setText("Volver");
 		ReturnMenuFrameButton.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				ReturnMenuFrameButtonActionPerformed(evt);
+				jButton1ActionPerformed(evt);
 			}
 		});
-
-		JPanel container = new JPanel();
-		container.setLayout(new BoxLayout(container, BoxLayout.X_AXIS));
-		container.add(teacherFormView);
-		container.add(teacherCollectionView);
-		this.setContentPane(container);
-		this.add(ReturnMenuFrameButton);
 
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -72,26 +66,26 @@ public class TeachersFrame extends JFrame {
 								layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
 										.addComponent(ReturnMenuFrameButton))
 						.addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-								.addComponent(teacherFormView, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(subjectFormView, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE,
 										Short.MAX_VALUE)
-								.addComponent(teacherCollectionView, GroupLayout.PREFERRED_SIZE,
+								.addComponent(subjectCollectionView, GroupLayout.PREFERRED_SIZE,
 										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 				.addContainerGap()));
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap()
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addComponent(teacherFormView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(subjectFormView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
 										Short.MAX_VALUE)
-								.addComponent(teacherCollectionView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(subjectCollectionView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
 										Short.MAX_VALUE))
 						.addGap(18, 18, 18).addComponent(ReturnMenuFrameButton).addContainerGap()));
 
 		pack();
 	}
 
-	private void ReturnMenuFrameButtonActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_ReturnMenuFrameButtonActionPerformed
+	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 		this.setVisible(false);
 		_menuFrame.setVisible(true);
 		dispose();

@@ -1,15 +1,15 @@
-package tfm.mvp.pv.Presenters;
+package tfm.mvp.pv.presenters;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
 
-import tfm.mvp.pv.Models.Subject;
-import tfm.mvp.pv.Models.SubjectDto;
-import tfm.mvp.pv.Models.Teacher;
-import tfm.mvp.pv.Models.TeacherDto;
-import tfm.mvp.pv.Views.TeacherFormView;
+import tfm.mvp.pv.models.Subject;
+import tfm.mvp.pv.models.SubjectDto;
+import tfm.mvp.pv.models.Teacher;
+import tfm.mvp.pv.models.TeacherDto;
+import tfm.mvp.pv.views.TeacherFormView;
 
 public class TeacherFormPresenter {
 

@@ -1,8 +1,8 @@
-package tfm.mvp.pv.Presenters;
+package tfm.mvp.pv.presenters;
 
 
-import tfm.mvp.pv.Models.Subject;
-import tfm.mvp.pv.Models.SubjectDto;
+import tfm.mvp.pv.models.Subject;
+import tfm.mvp.pv.models.SubjectDto;
 
 public class SubjectFormPresenter {
 

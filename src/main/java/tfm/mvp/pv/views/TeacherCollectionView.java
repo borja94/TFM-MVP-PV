@@ -1,13 +1,14 @@
-package tfm.mvp.pv.Views;
+package tfm.mvp.pv.views;
 
 import javax.swing.GroupLayout;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.table.TableModel;
+
+import tfm.mvp.pv.presenters.TeachersCollectionPresenter;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
-import tfm.mvp.pv.Presenters.TeachersCollectionPresenter;
 
 public class TeacherCollectionView extends JPanel {
 

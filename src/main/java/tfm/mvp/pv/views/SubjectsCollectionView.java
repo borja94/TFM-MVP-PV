@@ -1,4 +1,4 @@
-package tfm.mvp.pv.Views;
+package tfm.mvp.pv.views;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -10,7 +10,7 @@ import javax.swing.LayoutStyle;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
-import tfm.mvp.pv.Presenters.SubjectsCollectionPresenter;
+import tfm.mvp.pv.presenters.SubjectsCollectionPresenter;
 
 public class SubjectsCollectionView extends JPanel {
 

@@ -7,7 +7,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import tfm.mvp.pv.presenters.TeachersCollectionPresenter;
 

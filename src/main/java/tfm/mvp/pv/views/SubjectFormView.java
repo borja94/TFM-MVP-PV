@@ -128,47 +128,5 @@ public class SubjectFormView extends JPanel {
 	public SubjectFormPresenter getSubjectFormPresenter() {
 		return subjectFormPresenter;
 	}
-	
-
-	/*
-	 * public void setSubjectCollectionView(SubjectsCollectionView
-	 * subjectCollectionView) { this.subjectCollectionView = subjectCollectionView;
-	 * }
-	 * 
-	 * public int getSubjectSelectedId() { return subjectSelectedId; }
-	 * 
-	 * public void setSubjectSelectedId(int subjectSelectedId) {
-	 * this.subjectSelectedId = subjectSelectedId; }
-	 * 
-	 * public JTextField getCourseInput() { return courseInput; }
-	 * 
-	 * public void setCourseInput(JTextField courseInput) { this.courseInput =
-	 * courseInput; }
-	 * 
-	 * public JButton getSaveButton() { return saveButton; }
-	 * 
-	 * public void setSaveButton(JButton saveButton) { this.saveButton = saveButton;
-	 * }
-	 * 
-	 * public JLabel getSubjectFormLabel() { return subjectFormLabel; }
-	 * 
-	 * public void setSubjectFormLabel(JLabel subjectFormLabel) {
-	 * this.subjectFormLabel = subjectFormLabel; }
-	 * 
-	 * public JTextField getTitleInput() { return titleInput; }
-	 * 
-	 * public void setTitleInput(JTextField titleInput) { this.titleInput =
-	 * titleInput; }
-	 * 
-	 * public JLabel getTitleInputLabel() { return titleInputLabel; }
-	 * 
-	 * public void setTitleInputLabel(JLabel titleInputLabel) { this.titleInputLabel
-	 * = titleInputLabel; }
-	 * 
-	 * public JLabel getCourseInpitLabel() { return courseInpitLabel; }
-	 * 
-	 * public void setCourseInpitLabel(JLabel courseInpitLabel) {
-	 * this.courseInpitLabel = courseInpitLabel; }
-	 */
 
 }

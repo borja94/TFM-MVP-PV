@@ -1,13 +1,13 @@
 package tfm.mvp.pv.presenters;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.DefaultListModel;
 
 import tfm.mvp.pv.models.Student;
 import tfm.mvp.pv.models.StudentDto;
 import tfm.mvp.pv.models.Subject;
 import tfm.mvp.pv.models.SubjectDto;
+import tfm.mvp.pv.views.StudentFormView;
 
 public class StudentFormPresenter {
 
@@ -16,37 +16,104 @@ public class StudentFormPresenter {
 	private Student student;
 	private List<Subject> subjectsCollection;
 	private static final char ID_SUBJECT_SEPARATOR = '#';
+	private int studentSelectedId;
+	private static final String NEW_STUDENT_LABEL_TEXT = "Nuevo alumno";
+	private static final String EDIT_STUDENT_LABEL_TEXT = "Editar alumno";
+	private static final int NO_STUDENT_SELECTED = -1;
+	public StudentFormView studentFormView;
+	public StudentsCollectionPresenter studentCollectionPresenter;
 
-	public StudentFormPresenter() {
+	public StudentFormPresenter(StudentFormView studentFormView) {
+		studentSelectedId = NO_STUDENT_SELECTED;
 		studentDto = new StudentDto();
 		subjectDto = new SubjectDto();
+		this.studentFormView = studentFormView;
+		studentFormView.SetLabelFormText(NEW_STUDENT_LABEL_TEXT);
+
 	}
 
-	public void insertNewStudent(String name, String surname, DefaultListModel<String> assignedSubjectModel) {
+	public void notifyUpdateSubjectList(List<String> studentSubjectCollection) {
+		studentFormView.cleanSubjecModels();
 
-		Student studentAux = new Student(0, name, surname);
-
-		for (int i = 0; i < assignedSubjectModel.size(); i++) {
-			String subjectAux =  assignedSubjectModel.getElementAt(i);
-			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf(ID_SUBJECT_SEPARATOR)));
-			studentAux.getSubjectCollection().add(new Subject(aux));
+		for (int i = 0; i < loadSubjects(); i++) {
+			String subject = getSubjectByPosition(i);
+			if (studentSubjectCollection != null && studentSubjectCollection.contains(subject)) {
+				studentFormView.addAssignedSubjectElement(subject);
+			} else {
+				studentFormView.addUnassignedSubjectElement(subject);
+			}
 		}
-		studentDto.insert(studentAux);
-
 	}
 
-	public void updateStudent(String name, String surname, DefaultListModel<String> assignedSubjectModel, int id) {
+	public void insertNewStudent(String name, String surname) {
 
+		studentDto.insert(generateStudent(0, name, surname));
+		cleanForm();
+	}
+
+	public void updateStudent(String name, String surname, int id) {
+
+		studentDto.update(generateStudent(id, name, surname));
+		cleanForm();
+	}
+
+	private Student generateStudent(int id , String name, String surname) {
+		
 		Student studentAux = new Student(id, name, surname);
 
-		for (int i = 0; i < assignedSubjectModel.size(); i++) {
-			String subjectAux =  assignedSubjectModel.getElementAt(i);
+		for (int i = 0; i < studentFormView.getAssignedSubjectCollectionSize(); i++) {
+			String subjectAux = studentFormView.getAssignedSubjectElementAt(i);
 			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf(ID_SUBJECT_SEPARATOR)));
 			studentAux.getSubjectCollection().add(new Subject(aux));
 		}
+		
+		return studentAux;
+	}
 
-		studentDto.update(studentAux);
+	public void notifyNewTeacherMode() {
+		cleanForm();
+	}
+	
+	private void cleanForm() {
+		studentFormView.SetLabelFormText(NEW_STUDENT_LABEL_TEXT);
+		studentFormView.setNameInputValue("");
+		studentFormView.setSurnameInputValue("");
+		notifyUpdateSubjectList(null);
+		studentSelectedId = NO_STUDENT_SELECTED;
+	}
 
+	public void notifyEditTeacherMode(int id) {
+		studentFormView.SetLabelFormText(EDIT_STUDENT_LABEL_TEXT);
+		studentSelectedId = id;
+		loadStudent(id);
+		studentFormView.setNameInputValue(getStudentName());
+		studentFormView.setSurnameInputValue(getStudentSurName());
+		List<String> subject = new ArrayList<>();
+		for (int i = 0; i < getStudentNumSubject(); i++) {
+			subject.add(getStudentSubject(i));
+		}
+		notifyUpdateSubjectList(subject);
+	}
+
+	public void notifySaveForm() {
+
+		String name = studentFormView.getNameInputValue();
+		String surname = studentFormView.getSurnameInputValue();
+
+		if (!name.isEmpty() && !surname.isEmpty()) {
+			if (studentSelectedId != NO_STUDENT_SELECTED)
+				updateStudent(name, surname, studentSelectedId);
+			else
+				insertNewStudent(name, surname);
+			
+			studentCollectionPresenter.notifyUpdateStudentTableData();
+		}
+	}
+	
+	
+
+	public void setStudentCollectionPresenter(StudentsCollectionPresenter studentCollectionPresenter) {
+		this.studentCollectionPresenter = studentCollectionPresenter;
 	}
 
 	public void loadStudent(int id) {

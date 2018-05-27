@@ -18,11 +18,11 @@ public class StudentsFrame extends javax.swing.JFrame {
 
 
 	public StudentsFrame(MenuFrame menuFrame) {
+		this.menuFrame = menuFrame;
 		studentFormView = new StudentFormView();
 		studentsCollectionView = new StudentsCollectionView(studentFormView);
-		studentFormView.setStudentCollectionView(studentsCollectionView);
+		studentFormView.setStudentCollectionPresenter(studentsCollectionView.getStudentCollectionPresenter());
 		initComponents();
-		this.menuFrame = menuFrame;
 	}
 
 	private void initComponents() {

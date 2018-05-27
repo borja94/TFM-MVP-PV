@@ -5,30 +5,24 @@ import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import tfm.mvp.pv.presenters.StudentsCollectionPresenter;
 
 public class StudentsCollectionView extends JPanel {
-
-	private TableModel studentsTableModel;
 
 	private JButton deleteStudentButton;
 	private JButton editStudentButton;
 	private JButton newStudentButton;
 	private JTable studentsTable;
 	private JScrollPane tableScrollPane;
-	private StudentFormView studentFormView;
 	private StudentsCollectionPresenter studentCollectionPresenter;
 
 	public StudentsCollectionView(StudentFormView studentFormView) {
-		this.studentFormView = studentFormView;
-		studentCollectionPresenter = new StudentsCollectionPresenter();
+		studentCollectionPresenter = new StudentsCollectionPresenter(this,studentFormView.getStudentFormPresenter());
 		initComponents();
 	}
 
@@ -92,93 +86,34 @@ public class StudentsCollectionView extends JPanel {
 	}
 
 	public void updateStudentTableData() {
-		studentCollectionPresenter.loadTableData();
-		String[] columns = new String[studentCollectionPresenter.getNumColumns()];
-		String[][] tableData = new String[studentCollectionPresenter.getNumRows()][studentCollectionPresenter
-				.getNumColumns()];
-		for (int i = 0; i < columns.length; i++) {
-			columns[i] = studentCollectionPresenter.getColumnName(i);
-		}
-		for (int i = 0; i < studentCollectionPresenter.getNumRows(); i++) {
-			for (int j = 0; j < studentCollectionPresenter.getNumColumns(); j++) {
-				tableData[i][j] = studentCollectionPresenter.getStudentAtribute(j, i);
-			}
-		}
-		studentsTableModel = new DefaultTableModel(tableData, columns);
-		studentsTable.setModel(studentsTableModel);
+		studentCollectionPresenter.notifyUpdateStudentTableData();
 	}
 
 	private void deleteStudentButtonActionPerformed() {
-		int selectedRow = studentsTable.getSelectedRow();
-		if (selectedRow != -1) {
-			int dialogResult = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar al alumno");
-			if (dialogResult == JOptionPane.YES_OPTION) {
-				studentCollectionPresenter
-						.removeStudent((Integer.parseInt(studentsTableModel.getValueAt(selectedRow, 0).toString())));
-				updateStudentTableData();
-			}
-		}
+		studentCollectionPresenter.notifyDeleteStudent();
 	}
 
 	private void editStudentButtonActionPerformed() {
-
-		int selectedRow = studentsTable.getSelectedRow();
-		if (selectedRow != -1) {
-			studentFormView.editTeacherMode(Integer.parseInt(studentsTableModel.getValueAt(selectedRow, 0).toString()));
-
-		}
+		studentCollectionPresenter.notifyEditStudent();
 	}
 
 	private void newStudentButtonActionPerformed() {
-		studentFormView.newTeacherMode();
+		studentCollectionPresenter.notifyNewStudent();
 	}
 
-	public TableModel getStudentsTableModel() {
-		return studentsTableModel;
+	public StudentsCollectionPresenter getStudentCollectionPresenter() {
+		return studentCollectionPresenter;
 	}
-
-	public void setStudentsTableModel(TableModel studentsTableModel) {
-		this.studentsTableModel = studentsTableModel;
+	
+	public void setTableModel(DefaultTableModel tableModel) {
+		studentsTable.setModel(tableModel);
 	}
-
-	public JButton getDeleteStudentButton() {
-		return deleteStudentButton;
+	
+	public int getTableSelectedRow() {
+		return studentsTable.getSelectedRow();
 	}
-
-	public void setDeleteStudentButton(JButton deleteStudentButton) {
-		this.deleteStudentButton = deleteStudentButton;
+	
+	public int getSelectedId() {
+		return Integer.parseInt(studentsTable.getModel().getValueAt(getTableSelectedRow(), 0).toString());
 	}
-
-	public JButton getEditStudentButton() {
-		return editStudentButton;
-	}
-
-	public void setEditStudentButton(JButton editStudentButton) {
-		this.editStudentButton = editStudentButton;
-	}
-
-	public JButton getNewStudentButton() {
-		return newStudentButton;
-	}
-
-	public void setNewStudentButton(JButton newStudentButton) {
-		this.newStudentButton = newStudentButton;
-	}
-
-	public JTable getStudentsTable() {
-		return studentsTable;
-	}
-
-	public void setStudentsTable(JTable studentsTable) {
-		this.studentsTable = studentsTable;
-	}
-
-	public JScrollPane getTableScrollPane() {
-		return tableScrollPane;
-	}
-
-	public void setTableScrollPane(JScrollPane tableScrollPane) {
-		this.tableScrollPane = tableScrollPane;
-	}
-
 }

@@ -18,15 +18,16 @@ public class TeacherFormPresenter {
 	private Teacher teacher;
 	private List<Subject> subjectsCollection;
 	private TeacherFormView teacherFormView;
-	private boolean editMode;
 	private int teacherSelectedId;
 	private static final String NEW_TEACHER_LABEL_TEXT = "Nuevo profesor";
 	private static final String EDIT_TEACHER_LABEL_TEXT = "Editar profesor";
 	private TeachersCollectionPresenter teacherCollectionPresenter;
 	private static final char ID_SUBJECT_SEPARATOR = '#';
 
+	private static final int NO_TEACHER_SELECTED_ID = -1;
 
 	public TeacherFormPresenter(TeacherFormView teacherFormView) {
+		teacherSelectedId = NO_TEACHER_SELECTED_ID;
 		this.teacherFormView = teacherFormView;
 		teacherDto = new TeacherDto();
 		subjectDto = new SubjectDto();
@@ -86,8 +87,7 @@ public class TeacherFormPresenter {
 		teacherFormView.getNameInput().setText("");
 		teacherFormView.getSurnameInput().setText("");
 		updateSubjectList(null);
-		teacherSelectedId = 0;
-		editMode = false;
+		teacherSelectedId = NO_TEACHER_SELECTED_ID;
 	}
 
 	public void notifyAddSubject() {
@@ -118,7 +118,7 @@ public class TeacherFormPresenter {
 		String surname = teacherFormView.getSurnameInput().getText();
 
 		if (!name.isEmpty() && !surname.isEmpty()) {
-			if (editMode)
+			if (teacherSelectedId != NO_TEACHER_SELECTED_ID)
 				updateTeacher(name, surname, teacherFormView.getAssignedSubjectModel(), teacherSelectedId);
 			else
 				insertNewTeacher(name, surname, teacherFormView.getAssignedSubjectModel());
@@ -133,7 +133,6 @@ public class TeacherFormPresenter {
 	public void notifyEditTeacherMode(int id) {
 		teacherFormView.getTeacherFormLabel().setText(EDIT_TEACHER_LABEL_TEXT);
 		teacherSelectedId = id;
-		editMode = true;
 		loadTeacher(id);
 		teacherFormView.getNameInput().setText(getTeacherName());
 		teacherFormView.getSurnameInput().setText(getTeacherSurName());

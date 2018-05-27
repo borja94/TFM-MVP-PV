@@ -1,7 +1,5 @@
 package tfm.mvp.pv.views;
 
-
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -18,7 +16,6 @@ public class SubjectFormView extends JPanel {
 
 	private static final String NEW_SUBJECT_LABEL_TEXT = "Nueva asignatura";
 	private static final String EDIT_SUBJECT_LABEL_TEXT = "Editar asignatura";
-	private boolean editMode;
 	private int subjectSelectedId;
 
 	private JTextField courseInput;
@@ -30,6 +27,7 @@ public class SubjectFormView extends JPanel {
 
 	private SubjectFormPresenter subjectFormPresenter;
 	private SubjectsCollectionView subjectCollectionView;
+	private static final int NO_SUBJECT_SELECTED = -1;
 
 	public SubjectFormView() {
 		subjectFormPresenter = new SubjectFormPresenter();
@@ -38,6 +36,7 @@ public class SubjectFormView extends JPanel {
 
 	private void initComponents() {
 
+		subjectSelectedId = NO_SUBJECT_SELECTED;
 		subjectFormLabel = new JLabel();
 		titleInput = new JTextField();
 		courseInput = new JTextField();
@@ -101,28 +100,25 @@ public class SubjectFormView extends JPanel {
 		String course = courseInput.getText();
 
 		if (!name.isEmpty() && !course.isEmpty()) {
-			if (editMode) {
+			if (subjectSelectedId != NO_SUBJECT_SELECTED) {
 				subjectFormPresenter.updateStudent(name, Integer.parseInt(course), subjectSelectedId);
 			} else {
 				subjectFormPresenter.insertNewStudent(name, Integer.parseInt(course));
 			}
-			
-			 subjectCollectionView.updateSubjectsTableData();
-			 
+			subjectCollectionView.updateSubjectsTableData();
 		}
 	}
-	
+
 	public void newSubjectMode() {
 		subjectFormLabel.setText(NEW_SUBJECT_LABEL_TEXT);
 		titleInput.setText("");
 		courseInput.setText("");
-		subjectSelectedId = 0;
-		editMode = false;
+		subjectSelectedId = NO_SUBJECT_SELECTED;
 	}
+
 	public void editSubjectMode(int id) {
 		subjectFormLabel.setText(EDIT_SUBJECT_LABEL_TEXT);
 		subjectSelectedId = id;
-		editMode = true;
 		subjectFormPresenter.loadSubject(id);
 		titleInput.setText(subjectFormPresenter.getSubjectTitle());
 		courseInput.setText(subjectFormPresenter.getSubjectCourse());
@@ -195,8 +191,5 @@ public class SubjectFormView extends JPanel {
 	public static String getEditsubjectlabeltext() {
 		return EDIT_SUBJECT_LABEL_TEXT;
 	}
-	
-	
-	
-	
+
 }

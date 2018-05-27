@@ -11,12 +11,9 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
 import tfm.mvp.pv.presenters.SubjectFormPresenter;
+import tfm.mvp.pv.presenters.SubjectsCollectionPresenter;
 
 public class SubjectFormView extends JPanel {
-
-	private static final String NEW_SUBJECT_LABEL_TEXT = "Nueva asignatura";
-	private static final String EDIT_SUBJECT_LABEL_TEXT = "Editar asignatura";
-	private int subjectSelectedId;
 
 	private JTextField courseInput;
 	private JButton saveButton;
@@ -26,17 +23,15 @@ public class SubjectFormView extends JPanel {
 	private JLabel courseInpitLabel;
 
 	private SubjectFormPresenter subjectFormPresenter;
-	private SubjectsCollectionView subjectCollectionView;
-	private static final int NO_SUBJECT_SELECTED = -1;
 
 	public SubjectFormView() {
-		subjectFormPresenter = new SubjectFormPresenter();
 		initComponents();
+		subjectFormPresenter = new SubjectFormPresenter(this);
+
 	}
 
 	private void initComponents() {
 
-		subjectSelectedId = NO_SUBJECT_SELECTED;
 		subjectFormLabel = new JLabel();
 		titleInput = new JTextField();
 		courseInput = new JTextField();
@@ -44,7 +39,6 @@ public class SubjectFormView extends JPanel {
 		courseInpitLabel = new JLabel();
 		saveButton = new JButton();
 
-		subjectFormLabel.setText(NEW_SUBJECT_LABEL_TEXT);
 
 		titleInputLabel.setText("Título");
 
@@ -96,100 +90,85 @@ public class SubjectFormView extends JPanel {
 
 	private void saveButtonActionPerformed() {
 
-		String name = titleInput.getText();
-		String course = courseInput.getText();
-
-		if (!name.isEmpty() && !course.isEmpty()) {
-			if (subjectSelectedId != NO_SUBJECT_SELECTED) {
-				subjectFormPresenter.updateStudent(name, Integer.parseInt(course), subjectSelectedId);
-			} else {
-				subjectFormPresenter.insertNewStudent(name, Integer.parseInt(course));
-			}
-			subjectCollectionView.updateSubjectsTableData();
-		}
+		subjectFormPresenter.notifySave();
 	}
 
 	public void newSubjectMode() {
-		subjectFormLabel.setText(NEW_SUBJECT_LABEL_TEXT);
-		titleInput.setText("");
-		courseInput.setText("");
-		subjectSelectedId = NO_SUBJECT_SELECTED;
+		subjectFormPresenter.notifyNewSubjectMode();
 	}
 
 	public void editSubjectMode(int id) {
-		subjectFormLabel.setText(EDIT_SUBJECT_LABEL_TEXT);
-		subjectSelectedId = id;
-		subjectFormPresenter.loadSubject(id);
-		titleInput.setText(subjectFormPresenter.getSubjectTitle());
-		courseInput.setText(subjectFormPresenter.getSubjectCourse());
+		subjectFormPresenter.notifyEditSubjectMode(id);
 	}
 
-	public void setSubjectCollectionView(SubjectsCollectionView subjectCollectionView) {
-		this.subjectCollectionView = subjectCollectionView;
+	public void setCourseInputValue(String value) {
+		courseInput.setText(value);
 	}
 
-	public int getSubjectSelectedId() {
-		return subjectSelectedId;
+	public void setTitleInputValue(String value) {
+		titleInput.setText(value);
 	}
 
-	public void setSubjectSelectedId(int subjectSelectedId) {
-		this.subjectSelectedId = subjectSelectedId;
+	public void setSubjectFormLabelValue(String value) {
+		subjectFormLabel.setText(value);
 	}
 
-	public JTextField getCourseInput() {
-		return courseInput;
+	public String getTitleInputValue() {
+		return titleInput.getText();
 	}
 
-	public void setCourseInput(JTextField courseInput) {
-		this.courseInput = courseInput;
+	public String getCourseInputValue() {
+		return courseInput.getText();
 	}
 
-	public JButton getSaveButton() {
-		return saveButton;
+	public void setSubjectCollectionPresenter(SubjectsCollectionPresenter subjectsCollectionPresenter) {
+		this.subjectFormPresenter.setSubjectsCollectionPresenter(subjectsCollectionPresenter);
 	}
 
-	public void setSaveButton(JButton saveButton) {
-		this.saveButton = saveButton;
+	public SubjectFormPresenter getSubjectFormPresenter() {
+		return subjectFormPresenter;
 	}
+	
 
-	public JLabel getSubjectFormLabel() {
-		return subjectFormLabel;
-	}
-
-	public void setSubjectFormLabel(JLabel subjectFormLabel) {
-		this.subjectFormLabel = subjectFormLabel;
-	}
-
-	public JTextField getTitleInput() {
-		return titleInput;
-	}
-
-	public void setTitleInput(JTextField titleInput) {
-		this.titleInput = titleInput;
-	}
-
-	public JLabel getTitleInputLabel() {
-		return titleInputLabel;
-	}
-
-	public void setTitleInputLabel(JLabel titleInputLabel) {
-		this.titleInputLabel = titleInputLabel;
-	}
-
-	public JLabel getCourseInpitLabel() {
-		return courseInpitLabel;
-	}
-
-	public void setCourseInpitLabel(JLabel courseInpitLabel) {
-		this.courseInpitLabel = courseInpitLabel;
-	}
-
-	public static String getNewsubjectlabeltext() {
-		return NEW_SUBJECT_LABEL_TEXT;
-	}
-
-	public static String getEditsubjectlabeltext() {
-		return EDIT_SUBJECT_LABEL_TEXT;
-	}
+	/*
+	 * public void setSubjectCollectionView(SubjectsCollectionView
+	 * subjectCollectionView) { this.subjectCollectionView = subjectCollectionView;
+	 * }
+	 * 
+	 * public int getSubjectSelectedId() { return subjectSelectedId; }
+	 * 
+	 * public void setSubjectSelectedId(int subjectSelectedId) {
+	 * this.subjectSelectedId = subjectSelectedId; }
+	 * 
+	 * public JTextField getCourseInput() { return courseInput; }
+	 * 
+	 * public void setCourseInput(JTextField courseInput) { this.courseInput =
+	 * courseInput; }
+	 * 
+	 * public JButton getSaveButton() { return saveButton; }
+	 * 
+	 * public void setSaveButton(JButton saveButton) { this.saveButton = saveButton;
+	 * }
+	 * 
+	 * public JLabel getSubjectFormLabel() { return subjectFormLabel; }
+	 * 
+	 * public void setSubjectFormLabel(JLabel subjectFormLabel) {
+	 * this.subjectFormLabel = subjectFormLabel; }
+	 * 
+	 * public JTextField getTitleInput() { return titleInput; }
+	 * 
+	 * public void setTitleInput(JTextField titleInput) { this.titleInput =
+	 * titleInput; }
+	 * 
+	 * public JLabel getTitleInputLabel() { return titleInputLabel; }
+	 * 
+	 * public void setTitleInputLabel(JLabel titleInputLabel) { this.titleInputLabel
+	 * = titleInputLabel; }
+	 * 
+	 * public JLabel getCourseInpitLabel() { return courseInpitLabel; }
+	 * 
+	 * public void setCourseInpitLabel(JLabel courseInpitLabel) {
+	 * this.courseInpitLabel = courseInpitLabel; }
+	 */
 
 }

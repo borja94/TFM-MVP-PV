@@ -118,7 +118,7 @@ public class TeacherCollectionView extends JPanel {
 
 	public int getSelectedId() {
 
-		return Integer.parseInt(teachersTable.getModel().getValueAt(teachersTable.getSelectedRow(), 0).toString());
+		return Integer.parseInt(teachersTable.getModel().getValueAt(getTableSelectedRow(), 0).toString());
 	}
 
 }

@@ -21,7 +21,7 @@ public class SubjectsFrame extends JFrame {
 
 		subjectFormView = new SubjectFormView();
 		subjectCollectionView = new SubjectsCollectionView(subjectFormView);
-		subjectFormView.setSubjectCollectionView(subjectCollectionView);
+		subjectFormView.setSubjectCollectionPresenter(subjectCollectionView.getSubjectsCollectionPresenter());
 		
 		initComponents();
 		this.menuFrame = menuFrame;

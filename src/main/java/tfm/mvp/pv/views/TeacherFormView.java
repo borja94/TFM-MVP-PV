@@ -60,6 +60,10 @@ public class TeacherFormView extends JPanel {
 		unassignSubjectsScrollPane = new JScrollPane();
 		assignSubjectPane = new JScrollPane();
 		teacherFormLabel = new JLabel();
+		unassignedSubjectModel = new DefaultListModel<>();
+		assignedSubjectModel = new DefaultListModel<>();
+		unassignSubjectCollection.setModel(unassignedSubjectModel);
+		assignSubjectCollection.setModel(assignedSubjectModel);
 
 		nameInputLabel.setText("Nombre");
 
@@ -181,142 +185,71 @@ public class TeacherFormView extends JPanel {
 		teacherFormPresenter.notifySaveForm();
 	}
 
+	public int[] getUnassignSubjectSelectedIndices() {
+		return unassignSubjectCollection.getSelectedIndices();
+	}
+
+	public String getUnassignedSubjectElementAt(int id) {
+		return unassignedSubjectModel.getElementAt(id);
+	}
+
+	public void addAssignedSubjectElement(String element) {
+		assignedSubjectModel.addElement(element);
+	}
+
+	public void removeAssignedSubjectElement(int id) {
+		assignedSubjectModel.remove(id);
+	}
+
+	public int[] getAssignedSubjectIndices() {
+		return assignSubjectCollection.getSelectedIndices();
+	}
+
+	public String getAssignedSubjectElementAt(int id) {
+		return assignedSubjectModel.getElementAt(id);
+	}
+
+	public void addUnassignedSubjectElement(String element) {
+		unassignedSubjectModel.addElement(element);
+	}
+
+	public void removeUnassignedSubjectElement(int id) {
+		unassignedSubjectModel.remove(id);
+	}
+
+	public String getNameInputValue() {
+		return nameInput.getText();
+	}
+
+	public String getSurnameInputValue() {
+		return surnameInput.getText();
+	}
+
+	public void setTeacherFormLabelText(String text) {
+		teacherFormLabel.setText(text);
+	}
+
+	public void setNameInputValue(String text) {
+		nameInput.setText(text);
+	}
+
+	public void setSurnameInputValue(String text) {
+		surnameInput.setText(text);
+	}
+
+	public void clearSubjectModels() {
+		assignedSubjectModel.clear();
+		unassignedSubjectModel.clear();
+	}
+
+	public int getAssignedSubjectCollectionSize() {
+		return assignedSubjectModel.size();
+	}
+
 	public TeacherFormPresenter getTeacherFormPresenter() {
 		return teacherFormPresenter;
 	}
 
-	public void setTeacherFormPresenter(TeacherFormPresenter teacherFormPresenter) {
-		this.teacherFormPresenter = teacherFormPresenter;
-	}
-
-	public DefaultListModel<String> getUnassignedSubjectModel() {
-		return unassignedSubjectModel;
-	}
-
-	public void setUnassignedSubjectModel(DefaultListModel<String> unassignedSubjectModel) {
-		this.unassignedSubjectModel = unassignedSubjectModel;
-	}
-
-	public DefaultListModel<String> getAssignedSubjectModel() {
-		return assignedSubjectModel;
-	}
-
-	public void setAssignedSubjectModel(DefaultListModel<String> assignedSubjectModel) {
-		this.assignedSubjectModel = assignedSubjectModel;
-	}
-
-	public JLabel getTeacherFormLabel() {
-		return teacherFormLabel;
-	}
-
-	public void setTeacherFormLabel(JLabel teacherFormLabel) {
-		this.teacherFormLabel = teacherFormLabel;
-	}
-
-	public JButton getAddSubjectButton() {
-		return addSubjectButton;
-	}
-
-	public void setAddSubjectButton(JButton addSubjectButton) {
-		this.addSubjectButton = addSubjectButton;
-	}
-
-	public JButton getRemoveSubjectButton() {
-		return removeSubjectButton;
-	}
-
-	public void setRemoveSubjectButton(JButton removeSubjectButton) {
-		this.removeSubjectButton = removeSubjectButton;
-	}
-
-	public JList<String> getAssignSubjectCollection() {
-		return assignSubjectCollection;
-	}
-
-	public void setAssignSubjectCollection(JList<String> assignSubjectCollection) {
-		this.assignSubjectCollection = assignSubjectCollection;
-	}
-
-	public JList<String> getUnassignSubjectCollection() {
-		return unassignSubjectCollection;
-	}
-
-	public void setUnassignSubjectCollection(JList<String> unassignSubjectCollection) {
-		this.unassignSubjectCollection = unassignSubjectCollection;
-	}
-
-	public JTextField getNameInput() {
-		return nameInput;
-	}
-
-	public void setNameInput(JTextField nameInput) {
-		this.nameInput = nameInput;
-	}
-
-	public JTextField getSurnameInput() {
-		return surnameInput;
-	}
-
-	public void setSurnameInput(JTextField surnameInput) {
-		this.surnameInput = surnameInput;
-	}
-
-	public JButton getSaveFormButton() {
-		return saveFormButton;
-	}
-
-	public void setSaveFormButton(JButton saveFormButton) {
-		this.saveFormButton = saveFormButton;
-	}
-
-	public JLabel getNameInputLabel() {
-		return nameInputLabel;
-	}
-
-	public void setNameInputLabel(JLabel nameInputLabel) {
-		this.nameInputLabel = nameInputLabel;
-	}
-
-	public JLabel getSurnameInputLabel() {
-		return surnameInputLabel;
-	}
-
-	public void setSurnameInputLabel(JLabel surnameInputLabel) {
-		this.surnameInputLabel = surnameInputLabel;
-	}
-
-	public JLabel getUnassignSubjectsInputLabel() {
-		return unassignSubjectsInputLabel;
-	}
-
-	public void setUnassignSubjectsInputLabel(JLabel unassignSubjectsInputLabel) {
-		this.unassignSubjectsInputLabel = unassignSubjectsInputLabel;
-	}
-
-	public JLabel getAssignSubjectInputLabel() {
-		return assignSubjectInputLabel;
-	}
-
-	public void setAssignSubjectInputLabel(JLabel assignSubjectInputLabel) {
-		this.assignSubjectInputLabel = assignSubjectInputLabel;
-	}
-
-	public JScrollPane getUnassignSubjectsScrollPane() {
-		return unassignSubjectsScrollPane;
-	}
-
-	public void setUnassignSubjectsScrollPane(JScrollPane unassignSubjectsScrollPane) {
-		this.unassignSubjectsScrollPane = unassignSubjectsScrollPane;
-	}
-
-	public JScrollPane getAssignSubjectPane() {
-		return assignSubjectPane;
-	}
-
-	public void setAssignSubjectPane(JScrollPane assignSubjectPane) {
-		this.assignSubjectPane = assignSubjectPane;
-	}
-	
 	public void setTeacherCollectionPresenter(TeachersCollectionPresenter teacherCollectionPresenter) {
 		this.teacherFormPresenter.setTeachetCollectionPresenter(teacherCollectionPresenter);
 	}

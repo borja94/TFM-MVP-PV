@@ -3,8 +3,6 @@ package tfm.mvp.pv.presenters;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.DefaultListModel;
-
 import tfm.mvp.pv.models.Subject;
 import tfm.mvp.pv.models.SubjectDto;
 import tfm.mvp.pv.models.Teacher;
@@ -33,95 +31,43 @@ public class TeacherFormPresenter {
 		subjectDto = new SubjectDto();
 	}
 
-	public void insertNewTeacher(String name, String surname, DefaultListModel<String> assignedSubjectModel) {
-
-		Teacher teacherAux = new Teacher(0, name, surname);
-
-		for (int i = 0; i < assignedSubjectModel.size(); i++) {
-			String subjectAux = assignedSubjectModel.getElementAt(i);
-			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf(ID_SUBJECT_SEPARATOR)));
-			teacherAux.getSubjectCollection().add(new Subject(aux));
-		}
-		teacherDto.insert(teacherAux);
-		cleanForm();
-	}
-
-	public void updateTeacher(String name, String surname, DefaultListModel<String> assignedSubjectModel, int id) {
-
-		Teacher teacherAux = new Teacher(id, name, surname);
-
-		for (int i = 0; i < assignedSubjectModel.size(); i++) {
-			String subjectAux = assignedSubjectModel.getElementAt(i);
-			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf(ID_SUBJECT_SEPARATOR)));
-			teacherAux.getSubjectCollection().add(new Subject(aux));
-		}
-
-		teacherDto.update(teacherAux);
-		cleanForm();
-	}
-
 	public void notifyUpdateSubjectList() {
 
 		updateSubjectList(null);
 	}
 
-	private void updateSubjectList(List<String> teacherSubjectCollection) {
-		teacherFormView.setUnassignedSubjectModel(new DefaultListModel<>());
-
-		teacherFormView.setAssignedSubjectModel(new DefaultListModel<>());
-
-		for (int i = 0; i < loadSubjects(); i++) {
-			String subject = getSubjectByPosition(i);
-			if (teacherSubjectCollection != null && teacherSubjectCollection.contains(subject)) {
-				teacherFormView.getAssignedSubjectModel().addElement(subject);
-			} else {
-				teacherFormView.getUnassignedSubjectModel().addElement(subject);
-			}
-		}
-		teacherFormView.getUnassignSubjectCollection().setModel(teacherFormView.getUnassignedSubjectModel());
-		teacherFormView.getAssignSubjectCollection().setModel(teacherFormView.getAssignedSubjectModel());
-	}
-
-	private void cleanForm() {
-		teacherFormView.getTeacherFormLabel().setText(NEW_TEACHER_LABEL_TEXT);
-		teacherFormView.getNameInput().setText("");
-		teacherFormView.getSurnameInput().setText("");
-		updateSubjectList(null);
-		teacherSelectedId = NO_TEACHER_SELECTED_ID;
-	}
-
 	public void notifyAddSubject() {
-		int[] selectedIndex = teacherFormView.getUnassignSubjectCollection().getSelectedIndices();
+		int[] selectedIndex = teacherFormView.getUnassignSubjectSelectedIndices();
 
 		for (int i = selectedIndex.length - 1; i >= 0; i--) {
 			int index = selectedIndex[i];
-			String item = teacherFormView.getUnassignedSubjectModel().getElementAt(index);
-			teacherFormView.getAssignedSubjectModel().addElement(item);
-			teacherFormView.getUnassignedSubjectModel().remove(index);
+			String item = teacherFormView.getUnassignedSubjectElementAt(index);
+			teacherFormView.addAssignedSubjectElement(item);
+			teacherFormView.removeUnassignedSubjectElement(index);
 		}
 	}
 
 	public void notifyRemoveSubject() {
-		int[] selectedIndex = teacherFormView.getAssignSubjectCollection().getSelectedIndices();
+		int[] selectedIndex = teacherFormView.getAssignedSubjectIndices();
 
 		for (int i = selectedIndex.length - 1; i >= 0; i--) {
 			int index = selectedIndex[i];
-			String item = teacherFormView.getAssignedSubjectModel().getElementAt(index);
-			teacherFormView.getUnassignedSubjectModel().addElement(item);
-			teacherFormView.getAssignedSubjectModel().remove(index);
+			String item = teacherFormView.getAssignedSubjectElementAt(index);
+			teacherFormView.addUnassignedSubjectElement(item);
+			teacherFormView.removeAssignedSubjectElement(index);
 		}
 		cleanForm();
 	}
 
 	public void notifySaveForm() {
-		String name = teacherFormView.getNameInput().getText();
-		String surname = teacherFormView.getSurnameInput().getText();
+		String name = teacherFormView.getNameInputValue();
+		String surname = teacherFormView.getSurnameInputValue();
 
 		if (!name.isEmpty() && !surname.isEmpty()) {
 			if (teacherSelectedId != NO_TEACHER_SELECTED_ID)
-				updateTeacher(name, surname, teacherFormView.getAssignedSubjectModel(), teacherSelectedId);
+				updateTeacher(name, surname, teacherSelectedId);
 			else
-				insertNewTeacher(name, surname, teacherFormView.getAssignedSubjectModel());
+				insertNewTeacher(name, surname);
 			teacherCollectionPresenter.notifyUpdateTeacherTableData();
 		}
 	}
@@ -131,53 +77,69 @@ public class TeacherFormPresenter {
 	}
 
 	public void notifyEditTeacherMode(int id) {
-		teacherFormView.getTeacherFormLabel().setText(EDIT_TEACHER_LABEL_TEXT);
+		teacherFormView.setTeacherFormLabelText(EDIT_TEACHER_LABEL_TEXT);
 		teacherSelectedId = id;
-		loadTeacher(id);
-		teacherFormView.getNameInput().setText(getTeacherName());
-		teacherFormView.getSurnameInput().setText(getTeacherSurName());
+		teacher = teacherDto.get(id);
+		teacherFormView.setNameInputValue(teacher.getName());
+		teacherFormView.setSurnameInputValue(teacher.getSurname());
 		List<String> subject = new ArrayList<>();
-		for (int i = 0; i < getTeacherNumSubject(); i++) {
-			subject.add(getTeacherSubject(i));
+		for (int i = 0; i < teacher.getSubjectCollection().size(); i++) {
+			subject.add(teacher.getSubjectCollection().get(i).toString());
 		}
 		updateSubjectList(subject);
 	}
 
-	public void loadTeacher(int id) {
-		teacher = teacherDto.get(id);
-	}
-
-	public String getTeacherName() {
-		return teacher.getName();
-	}
-
-	public String getTeacherSurName() {
-		return teacher.getSurname();
-	}
-
-	public int getTeacherId() {
-		return teacher.getId();
-	}
-
-	public int getTeacherNumSubject() {
-		return teacher.getSubjectCollection().size();
-	}
-
-	public String getTeacherSubject(int id) {
-		return teacher.getSubjectCollection().get(id).toString();
-	}
-
-	public int loadSubjects() {
-		subjectsCollection = subjectDto.getAll();
-		return subjectsCollection.size();
-	}
-
-	public String getSubjectByPosition(int position) {
-		return subjectsCollection.get(position).toString();
-	}
-
 	public void setTeachetCollectionPresenter(TeachersCollectionPresenter teacherCollectionPresenter) {
 		this.teacherCollectionPresenter = teacherCollectionPresenter;
+	}
+
+	private void insertNewTeacher(String name, String surname) {
+
+		teacherDto.insert(generateTeacher(0, name, surname));
+		cleanForm();
+	}
+
+	private void updateTeacher(String name, String surname, int id) {
+
+		teacherDto.update(generateTeacher(id, name, surname));
+		cleanForm();
+	}
+
+	private Teacher generateTeacher(int id, String name, String surname) {
+
+		Teacher teacherAux = new Teacher(id, name, surname);
+
+		for (int i = 0; i < teacherFormView.getAssignedSubjectCollectionSize(); i++) {
+			String subjectAux = teacherFormView.getAssignedSubjectElementAt(i);
+			int aux = Integer.parseInt(subjectAux.substring(0, subjectAux.indexOf(ID_SUBJECT_SEPARATOR)));
+			teacherAux.getSubjectCollection().add(new Subject(aux));
+		}
+
+		return teacherAux;
+
+	}
+
+	private void updateSubjectList(List<String> teacherSubjectCollection) {
+		teacherFormView.clearSubjectModels();
+
+		subjectsCollection = subjectDto.getAll();
+
+		for (int i = 0; i < subjectsCollection.size(); i++) {
+			String subject = subjectsCollection.get(i).toString();
+			if (teacherSubjectCollection != null && teacherSubjectCollection.contains(subject)) {
+				teacherFormView.addAssignedSubjectElement(subject);
+			} else {
+				teacherFormView.addUnassignedSubjectElement(subject);
+			}
+		}
+	}
+
+	private void cleanForm() {
+		teacherFormView.setTeacherFormLabelText(NEW_TEACHER_LABEL_TEXT);
+		teacherFormView.setNameInputValue("");
+		teacherFormView.setSurnameInputValue("");
+		updateSubjectList(null);
+		teacherSelectedId = NO_TEACHER_SELECTED_ID;
 	}
 
 }

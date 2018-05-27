@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.LayoutStyle;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
 import tfm.mvp.pv.presenters.TeachersCollectionPresenter;
@@ -22,10 +23,9 @@ public class TeacherCollectionView extends JPanel {
 	private JScrollPane tableScrollPane;
 
 	private TeachersCollectionPresenter teacherCollectionPresenter;
-	private TableModel teachersTableModel;
 
 	public TeacherCollectionView(TeacherFormView teacherFormView) {
-		teacherCollectionPresenter = new TeachersCollectionPresenter(this,teacherFormView.getTeacherFormPresenter());
+		teacherCollectionPresenter = new TeachersCollectionPresenter(this, teacherFormView.getTeacherFormPresenter());
 		initComponents();
 	}
 
@@ -69,22 +69,23 @@ public class TeacherCollectionView extends JPanel {
 
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
-		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(layout.createSequentialGroup().addGroup(layout
-						.createParallelGroup(GroupLayout.Alignment.LEADING)
+		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(layout
+				.createSequentialGroup()
+				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addComponent(tableScrollPane, GroupLayout.PREFERRED_SIZE, 425, GroupLayout.PREFERRED_SIZE)
 						.addGroup(layout.createSequentialGroup().addComponent(deleteTeacherButton)
-								.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addComponent(editTeacherButton)
-								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+								.addComponent(editTeacherButton).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(newTeacherButton)))
-						.addGap(0, 19, Short.MAX_VALUE)));
+				.addGap(0, 19, Short.MAX_VALUE)));
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(
 				GroupLayout.Alignment.TRAILING,
 				layout.createSequentialGroup().addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(tableScrollPane, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
 						.addGap(18, 18, 18)
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(deleteTeacherButton).addComponent(editTeacherButton).addComponent(newTeacherButton))
+								.addComponent(deleteTeacherButton).addComponent(editTeacherButton)
+								.addComponent(newTeacherButton))
 						.addGap(203, 203, 203)));
 	}
 
@@ -104,60 +105,21 @@ public class TeacherCollectionView extends JPanel {
 		teacherCollectionPresenter.notifyNewTeacher();
 	}
 
-	public JButton getDeleteTeacherButton() {
-		return deleteTeacherButton;
-	}
-
-	public void setDeleteTeacherButton(JButton deleteTeacherButton) {
-		this.deleteTeacherButton = deleteTeacherButton;
-	}
-
-	public JButton getEditTeacherButton() {
-		return editTeacherButton;
-	}
-
-	public void setEditTeacherButton(JButton editTeacherButton) {
-		this.editTeacherButton = editTeacherButton;
-	}
-
-	public JButton getNewTeacherButton() {
-		return newTeacherButton;
-	}
-
-	public void setNewTeacherButton(JButton newTeacherButton) {
-		this.newTeacherButton = newTeacherButton;
-	}
-
-	public JTable getTeachersTable() {
-		return teachersTable;
-	}
-
-	public void setTeachersTable(JTable teachersTable) {
-		this.teachersTable = teachersTable;
-	}
-
-	public JScrollPane getTableScrollPane() {
-		return tableScrollPane;
-	}
-
-	public void setTableScrollPane(JScrollPane tableScrollPane) {
-		this.tableScrollPane = tableScrollPane;
-	}
-
-	public TableModel getTeachersTableModel() {
-		return teachersTableModel;
-	}
-
-	public void setTeachersTableModel(TableModel teachersTableModel) {
-		this.teachersTableModel = teachersTableModel;
-	}
-
 	public TeachersCollectionPresenter getTeacherCollectionPresenter() {
 		return teacherCollectionPresenter;
 	}
-	
-	
-	
-	
+
+	public void setTableModel(DefaultTableModel tableModel) {
+		teachersTable.setModel(tableModel);
+	}
+
+	public int getTableSelectedRow() {
+		return teachersTable.getSelectedRow();
+	}
+
+	public int getSelectedId() {
+
+		return Integer.parseInt(teachersTable.getModel().getValueAt(teachersTable.getSelectedRow(), 0).toString());
+	}
 
 }

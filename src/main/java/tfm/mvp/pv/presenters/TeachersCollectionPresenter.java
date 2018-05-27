@@ -81,27 +81,24 @@ public class TeachersCollectionPresenter {
 				tableData[i][j] = getTeacherAtribute(j, i);
 			}
 		}
-		teacherCollectionView.setTeachersTableModel(new DefaultTableModel(tableData, columns));
-		teacherCollectionView.getTeachersTable().setModel(teacherCollectionView.getTeachersTableModel());
+		teacherCollectionView.setTableModel(new DefaultTableModel(tableData, columns));
 	}
 
 	public void notifyDeleteTeacher() {
-		int selectedRow = teacherCollectionView.getTeachersTable().getSelectedRow();
+		int selectedRow = teacherCollectionView.getTableSelectedRow();
 		if (selectedRow != -1) {
 			int dialogResult = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar al profesor");
 			if (dialogResult == JOptionPane.YES_OPTION) {
-				removeTeacher((Integer.parseInt(
-						teacherCollectionView.getTeachersTableModel().getValueAt(selectedRow, 0).toString())));
+				removeTeacher(teacherCollectionView.getSelectedId());
 				notifyUpdateTeacherTableData();
 			}
 		}
 	}
 
 	public void notifyEditTeacher() {
-		int selectedRow = teacherCollectionView.getTeachersTable().getSelectedRow();
+		int selectedRow = teacherCollectionView.getTableSelectedRow();
 		if (selectedRow != -1)
-			teacherFormPresenter.notifyEditTeacherMode(Integer
-					.parseInt(teacherCollectionView.getTeachersTableModel().getValueAt(selectedRow, 0).toString()));
+			teacherFormPresenter.notifyEditTeacherMode(teacherCollectionView.getSelectedId());
 	}
 
 	public void notifyNewTeacher() {

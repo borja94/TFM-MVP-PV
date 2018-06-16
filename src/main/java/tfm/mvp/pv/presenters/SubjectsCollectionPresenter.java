@@ -6,23 +6,23 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import tfm.mvp.pv.models.Subject;
-import tfm.mvp.pv.models.SubjectDto;
+import tfm.mvp.pv.models.SubjectDao;
 import tfm.mvp.pv.views.SubjectsCollectionView;
 
 public class SubjectsCollectionPresenter implements ISubjectCollectionViewPresenter {
 
-	private SubjectDto subjectDto;
+	private SubjectDao subjectDao;
 	private List<Subject> subjectsCollection;
 	private static final String[] COLUMN_NAMES = { "ID", "Titulo", "Curso" };
 	private SubjectsCollectionView subjectCollectionView;
 	private ISubjectFormPresenter iSubjectFormPresenter;
 
 	public SubjectsCollectionPresenter() {
-		subjectDto = new SubjectDto();
+		subjectDao = new SubjectDao();
 	}
 
 	public void loadTableData() {
-		subjectsCollection = subjectDto.getAll();
+		subjectsCollection = subjectDao.getAll();
 
 	}
 
@@ -53,7 +53,7 @@ public class SubjectsCollectionPresenter implements ISubjectCollectionViewPresen
 	}
 
 	public void removeSubject(int id) {
-		subjectDto.remove(id);
+		subjectDao.remove(id);
 	}
 
 	public void notifyUpdateSubjectsTableData() {

@@ -11,13 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class SubjectDto extends Dto {
+public class SubjectDao extends Dao {
 
 	private static final String COURSE_COLUMN = "COURSE";
 	private static final String ID_COLUMN = "ID";
 	private static final String TITLE_COLUMN = "TITLE";
 
-	public SubjectDto() {
+	public SubjectDao() {
 		super();
 	}
 

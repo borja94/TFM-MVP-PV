@@ -12,7 +12,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class TeacherDto extends Dto {
+public class TeacherDao extends Dao {
 
 	private static final String COURSE_COLUMN = "COURSE";
 	private static final String ID_COLUMN = "ID";
@@ -21,7 +21,7 @@ public class TeacherDto extends Dto {
 	private static final String SURNAME_COLUMN = "SURNAME";
 	private static final String NAME_COLUMN = "NAME";
 
-	public TeacherDto() {
+	public TeacherDao() {
 		super();
 	}
 
@@ -116,7 +116,7 @@ public class TeacherDto extends Dto {
 
 				Teacher teacher = new Teacher(rs.getInt(ID_COLUMN), rs.getString(NAME_COLUMN),
 						rs.getString(SURNAME_COLUMN));
-				SubjectDto subjectDto = new SubjectDto();
+				SubjectDao subjectDto = new SubjectDao();
 				teacher.setSubjectCollection(subjectDto.getByTeacher(teacher.getId()));
 
 				result.add(teacher);

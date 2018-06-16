@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tfm.mvp.pv.models.Subject;
-import tfm.mvp.pv.models.SubjectDto;
+import tfm.mvp.pv.models.SubjectDao;
 import tfm.mvp.pv.models.Teacher;
-import tfm.mvp.pv.models.TeacherDto;
+import tfm.mvp.pv.models.TeacherDao;
 import tfm.mvp.pv.views.TeacherFormView;
 
 public class TeacherFormPresenter implements ITeacherFormPresenter , ITeacherFormViewPresenter {
 
-	private TeacherDto teacherDto;
-	private SubjectDto subjectDto;
+	private TeacherDao teacherDao;
+	private SubjectDao subjectDao;
 	private Teacher teacher;
 	private List<Subject> subjectsCollection;
 	private TeacherFormView teacherFormView;
@@ -26,8 +26,8 @@ public class TeacherFormPresenter implements ITeacherFormPresenter , ITeacherFor
 
 	public TeacherFormPresenter() {
 		teacherSelectedId = NO_TEACHER_SELECTED_ID;
-		teacherDto = new TeacherDto();
-		subjectDto = new SubjectDto();
+		teacherDao = new TeacherDao();
+		subjectDao = new SubjectDao();
 	}
 
 	public void updateSubjectList() {
@@ -78,7 +78,7 @@ public class TeacherFormPresenter implements ITeacherFormPresenter , ITeacherFor
 	public void editTeacherMode(int id) {
 		teacherFormView.setTeacherFormLabelText(EDIT_TEACHER_LABEL_TEXT);
 		teacherSelectedId = id;
-		teacher = teacherDto.get(id);
+		teacher = teacherDao.get(id);
 		teacherFormView.setNameInputValue(teacher.getName());
 		teacherFormView.setSurnameInputValue(teacher.getSurname());
 		List<String> subject = new ArrayList<>();
@@ -98,13 +98,13 @@ public class TeacherFormPresenter implements ITeacherFormPresenter , ITeacherFor
 
 	private void insertNewTeacher(String name, String surname) {
 
-		teacherDto.insert(generateTeacher(0, name, surname));
+		teacherDao.insert(generateTeacher(0, name, surname));
 		cleanForm();
 	}
 
 	private void updateTeacher(String name, String surname, int id) {
 
-		teacherDto.update(generateTeacher(id, name, surname));
+		teacherDao.update(generateTeacher(id, name, surname));
 		cleanForm();
 	}
 
@@ -125,7 +125,7 @@ public class TeacherFormPresenter implements ITeacherFormPresenter , ITeacherFor
 	private void updateSubjectList(List<String> teacherSubjectCollection) {
 		teacherFormView.clearSubjectModels();
 
-		subjectsCollection = subjectDto.getAll();
+		subjectsCollection = subjectDao.getAll();
 
 		for (int i = 0; i < subjectsCollection.size(); i++) {
 			String subject = subjectsCollection.get(i).toString();

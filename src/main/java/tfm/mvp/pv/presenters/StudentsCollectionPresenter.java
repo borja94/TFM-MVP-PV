@@ -6,24 +6,24 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import tfm.mvp.pv.models.Student;
-import tfm.mvp.pv.models.StudentDto;
+import tfm.mvp.pv.models.StudentDao;
 import tfm.mvp.pv.models.Subject;
 import tfm.mvp.pv.views.StudentsCollectionView;
 
 public class StudentsCollectionPresenter implements IStudentCollectionViewPresenter {
 
-	private StudentDto studentDto;
+	private StudentDao studentDao;
 	private List<Student> studentCollection;
 	private static final String[] COLUMN_NAMES = { "ID", "Nombre", "Apellidos", "Asignaturas" };
 	private StudentsCollectionView studentCollectionView;
 	private IStudentFormPresenter iStudentFormPresenter;
 
 	public StudentsCollectionPresenter() {
-		studentDto = new StudentDto();
+		studentDao = new StudentDao();
 	}
 
 	public void loadTableData() {
-		studentCollection = studentDto.getAll();
+		studentCollection = studentDao.getAll();
 	}
 
 	public int getNumColumns() {
@@ -100,7 +100,7 @@ public class StudentsCollectionPresenter implements IStudentCollectionViewPresen
 	}
 
 	public void removeStudent(int id) {
-		studentDto.remove(id);
+		studentDao.remove(id);
 	}
 	
 	public void setStudentFormPresenter(IStudentFormPresenter studentFormPresenter) {

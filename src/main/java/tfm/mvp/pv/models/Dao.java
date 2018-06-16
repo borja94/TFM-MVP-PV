@@ -10,11 +10,11 @@ import java.util.logging.Logger;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
-public abstract class Dto {
+public abstract class Dao {
 
 	protected BasicDataSource basicDataSource;
 
-	public Dto() {
+	public Dao() {
 		basicDataSource = new BasicDataSource();
 		basicDataSource.setDriverClassName("org.apache.derby.jdbc.ClientDriver");
 		basicDataSource.setUsername("APP");

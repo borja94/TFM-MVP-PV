@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import tfm.mvp.pv.models.Student;
-import tfm.mvp.pv.models.StudentDto;
+import tfm.mvp.pv.models.StudentDao;
 import tfm.mvp.pv.models.Subject;
-import tfm.mvp.pv.models.SubjectDto;
+import tfm.mvp.pv.models.SubjectDao;
 import tfm.mvp.pv.views.StudentFormView;
 
 public class StudentFormPresenter implements IStudentFormPresenter, IStudentFormViewPresenter {
 
-	private StudentDto studentDto;
-	private SubjectDto subjectDto;
+	private StudentDao studentDao;
+	private SubjectDao subjectDao;
 	private Student student;
 	private List<Subject> subjectsCollection;
 	private static final char ID_SUBJECT_SEPARATOR = '#';
@@ -25,8 +25,8 @@ public class StudentFormPresenter implements IStudentFormPresenter, IStudentForm
 
 	public StudentFormPresenter() {
 		studentSelectedId = NO_STUDENT_SELECTED;
-		studentDto = new StudentDto();
-		subjectDto = new SubjectDto();
+		studentDao = new StudentDao();
+		subjectDao = new SubjectDao();
 
 	}
 
@@ -45,13 +45,13 @@ public class StudentFormPresenter implements IStudentFormPresenter, IStudentForm
 
 	public void insertNewStudent(String name, String surname) {
 
-		studentDto.insert(generateStudent(0, name, surname));
+		studentDao.insert(generateStudent(0, name, surname));
 		cleanForm();
 	}
 
 	public void updateStudent(String name, String surname, int id) {
 
-		studentDto.update(generateStudent(id, name, surname));
+		studentDao.update(generateStudent(id, name, surname));
 		cleanForm();
 	}
 
@@ -115,7 +115,7 @@ public class StudentFormPresenter implements IStudentFormPresenter, IStudentForm
 	}
 
 	public void loadStudent(int id) {
-		student = studentDto.get(id);
+		student = studentDao.get(id);
 	}
 
 	public String getStudentName() {
@@ -139,7 +139,7 @@ public class StudentFormPresenter implements IStudentFormPresenter, IStudentForm
 	}
 
 	public int loadSubjects() {
-		subjectsCollection = subjectDto.getAll();
+		subjectsCollection = subjectDao.getAll();
 		return subjectsCollection.size();
 	}
 

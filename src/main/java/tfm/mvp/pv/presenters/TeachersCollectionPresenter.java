@@ -7,23 +7,23 @@ import javax.swing.table.DefaultTableModel;
 
 import tfm.mvp.pv.models.Subject;
 import tfm.mvp.pv.models.Teacher;
-import tfm.mvp.pv.models.TeacherDto;
+import tfm.mvp.pv.models.TeacherDao;
 import tfm.mvp.pv.views.TeacherCollectionView;
 
 public class TeachersCollectionPresenter implements ITeacherCollectionViewPresenter {
 
-	private TeacherDto teacherDto;
+	private TeacherDao teacherDao;
 	private List<Teacher> teacherCollection;
 	private static final String[] COLUMN_NAMES = { "ID", "Nombre", "Apellidos", "Asignaturas" };
 	private TeacherCollectionView teacherCollectionView;
 	private ITeacherFormPresenter iTeacherFormPresenter;
 
 	public TeachersCollectionPresenter() {
-		teacherDto = new TeacherDto();
+		teacherDao = new TeacherDao();
 	}
 
 	public void loadTableData() {
-		teacherCollection = teacherDto.getAll();
+		teacherCollection = teacherDao.getAll();
 	}
 
 	public int getNumColumns() {
@@ -62,7 +62,7 @@ public class TeachersCollectionPresenter implements ITeacherCollectionViewPresen
 	}
 
 	public void removeTeacher(int id) {
-		teacherDto.remove(id);
+		teacherDao.remove(id);
 	}
 
 	public void updateTeacherTableData() {

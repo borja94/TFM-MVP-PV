@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class StudentDto extends Dto {
+public class StudentDao extends Dao {
 
 	private static final String COURSE_COLUMN = "COURSE";
 	private static final String ID_COLUMN = "ID";
@@ -108,7 +108,7 @@ public class StudentDto extends Dto {
 			while (rs.previous()) {
 
 				Student student = new Student(rs.getInt(ID_COLUMN), rs.getString(NAME_COLUMN), rs.getString(SURNAME_COLUMN));
-				SubjectDto subjectDto = new SubjectDto();
+				SubjectDao subjectDto = new SubjectDao();
 				student.setSubjectCollection(subjectDto.getByStudent(student.getId()));
 				result.add(student);
 

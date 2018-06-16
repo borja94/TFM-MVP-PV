@@ -1,7 +1,7 @@
 package tfm.mvp.pv.presenters;
 
 import tfm.mvp.pv.models.Subject;
-import tfm.mvp.pv.models.SubjectDto;
+import tfm.mvp.pv.models.SubjectDao;
 import tfm.mvp.pv.views.SubjectFormView;
 
 public class SubjectFormPresenter implements ISubjectFormPresenter, ISubjectFormViewPresenter {
@@ -11,7 +11,7 @@ public class SubjectFormPresenter implements ISubjectFormPresenter, ISubjectForm
 	private int subjectSelectedId;
 	private static final int NO_SUBJECT_SELECTED = -1;
 
-	private SubjectDto subjectDto;
+	private SubjectDao subjectDao;
 	private Subject subject;
 
 	private SubjectFormView subjectFormView;
@@ -20,7 +20,7 @@ public class SubjectFormPresenter implements ISubjectFormPresenter, ISubjectForm
 	public SubjectFormPresenter() {
 		subjectSelectedId = NO_SUBJECT_SELECTED;
 
-		subjectDto = new SubjectDto();
+		subjectDao = new SubjectDao();
 	}
 
 	public void newSubjectMode() {
@@ -33,7 +33,7 @@ public class SubjectFormPresenter implements ISubjectFormPresenter, ISubjectForm
 	public void editSubjectMode(int id) {
 		subjectFormView.setSubjectFormLabelValue(EDIT_SUBJECT_LABEL_TEXT);
 		subjectSelectedId = id;
-		subject = subjectDto.get(id);
+		subject = subjectDao.get(id);
 		subjectFormView.setTitleInputValue(subject.getTitle());
 		subjectFormView.setCourseInputValue(subject.getCourse().toString());
 	}
@@ -41,14 +41,14 @@ public class SubjectFormPresenter implements ISubjectFormPresenter, ISubjectForm
 	public void insertNewStudent(String title, int course) {
 
 		Subject subjectAux = new Subject(0, title, course);
-		subjectDto.insert(subjectAux);
+		subjectDao.insert(subjectAux);
 
 	}
 
 	public void updateStudent(String title, int course, int id) {
 
 		Subject subjectAux = new Subject(id, title, course);
-		subjectDto.update(subjectAux);
+		subjectDao.update(subjectAux);
 
 	}
 

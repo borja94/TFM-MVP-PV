@@ -13,6 +13,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
+import tfm.mvp.pv.presenters.IStudentFormPresenter;
+import tfm.mvp.pv.presenters.IStudentFormViewPresenter;
 import tfm.mvp.pv.presenters.StudentFormPresenter;
 import tfm.mvp.pv.presenters.StudentsCollectionPresenter;
 
@@ -34,12 +36,13 @@ public class StudentFormView extends JPanel {
 	private DefaultListModel<String> unassignedSubjectModel;
 	private DefaultListModel<String> assignedSubjectModel;
 
-	private StudentFormPresenter studentFormPresenter;
+	private IStudentFormViewPresenter iStudentFormPresenter;
 
-	public StudentFormView() {
+	public StudentFormView(IStudentFormViewPresenter studentFormViewPresenter) {
 		initComponents();
-		studentFormPresenter = new StudentFormPresenter(this);
-		updateSubjectList();
+		iStudentFormPresenter = studentFormViewPresenter;
+		iStudentFormPresenter.setStudentFormView(this);
+		onUpdateSubjectList();
 	}
 
 	private void initComponents() {
@@ -86,7 +89,7 @@ public class StudentFormView extends JPanel {
 		saveFormButton.setText("Guardar");
 		saveFormButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				saveFormButtonActionPerformed();
+				onSaveFormButtonActionPerformed();
 			}
 		});
 
@@ -144,16 +147,8 @@ public class StudentFormView extends JPanel {
 
 	}
 
-	public void newTeacherMode() {
-		studentFormPresenter.notifyNewTeacherMode();
-	}
-
-	public void editTeacherMode(int id) {
-		studentFormPresenter.notifyEditTeacherMode(id);
-	}
-
-	public void updateSubjectList() {
-		studentFormPresenter.notifyUpdateSubjectList(null);
+	public void onUpdateSubjectList() {
+		iStudentFormPresenter.updateSubjectList(null);
 	}
 
 	private void addSubjectButtonActionPerformed() {
@@ -178,9 +173,9 @@ public class StudentFormView extends JPanel {
 		}
 	}
 
-	private void saveFormButtonActionPerformed() {
+	private void onSaveFormButtonActionPerformed() {
 
-		studentFormPresenter.notifySaveForm();
+		iStudentFormPresenter.saveForm();
 	}
 
 	public void SetLabelFormText(String text) {
@@ -242,13 +237,5 @@ public class StudentFormView extends JPanel {
 
 	public int getAssignedSubjectCollectionSize() {
 		return assignedSubjectModel.size();
-	}
-
-	public void setStudentCollectionPresenter(StudentsCollectionPresenter studentsCollectionPresenter) {
-		this.studentFormPresenter.setStudentCollectionPresenter(studentsCollectionPresenter);
-	}
-
-	public StudentFormPresenter getStudentFormPresenter() {
-		return studentFormPresenter;
 	}
 }

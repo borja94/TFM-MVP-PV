@@ -9,18 +9,16 @@ import tfm.mvp.pv.models.Subject;
 import tfm.mvp.pv.models.SubjectDto;
 import tfm.mvp.pv.views.SubjectsCollectionView;
 
-public class SubjectsCollectionPresenter {
+public class SubjectsCollectionPresenter implements ISubjectCollectionViewPresenter {
 
 	private SubjectDto subjectDto;
 	private List<Subject> subjectsCollection;
 	private static final String[] COLUMN_NAMES = { "ID", "Titulo", "Curso" };
 	private SubjectsCollectionView subjectCollectionView;
-	private SubjectFormPresenter subjectFormPresenter;
+	private ISubjectFormPresenter iSubjectFormPresenter;
 
-	public SubjectsCollectionPresenter(SubjectsCollectionView subjectCollectionView , SubjectFormPresenter subjectFormPresenter) {
+	public SubjectsCollectionPresenter() {
 		subjectDto = new SubjectDto();
-		this.subjectCollectionView = subjectCollectionView;
-		this.subjectFormPresenter = subjectFormPresenter;
 	}
 
 	public void loadTableData() {
@@ -72,7 +70,7 @@ public class SubjectsCollectionPresenter {
 		}
 		subjectCollectionView.setTableModel(new DefaultTableModel(tableData, columns));
 	}
-	
+
 	public void notifyDeleteButtonActionPerformed() {
 		int selectedRow = subjectCollectionView.getTableSelectedRow();
 		if (selectedRow != -1) {
@@ -83,12 +81,26 @@ public class SubjectsCollectionPresenter {
 			}
 		}
 	}
+
 	public void notifyEditMode() {
 
 		int selectedRow = subjectCollectionView.getTableSelectedRow();
 		if (selectedRow != -1)
-			subjectFormPresenter.notifyEditSubjectMode(subjectCollectionView.getSelectedId());
+			iSubjectFormPresenter.editSubjectMode(subjectCollectionView.getSelectedId());
 	}
+
+	public void setSubjectCollectionView(SubjectsCollectionView subjectsCollectionView) {
+		this.subjectCollectionView = subjectsCollectionView;
+	}
+
+	public void setTeacherFormPresenter(ISubjectFormPresenter subjectFormPresenter) {
+		this.iSubjectFormPresenter = subjectFormPresenter;
+	}
+
 	
-	
+	public void newSubjectMode() {
+		iSubjectFormPresenter.newSubjectMode();
+
+	}
+
 }

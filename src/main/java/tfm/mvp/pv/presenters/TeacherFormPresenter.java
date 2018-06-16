@@ -9,7 +9,7 @@ import tfm.mvp.pv.models.Teacher;
 import tfm.mvp.pv.models.TeacherDto;
 import tfm.mvp.pv.views.TeacherFormView;
 
-public class TeacherFormPresenter {
+public class TeacherFormPresenter implements ITeacherFormPresenter , ITeacherFormViewPresenter {
 
 	private TeacherDto teacherDto;
 	private SubjectDto subjectDto;
@@ -24,19 +24,18 @@ public class TeacherFormPresenter {
 
 	private static final int NO_TEACHER_SELECTED_ID = -1;
 
-	public TeacherFormPresenter(TeacherFormView teacherFormView) {
+	public TeacherFormPresenter() {
 		teacherSelectedId = NO_TEACHER_SELECTED_ID;
-		this.teacherFormView = teacherFormView;
 		teacherDto = new TeacherDto();
 		subjectDto = new SubjectDto();
 	}
 
-	public void notifyUpdateSubjectList() {
+	public void updateSubjectList() {
 
 		updateSubjectList(null);
 	}
 
-	public void notifyAddSubject() {
+	public void addSubject() {
 		int[] selectedIndex = teacherFormView.getUnassignSubjectSelectedIndices();
 
 		for (int i = selectedIndex.length - 1; i >= 0; i--) {
@@ -47,7 +46,7 @@ public class TeacherFormPresenter {
 		}
 	}
 
-	public void notifyRemoveSubject() {
+	public void removeSubject() {
 		int[] selectedIndex = teacherFormView.getAssignedSubjectIndices();
 
 		for (int i = selectedIndex.length - 1; i >= 0; i--) {
@@ -59,7 +58,7 @@ public class TeacherFormPresenter {
 		cleanForm();
 	}
 
-	public void notifySaveForm() {
+	public void saveForm() {
 		String name = teacherFormView.getNameInputValue();
 		String surname = teacherFormView.getSurnameInputValue();
 
@@ -68,15 +67,15 @@ public class TeacherFormPresenter {
 				updateTeacher(name, surname, teacherSelectedId);
 			else
 				insertNewTeacher(name, surname);
-			teacherCollectionPresenter.notifyUpdateTeacherTableData();
+			teacherCollectionPresenter.updateTeacherTableData();
 		}
 	}
 
-	public void notifyNewTeacherMode() {
+	public void newTeacherMode() {
 		cleanForm();
 	}
 
-	public void notifyEditTeacherMode(int id) {
+	public void editTeacherMode(int id) {
 		teacherFormView.setTeacherFormLabelText(EDIT_TEACHER_LABEL_TEXT);
 		teacherSelectedId = id;
 		teacher = teacherDto.get(id);
@@ -91,6 +90,10 @@ public class TeacherFormPresenter {
 
 	public void setTeachetCollectionPresenter(TeachersCollectionPresenter teacherCollectionPresenter) {
 		this.teacherCollectionPresenter = teacherCollectionPresenter;
+	}
+	
+	public void setTeacherFormView(TeacherFormView teacherFormView) {
+		this.teacherFormView = teacherFormView;
 	}
 
 	private void insertNewTeacher(String name, String surname) {

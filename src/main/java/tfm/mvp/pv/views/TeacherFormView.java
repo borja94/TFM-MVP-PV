@@ -13,12 +13,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
-import tfm.mvp.pv.presenters.TeacherFormPresenter;
-import tfm.mvp.pv.presenters.TeachersCollectionPresenter;
+import tfm.mvp.pv.presenters.ITeacherFormViewPresenter;
 
 public class TeacherFormView extends JPanel {
 
-	private TeacherFormPresenter teacherFormPresenter;
+	private ITeacherFormViewPresenter iTeacherFormViewPresenter;
 
 	private DefaultListModel<String> unassignedSubjectModel;
 	private DefaultListModel<String> assignedSubjectModel;
@@ -38,10 +37,11 @@ public class TeacherFormView extends JPanel {
 	private JScrollPane unassignSubjectsScrollPane;
 	private JScrollPane assignSubjectPane;
 
-	public TeacherFormView() {
+	public TeacherFormView(ITeacherFormViewPresenter teacherFormViewPresenter) {
+		iTeacherFormViewPresenter = teacherFormViewPresenter;
+		iTeacherFormViewPresenter.setTeacherFormView(this);
+		
 		initComponents();
-		teacherFormPresenter = new TeacherFormPresenter(this);
-		updateSubjectList();
 	}
 
 	private void initComponents() {
@@ -73,14 +73,14 @@ public class TeacherFormView extends JPanel {
 		addSubjectButton.setText("-->");
 		addSubjectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				addSubjectButtonActionPerformed();
+				onAddSubjectButtonActionPerformed();
 			}
 		});
 
 		removeSubjectButton.setText("<--");
 		removeSubjectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				removeSubjectButtonActionPerformed();
+				onRemoveSubjectButtonActionPerformed();
 			}
 		});
 
@@ -91,7 +91,7 @@ public class TeacherFormView extends JPanel {
 		saveFormButton.setText("Guardar");
 		saveFormButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				saveFormButtonActionPerformed();
+				onSaveFormButtonActionPerformed();
 			}
 		});
 
@@ -100,9 +100,10 @@ public class TeacherFormView extends JPanel {
 		assignSubjectPane.setViewportView(assignSubjectCollection);
 
 		initComponentsPosition();
+		onUpdateSubjectList();
 	}
 
-	public void initComponentsPosition() {
+	private void initComponentsPosition() {
 
 		GroupLayout layout = new GroupLayout(this);
 		this.setLayout(layout);
@@ -160,29 +161,20 @@ public class TeacherFormView extends JPanel {
 				.addGap(51, 51, 51).addComponent(saveFormButton).addContainerGap(96, Short.MAX_VALUE)));
 	}
 
-	public void newTeacherMode() {
-		teacherFormPresenter.notifyNewTeacherMode();
+	private void onUpdateSubjectList() {
+		iTeacherFormViewPresenter.updateSubjectList();
 	}
 
-	public void editTeacherMode(int id) {
-		teacherFormPresenter.notifyEditTeacherMode(id);
+	private void onAddSubjectButtonActionPerformed() {
+		iTeacherFormViewPresenter.addSubject();
 	}
 
-	private void updateSubjectList() {
-		teacherFormPresenter.notifyUpdateSubjectList();
+	private void onRemoveSubjectButtonActionPerformed() {
+		iTeacherFormViewPresenter.removeSubject();
 	}
 
-	private void addSubjectButtonActionPerformed() {
-		teacherFormPresenter.notifyAddSubject();
-	}
-
-	private void removeSubjectButtonActionPerformed() {
-		teacherFormPresenter.notifyRemoveSubject();
-	}
-
-	private void saveFormButtonActionPerformed() {
-
-		teacherFormPresenter.notifySaveForm();
+	private void onSaveFormButtonActionPerformed() {
+		iTeacherFormViewPresenter.saveForm();
 	}
 
 	public int[] getUnassignSubjectSelectedIndices() {
@@ -245,13 +237,4 @@ public class TeacherFormView extends JPanel {
 	public int getAssignedSubjectCollectionSize() {
 		return assignedSubjectModel.size();
 	}
-
-	public TeacherFormPresenter getTeacherFormPresenter() {
-		return teacherFormPresenter;
-	}
-
-	public void setTeacherCollectionPresenter(TeachersCollectionPresenter teacherCollectionPresenter) {
-		this.teacherFormPresenter.setTeachetCollectionPresenter(teacherCollectionPresenter);
-	}
-
 }

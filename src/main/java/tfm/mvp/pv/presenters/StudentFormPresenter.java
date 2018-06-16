@@ -9,7 +9,7 @@ import tfm.mvp.pv.models.Subject;
 import tfm.mvp.pv.models.SubjectDto;
 import tfm.mvp.pv.views.StudentFormView;
 
-public class StudentFormPresenter {
+public class StudentFormPresenter implements IStudentFormPresenter, IStudentFormViewPresenter {
 
 	private StudentDto studentDto;
 	private SubjectDto subjectDto;
@@ -23,16 +23,14 @@ public class StudentFormPresenter {
 	public StudentFormView studentFormView;
 	public StudentsCollectionPresenter studentCollectionPresenter;
 
-	public StudentFormPresenter(StudentFormView studentFormView) {
+	public StudentFormPresenter() {
 		studentSelectedId = NO_STUDENT_SELECTED;
 		studentDto = new StudentDto();
 		subjectDto = new SubjectDto();
-		this.studentFormView = studentFormView;
-		studentFormView.SetLabelFormText(NEW_STUDENT_LABEL_TEXT);
 
 	}
 
-	public void notifyUpdateSubjectList(List<String> studentSubjectCollection) {
+	public void updateSubjectList(List<String> studentSubjectCollection) {
 		studentFormView.cleanSubjecModels();
 
 		for (int i = 0; i < loadSubjects(); i++) {
@@ -70,7 +68,7 @@ public class StudentFormPresenter {
 		return studentAux;
 	}
 
-	public void notifyNewTeacherMode() {
+	public void notifyNewMode() {
 		cleanForm();
 	}
 	
@@ -78,11 +76,11 @@ public class StudentFormPresenter {
 		studentFormView.SetLabelFormText(NEW_STUDENT_LABEL_TEXT);
 		studentFormView.setNameInputValue("");
 		studentFormView.setSurnameInputValue("");
-		notifyUpdateSubjectList(null);
+		updateSubjectList(null);
 		studentSelectedId = NO_STUDENT_SELECTED;
 	}
 
-	public void notifyEditTeacherMode(int id) {
+	public void notifyEditMode(int id) {
 		studentFormView.SetLabelFormText(EDIT_STUDENT_LABEL_TEXT);
 		studentSelectedId = id;
 		loadStudent(id);
@@ -92,10 +90,10 @@ public class StudentFormPresenter {
 		for (int i = 0; i < getStudentNumSubject(); i++) {
 			subject.add(getStudentSubject(i));
 		}
-		notifyUpdateSubjectList(subject);
+		updateSubjectList(subject);
 	}
 
-	public void notifySaveForm() {
+	public void saveForm() {
 
 		String name = studentFormView.getNameInputValue();
 		String surname = studentFormView.getSurnameInputValue();
@@ -147,5 +145,11 @@ public class StudentFormPresenter {
 
 	public String getSubjectByPosition(int position) {
 		return subjectsCollection.get(position).toString();
+	}
+
+	@Override
+	public void setStudentFormView(StudentFormView studentFormView) {
+		this.studentFormView = studentFormView;
+		
 	}
 }

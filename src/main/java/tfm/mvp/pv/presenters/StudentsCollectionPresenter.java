@@ -10,19 +10,16 @@ import tfm.mvp.pv.models.StudentDto;
 import tfm.mvp.pv.models.Subject;
 import tfm.mvp.pv.views.StudentsCollectionView;
 
-public class StudentsCollectionPresenter {
+public class StudentsCollectionPresenter implements IStudentCollectionViewPresenter {
 
 	private StudentDto studentDto;
 	private List<Student> studentCollection;
 	private static final String[] COLUMN_NAMES = { "ID", "Nombre", "Apellidos", "Asignaturas" };
 	private StudentsCollectionView studentCollectionView;
-	private StudentFormPresenter studentFormPresenter;
+	private IStudentFormPresenter iStudentFormPresenter;
 
-	public StudentsCollectionPresenter(StudentsCollectionView studentsCollectionView,
-			StudentFormPresenter studentFormPresenter) {
+	public StudentsCollectionPresenter() {
 		studentDto = new StudentDto();
-		this.studentCollectionView = studentsCollectionView;
-		this.studentFormPresenter = studentFormPresenter;
 	}
 
 	public void loadTableData() {
@@ -83,7 +80,7 @@ public class StudentsCollectionPresenter {
 
 		int selectedRow = studentCollectionView.getTableSelectedRow();
 		if (selectedRow != -1) {
-			studentFormPresenter.notifyEditTeacherMode(studentCollectionView.getSelectedId());
+			iStudentFormPresenter.notifyEditMode(studentCollectionView.getSelectedId());
 		}
 	}
 
@@ -99,11 +96,21 @@ public class StudentsCollectionPresenter {
 	}
 
 	public void notifyNewStudent() {
-		studentFormPresenter.notifyNewTeacherMode();
+		iStudentFormPresenter.notifyNewMode();
 	}
 
 	public void removeStudent(int id) {
 		studentDto.remove(id);
+	}
+	
+	public void setStudentFormPresenter(IStudentFormPresenter studentFormPresenter) {
+		this.iStudentFormPresenter = studentFormPresenter;
+	}
+
+	
+	public void setStudentCollectionView(StudentsCollectionView studentsCollectionView) {
+		this.studentCollectionView = studentsCollectionView;
+		
 	}
 
 }

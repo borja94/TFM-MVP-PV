@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
 
+import tfm.mvp.pv.presenters.SubjectFormPresenter;
+import tfm.mvp.pv.presenters.SubjectsCollectionPresenter;
 
 public class SubjectsFrame extends JFrame {
 
@@ -19,9 +21,16 @@ public class SubjectsFrame extends JFrame {
 
 	public SubjectsFrame(MenuFrame menuFrame) {
 
-		subjectFormView = new SubjectFormView();
-		subjectCollectionView = new SubjectsCollectionView(subjectFormView);
-		subjectFormView.setSubjectCollectionPresenter(subjectCollectionView.getSubjectsCollectionPresenter());
+		
+		
+		SubjectFormPresenter subjectFormPresenter = new SubjectFormPresenter();
+		SubjectsCollectionPresenter subjectCollectionPresenter = new SubjectsCollectionPresenter();
+		
+		subjectFormPresenter.setSubjectsCollectionPresenter(subjectCollectionPresenter);
+		subjectCollectionPresenter.setTeacherFormPresenter(subjectFormPresenter);
+		
+		subjectFormView = new SubjectFormView(subjectFormPresenter);
+		subjectCollectionView = new SubjectsCollectionView(subjectCollectionPresenter);
 		
 		initComponents();
 		this.menuFrame = menuFrame;

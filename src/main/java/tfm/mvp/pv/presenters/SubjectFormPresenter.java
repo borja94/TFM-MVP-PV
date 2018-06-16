@@ -4,7 +4,7 @@ import tfm.mvp.pv.models.Subject;
 import tfm.mvp.pv.models.SubjectDto;
 import tfm.mvp.pv.views.SubjectFormView;
 
-public class SubjectFormPresenter {
+public class SubjectFormPresenter implements ISubjectFormPresenter, ISubjectFormViewPresenter {
 
 	private static final String NEW_SUBJECT_LABEL_TEXT = "Nueva asignatura";
 	private static final String EDIT_SUBJECT_LABEL_TEXT = "Editar asignatura";
@@ -17,23 +17,20 @@ public class SubjectFormPresenter {
 	private SubjectFormView subjectFormView;
 	private SubjectsCollectionPresenter subjectsCollectionPresenter;
 
-	public SubjectFormPresenter(SubjectFormView subjectFormView) {
+	public SubjectFormPresenter() {
 		subjectSelectedId = NO_SUBJECT_SELECTED;
 
 		subjectDto = new SubjectDto();
-		this.subjectFormView = subjectFormView;
-		subjectFormView.setSubjectFormLabelValue(NEW_SUBJECT_LABEL_TEXT);
-
 	}
 
-	public void notifyNewSubjectMode() {
+	public void newSubjectMode() {
 		subjectFormView.setSubjectFormLabelValue(NEW_SUBJECT_LABEL_TEXT);
 		subjectFormView.setTitleInputValue("");
 		subjectFormView.setCourseInputValue("");
 		subjectSelectedId = NO_SUBJECT_SELECTED;
 	}
 
-	public void notifyEditSubjectMode(int id) {
+	public void editSubjectMode(int id) {
 		subjectFormView.setSubjectFormLabelValue(EDIT_SUBJECT_LABEL_TEXT);
 		subjectSelectedId = id;
 		subject = subjectDto.get(id);
@@ -54,8 +51,8 @@ public class SubjectFormPresenter {
 		subjectDto.update(subjectAux);
 
 	}
-	
-	public void notifySave() {
+
+	public void saveForm() {
 
 		String title = subjectFormView.getTitleInputValue();
 		String course = subjectFormView.getCourseInputValue();
@@ -66,7 +63,7 @@ public class SubjectFormPresenter {
 			} else {
 				insertNewStudent(title, Integer.parseInt(course));
 			}
-			
+
 			subjectsCollectionPresenter.notifyUpdateSubjectsTableData();
 		}
 	}
@@ -74,6 +71,9 @@ public class SubjectFormPresenter {
 	public void setSubjectsCollectionPresenter(SubjectsCollectionPresenter subjectsCollectionPresenter) {
 		this.subjectsCollectionPresenter = subjectsCollectionPresenter;
 	}
-	
-	
+
+	public void setSubjectFormView(SubjectFormView subjectFormView) {
+		this.subjectFormView = subjectFormView;
+	}
+
 }

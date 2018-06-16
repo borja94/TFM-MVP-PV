@@ -8,7 +8,7 @@ import javax.swing.JTable;
 import javax.swing.LayoutStyle;
 import javax.swing.table.DefaultTableModel;
 
-import tfm.mvp.pv.presenters.TeachersCollectionPresenter;
+import tfm.mvp.pv.presenters.ITeacherCollectionViewPresenter;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -21,10 +21,11 @@ public class TeacherCollectionView extends JPanel {
 	private JTable teachersTable;
 	private JScrollPane tableScrollPane;
 
-	private TeachersCollectionPresenter teacherCollectionPresenter;
+	private ITeacherCollectionViewPresenter iTeacherCollectionViewPresenter;
 
-	public TeacherCollectionView(TeacherFormView teacherFormView) {
-		teacherCollectionPresenter = new TeachersCollectionPresenter(this, teacherFormView.getTeacherFormPresenter());
+	public TeacherCollectionView(ITeacherCollectionViewPresenter teacherCollectionViewPresenter) {
+		iTeacherCollectionViewPresenter = teacherCollectionViewPresenter;
+		iTeacherCollectionViewPresenter.setTeacherCollectionView(this);
 		initComponents();
 	}
 
@@ -89,23 +90,19 @@ public class TeacherCollectionView extends JPanel {
 	}
 
 	public void updateTeacherTableData() {
-		teacherCollectionPresenter.notifyUpdateTeacherTableData();
+		iTeacherCollectionViewPresenter.updateTeacherTableData();
 	}
 
 	private void deleteTeacherButtonActionPerformed() {
-		teacherCollectionPresenter.notifyDeleteTeacher();
+		iTeacherCollectionViewPresenter.deleteTeacher();
 	}
 
 	private void editTeacherButtonActionPerformed() {
-		teacherCollectionPresenter.notifyEditTeacher();
+		iTeacherCollectionViewPresenter.editTeacher();
 	}
 
 	private void newTeacherButtonActionPerformed() {
-		teacherCollectionPresenter.notifyNewTeacher();
-	}
-
-	public TeachersCollectionPresenter getTeacherCollectionPresenter() {
-		return teacherCollectionPresenter;
+		iTeacherCollectionViewPresenter.newTeacher();
 	}
 
 	public void setTableModel(DefaultTableModel tableModel) {

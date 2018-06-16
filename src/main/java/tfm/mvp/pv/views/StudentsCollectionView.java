@@ -10,7 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import tfm.mvp.pv.presenters.StudentsCollectionPresenter;
+import tfm.mvp.pv.presenters.IStudentCollectionViewPresenter;
 
 public class StudentsCollectionView extends JPanel {
 
@@ -19,10 +19,12 @@ public class StudentsCollectionView extends JPanel {
 	private JButton newStudentButton;
 	private JTable studentsTable;
 	private JScrollPane tableScrollPane;
-	private StudentsCollectionPresenter studentCollectionPresenter;
+	private IStudentCollectionViewPresenter iStudentCollectionPresenter;
 
-	public StudentsCollectionView(StudentFormView studentFormView) {
-		studentCollectionPresenter = new StudentsCollectionPresenter(this,studentFormView.getStudentFormPresenter());
+	public StudentsCollectionView(IStudentCollectionViewPresenter studentCollectionViewPresenter) {
+		iStudentCollectionPresenter = studentCollectionViewPresenter;
+		iStudentCollectionPresenter.setStudentCollectionView(this);
+		
 		initComponents();
 	}
 
@@ -86,25 +88,21 @@ public class StudentsCollectionView extends JPanel {
 	}
 
 	public void updateStudentTableData() {
-		studentCollectionPresenter.notifyUpdateStudentTableData();
+		iStudentCollectionPresenter.notifyUpdateStudentTableData();
 	}
 
 	private void deleteStudentButtonActionPerformed() {
-		studentCollectionPresenter.notifyDeleteStudent();
+		iStudentCollectionPresenter.notifyDeleteStudent();
 	}
 
 	private void editStudentButtonActionPerformed() {
-		studentCollectionPresenter.notifyEditStudent();
+		iStudentCollectionPresenter.notifyEditStudent();
 	}
 
 	private void newStudentButtonActionPerformed() {
-		studentCollectionPresenter.notifyNewStudent();
+		iStudentCollectionPresenter.notifyNewStudent();
 	}
 
-	public StudentsCollectionPresenter getStudentCollectionPresenter() {
-		return studentCollectionPresenter;
-	}
-	
 	public void setTableModel(DefaultTableModel tableModel) {
 		studentsTable.setModel(tableModel);
 	}

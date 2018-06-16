@@ -10,8 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
-import tfm.mvp.pv.presenters.SubjectFormPresenter;
-import tfm.mvp.pv.presenters.SubjectsCollectionPresenter;
+import tfm.mvp.pv.presenters.ISubjectFormViewPresenter;
 
 public class SubjectFormView extends JPanel {
 
@@ -22,12 +21,13 @@ public class SubjectFormView extends JPanel {
 	private JLabel titleInputLabel;
 	private JLabel courseInpitLabel;
 
-	private SubjectFormPresenter subjectFormPresenter;
+	private ISubjectFormViewPresenter iSubjectFormPresenter;
 
-	public SubjectFormView() {
+	public SubjectFormView(ISubjectFormViewPresenter subjectFormPresenter) {
+		iSubjectFormPresenter = subjectFormPresenter;
+		iSubjectFormPresenter.setSubjectFormView(this);
+		
 		initComponents();
-		subjectFormPresenter = new SubjectFormPresenter(this);
-
 	}
 
 	private void initComponents() {
@@ -47,7 +47,7 @@ public class SubjectFormView extends JPanel {
 		saveButton.setText("Guardar");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				saveButtonActionPerformed();
+				onSaveButtonActionPerformed();
 			}
 		});
 
@@ -88,18 +88,11 @@ public class SubjectFormView extends JPanel {
 
 	}
 
-	private void saveButtonActionPerformed() {
+	private void onSaveButtonActionPerformed() {
 
-		subjectFormPresenter.notifySave();
+		iSubjectFormPresenter.saveForm();
 	}
-
-	public void newSubjectMode() {
-		subjectFormPresenter.notifyNewSubjectMode();
-	}
-
-	public void editSubjectMode(int id) {
-		subjectFormPresenter.notifyEditSubjectMode(id);
-	}
+	
 
 	public void setCourseInputValue(String value) {
 		courseInput.setText(value);
@@ -119,14 +112,6 @@ public class SubjectFormView extends JPanel {
 
 	public String getCourseInputValue() {
 		return courseInput.getText();
-	}
-
-	public void setSubjectCollectionPresenter(SubjectsCollectionPresenter subjectsCollectionPresenter) {
-		this.subjectFormPresenter.setSubjectsCollectionPresenter(subjectsCollectionPresenter);
-	}
-
-	public SubjectFormPresenter getSubjectFormPresenter() {
-		return subjectFormPresenter;
 	}
 
 }

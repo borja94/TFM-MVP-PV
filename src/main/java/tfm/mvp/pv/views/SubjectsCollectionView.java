@@ -11,7 +11,7 @@ import javax.swing.JTable;
 import javax.swing.LayoutStyle;
 import javax.swing.table.DefaultTableModel;
 
-import tfm.mvp.pv.presenters.SubjectsCollectionPresenter;
+import tfm.mvp.pv.presenters.ISubjectCollectionViewPresenter;
 
 public class SubjectsCollectionView extends JPanel {
 
@@ -21,16 +21,14 @@ public class SubjectsCollectionView extends JPanel {
 	private JTable subjectTable;
 	private JScrollPane tableScrollPane;
 
-	private SubjectFormView subjectFormView;
-	private SubjectsCollectionPresenter subjectsCollectionPresenter;
+	private ISubjectCollectionViewPresenter iSubjectsCollectionPresenter;
 
-	public SubjectsCollectionView(SubjectFormView subjectFormView) {
+	public SubjectsCollectionView(ISubjectCollectionViewPresenter subjectCollectionViewPresenter) {
 
-		subjectsCollectionPresenter = new SubjectsCollectionPresenter(this, subjectFormView.getSubjectFormPresenter());
-		this.subjectFormView = subjectFormView;
+		iSubjectsCollectionPresenter = subjectCollectionViewPresenter;
+		iSubjectsCollectionPresenter.setSubjectCollectionView(this);
+		
 		initComponents();
-		updateSubjectsTableData();
-
 	}
 
 	private void initComponents() {
@@ -65,6 +63,7 @@ public class SubjectsCollectionView extends JPanel {
 		});
 
 		initComponentsPosition();
+		updateSubjectsTableData();
 	}
 
 	private void initComponentsPosition() {
@@ -91,24 +90,20 @@ public class SubjectsCollectionView extends JPanel {
 	}
 
 	public void updateSubjectsTableData() {
-		subjectsCollectionPresenter.notifyUpdateSubjectsTableData();
+		iSubjectsCollectionPresenter.notifyUpdateSubjectsTableData();
 	}
 
 	private void deleteButtonActionPerformed() {
-		subjectsCollectionPresenter.notifyDeleteButtonActionPerformed();
+		iSubjectsCollectionPresenter.notifyDeleteButtonActionPerformed();
 	}
 
 	private void editButtonActionPerformed() {
 
-		subjectsCollectionPresenter.notifyEditMode();
+		iSubjectsCollectionPresenter.notifyEditMode();
 	}
 
 	private void newSubjectButtonActionPerformed() {
-		subjectFormView.newSubjectMode();
-	}
-
-	public SubjectsCollectionPresenter getSubjectsCollectionPresenter() {
-		return subjectsCollectionPresenter;
+		iSubjectsCollectionPresenter.newSubjectMode();
 	}
 
 	public void setTableModel(DefaultTableModel tableModel) {

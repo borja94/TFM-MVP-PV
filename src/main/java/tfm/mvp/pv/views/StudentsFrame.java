@@ -6,6 +6,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.GroupLayout;
 import javax.swing.WindowConstants;
+
+import tfm.mvp.pv.presenters.StudentFormPresenter;
+import tfm.mvp.pv.presenters.StudentsCollectionPresenter;
+
 import javax.swing.JButton;
 
 
@@ -19,9 +23,16 @@ public class StudentsFrame extends javax.swing.JFrame {
 
 	public StudentsFrame(MenuFrame menuFrame) {
 		this.menuFrame = menuFrame;
-		studentFormView = new StudentFormView();
-		studentsCollectionView = new StudentsCollectionView(studentFormView);
-		studentFormView.setStudentCollectionPresenter(studentsCollectionView.getStudentCollectionPresenter());
+	
+		StudentFormPresenter studentFormPresenter = new StudentFormPresenter();
+		StudentsCollectionPresenter studentCollectionPresenter = new StudentsCollectionPresenter();
+		
+		studentFormPresenter.setStudentCollectionPresenter(studentCollectionPresenter);
+		studentCollectionPresenter.setStudentFormPresenter(studentFormPresenter);
+		
+		studentFormView = new StudentFormView(studentFormPresenter);
+		studentsCollectionView = new StudentsCollectionView(studentCollectionPresenter);
+		
 		initComponents();
 	}
 

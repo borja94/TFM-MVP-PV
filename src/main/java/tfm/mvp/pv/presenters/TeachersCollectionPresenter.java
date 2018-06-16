@@ -10,19 +10,16 @@ import tfm.mvp.pv.models.Teacher;
 import tfm.mvp.pv.models.TeacherDto;
 import tfm.mvp.pv.views.TeacherCollectionView;
 
-public class TeachersCollectionPresenter {
+public class TeachersCollectionPresenter implements ITeacherCollectionViewPresenter {
 
 	private TeacherDto teacherDto;
 	private List<Teacher> teacherCollection;
 	private static final String[] COLUMN_NAMES = { "ID", "Nombre", "Apellidos", "Asignaturas" };
 	private TeacherCollectionView teacherCollectionView;
-	private TeacherFormPresenter teacherFormPresenter;
+	private ITeacherFormPresenter iTeacherFormPresenter;
 
-	public TeachersCollectionPresenter(TeacherCollectionView teacherCollectionView,
-			TeacherFormPresenter teacherFormPresenter) {
-		this.teacherCollectionView = teacherCollectionView;
+	public TeachersCollectionPresenter() {
 		teacherDto = new TeacherDto();
-		this.teacherFormPresenter = teacherFormPresenter;
 	}
 
 	public void loadTableData() {
@@ -56,7 +53,7 @@ public class TeachersCollectionPresenter {
 				if (result.toString() == "")
 					result.append(subject.getTitle());
 				else
-					result.append( "," + subject.getTitle());
+					result.append("," + subject.getTitle());
 			}
 			return result.toString();
 		default:
@@ -68,7 +65,7 @@ public class TeachersCollectionPresenter {
 		teacherDto.remove(id);
 	}
 
-	public void notifyUpdateTeacherTableData() {
+	public void updateTeacherTableData() {
 
 		loadTableData();
 		String[] columns = new String[getNumColumns()];
@@ -84,25 +81,33 @@ public class TeachersCollectionPresenter {
 		teacherCollectionView.setTableModel(new DefaultTableModel(tableData, columns));
 	}
 
-	public void notifyDeleteTeacher() {
+	public void setTeacherFormPresenter(ITeacherFormPresenter teacherFormPresenter) {
+		iTeacherFormPresenter = teacherFormPresenter;
+	}
+
+	public void deleteTeacher() {
 		int selectedRow = teacherCollectionView.getTableSelectedRow();
 		if (selectedRow != -1) {
 			int dialogResult = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar al profesor");
 			if (dialogResult == JOptionPane.YES_OPTION) {
 				removeTeacher(teacherCollectionView.getSelectedId());
-				notifyUpdateTeacherTableData();
+				updateTeacherTableData();
 			}
 		}
 	}
 
-	public void notifyEditTeacher() {
+	public void editTeacher() {
 		int selectedRow = teacherCollectionView.getTableSelectedRow();
 		if (selectedRow != -1)
-			teacherFormPresenter.notifyEditTeacherMode(teacherCollectionView.getSelectedId());
+			iTeacherFormPresenter.editTeacherMode(teacherCollectionView.getSelectedId());
 	}
 
-	public void notifyNewTeacher() {
-		teacherFormPresenter.notifyNewTeacherMode();
+	public void newTeacher() {
+		iTeacherFormPresenter.newTeacherMode();
+	}
+	
+	public void setTeacherCollectionView(TeacherCollectionView teacherCollectionView) {
+		this.teacherCollectionView = teacherCollectionView;
 	}
 
 }

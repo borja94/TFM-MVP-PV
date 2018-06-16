@@ -9,6 +9,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
 import javax.swing.WindowConstants;
+
+import tfm.mvp.pv.presenters.TeacherFormPresenter;
+import tfm.mvp.pv.presenters.TeachersCollectionPresenter;
+
 import javax.swing.JButton;
 
 
@@ -21,9 +25,17 @@ public class TeachersFrame extends JFrame {
 	
 	public TeachersFrame(MenuFrame menuFrame) {
 		this.menuFrame = menuFrame;
-		teacherFormView = new TeacherFormView();
-		teacherCollectionView = new TeacherCollectionView(teacherFormView);
-		teacherFormView.setTeacherCollectionPresenter(teacherCollectionView.getTeacherCollectionPresenter());
+		
+		TeacherFormPresenter teacherFormPresenter = new TeacherFormPresenter();
+		TeachersCollectionPresenter teacherCollectionPresenter = new TeachersCollectionPresenter();
+		
+		teacherFormPresenter.setTeachetCollectionPresenter(teacherCollectionPresenter);
+		teacherCollectionPresenter.setTeacherFormPresenter(teacherFormPresenter);
+		
+		teacherFormView = new TeacherFormView(teacherFormPresenter);
+		teacherCollectionView = new TeacherCollectionView(teacherCollectionPresenter);
+				
+		
 		initComponents();
 	}
 

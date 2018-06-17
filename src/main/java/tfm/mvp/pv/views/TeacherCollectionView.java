@@ -58,9 +58,11 @@ public class TeacherCollectionView extends JPanel {
 				.createSequentialGroup()
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addComponent(tableScrollPane, GroupLayout.PREFERRED_SIZE, 425, GroupLayout.PREFERRED_SIZE)
-						.addGroup(layout.createSequentialGroup().addComponent(deleteTeacherButton)
+						.addGroup(layout.createSequentialGroup()
+								.addComponent(deleteTeacherButton)
 								.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-								.addComponent(editTeacherButton).addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(editTeacherButton)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(newTeacherButton)))
 				.addGap(0, 19, Short.MAX_VALUE)));
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addGroup(
@@ -69,7 +71,8 @@ public class TeacherCollectionView extends JPanel {
 						.addComponent(tableScrollPane, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
 						.addGap(18, 18, 18)
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(deleteTeacherButton).addComponent(editTeacherButton)
+								.addComponent(deleteTeacherButton)
+								.addComponent(editTeacherButton)
 								.addComponent(newTeacherButton))
 						.addGap(203, 203, 203)));
 	}

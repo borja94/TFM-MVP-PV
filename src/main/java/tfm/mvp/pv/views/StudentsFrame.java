@@ -45,20 +45,25 @@ public class StudentsFrame extends javax.swing.JFrame {
 		GroupLayout layout = new GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
 		layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-				.addGroup(layout.createSequentialGroup().addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(returnMenuFrameButton).addContainerGap())
-				.addGroup(layout.createSequentialGroup().addGap(22, 22, 22)
-						.addComponent(studentFormView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+				.addGroup(layout.createSequentialGroup()
+						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(returnMenuFrameButton)
+						.addContainerGap())
+				.addGroup(layout.createSequentialGroup()
+						.addGap(22, 22, 22)
+						.addComponent(studentsCollectionView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
 								Short.MAX_VALUE)
-						.addGap(18, 18, 18).addComponent(studentsCollectionView, GroupLayout.PREFERRED_SIZE,
+						.addGap(18, 18, 18)
+						.addComponent(studentFormView, GroupLayout.PREFERRED_SIZE,
 								GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addGap(43, 43, 43)));
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-				.addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap()
+				.addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+						.addContainerGap()
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addComponent(studentFormView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(studentsCollectionView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
 										Short.MAX_VALUE)
-								.addComponent(studentsCollectionView, GroupLayout.DEFAULT_SIZE,
+								.addComponent(studentFormView, GroupLayout.DEFAULT_SIZE,
 										javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 						.addGap(18, 18, 18).addComponent(returnMenuFrameButton).addContainerGap()));
 

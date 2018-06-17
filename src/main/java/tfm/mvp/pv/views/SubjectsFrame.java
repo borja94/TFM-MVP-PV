@@ -52,19 +52,19 @@ public class SubjectsFrame extends JFrame {
 								layout.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
 										.addComponent(returnMenuFrameButton))
 						.addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-								.addComponent(subjectFormView, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+								.addComponent(subjectCollectionView, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 										GroupLayout.PREFERRED_SIZE)
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE,
 										Short.MAX_VALUE)
-								.addComponent(subjectCollectionView, GroupLayout.PREFERRED_SIZE,
+								.addComponent(subjectFormView, GroupLayout.PREFERRED_SIZE,
 										GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
 				.addContainerGap()));
 		layout.setVerticalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 				.addGroup(GroupLayout.Alignment.TRAILING, layout.createSequentialGroup().addContainerGap()
 						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addComponent(subjectFormView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-										Short.MAX_VALUE)
 								.addComponent(subjectCollectionView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
+										Short.MAX_VALUE)
+								.addComponent(subjectFormView, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
 										Short.MAX_VALUE))
 						.addGap(18, 18, 18).addComponent(returnMenuFrameButton).addContainerGap()));
 

@@ -61,8 +61,10 @@ public class SubjectsCollectionView extends JPanel {
 				.createSequentialGroup()
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addComponent(tableScrollPane, GroupLayout.PREFERRED_SIZE, 425, GroupLayout.PREFERRED_SIZE)
-						.addGroup(layout.createSequentialGroup().addComponent(deleteButton)
-								.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED).addComponent(editButton)
+						.addGroup(layout.createSequentialGroup()
+								.addComponent(deleteButton)
+								.addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+								.addComponent(editButton)
 								.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 								.addComponent(newSubjectButton)))
 				.addGap(0, 19, Short.MAX_VALUE)));
@@ -70,8 +72,10 @@ public class SubjectsCollectionView extends JPanel {
 				GroupLayout.Alignment.TRAILING,
 				layout.createSequentialGroup().addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(tableScrollPane, GroupLayout.PREFERRED_SIZE, 185, GroupLayout.PREFERRED_SIZE)
-						.addGap(18, 18, 18).addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(deleteButton).addComponent(editButton).addComponent(newSubjectButton))
+						.addGap(18, 18, 18)
+						.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+								.addComponent(deleteButton).addComponent(editButton)
+								.addComponent(newSubjectButton))
 						.addGap(203, 203, 203)));
 
 	}

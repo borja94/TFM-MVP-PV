@@ -108,8 +108,8 @@ public class StudentDao extends Dao {
 			while (rs.previous()) {
 
 				Student student = new Student(rs.getInt(ID_COLUMN), rs.getString(NAME_COLUMN), rs.getString(SURNAME_COLUMN));
-				SubjectDao subjectDto = new SubjectDao();
-				student.setSubjectCollection(subjectDto.getByStudent(student.getId()));
+				SubjectDao subjectDao = new SubjectDao();
+				student.setSubjectCollection(subjectDao.getByStudent(student.getId()));
 				result.add(student);
 
 			}

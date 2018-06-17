@@ -116,8 +116,8 @@ public class TeacherDao extends Dao {
 
 				Teacher teacher = new Teacher(rs.getInt(ID_COLUMN), rs.getString(NAME_COLUMN),
 						rs.getString(SURNAME_COLUMN));
-				SubjectDao subjectDto = new SubjectDao();
-				teacher.setSubjectCollection(subjectDto.getByTeacher(teacher.getId()));
+				SubjectDao subjectDao = new SubjectDao();
+				teacher.setSubjectCollection(subjectDao.getByTeacher(teacher.getId()));
 
 				result.add(teacher);
 

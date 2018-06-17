@@ -1,6 +1,6 @@
 package tfm.mvp.pv.presenters;
 
-import tfm.mvp.pv.views.TeacherCollectionView;;
+import tfm.mvp.pv.views.TeacherCollectionView;
 
 public interface ITeacherCollectionViewPresenter {
 

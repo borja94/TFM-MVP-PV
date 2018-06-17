@@ -1,6 +1,8 @@
 package tfm.mvp.pv;
 
 import javax.swing.UnsupportedLookAndFeelException;
+
+import java.awt.EventQueue;
 import java.util.logging.*;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -23,10 +25,6 @@ public class App {
 			Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
-		java.awt.EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				new MenuFrame().setVisible(true);
-			}
-		});
+		EventQueue.invokeLater(()->new MenuFrame().setVisible(true));
 	}
 }

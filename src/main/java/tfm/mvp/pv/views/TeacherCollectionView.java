@@ -10,9 +10,6 @@ import javax.swing.table.DefaultTableModel;
 
 import tfm.mvp.pv.presenters.ITeacherCollectionViewPresenter;
 
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
 public class TeacherCollectionView extends JPanel {
 
 	private JButton deleteTeacherButton;
@@ -42,25 +39,13 @@ public class TeacherCollectionView extends JPanel {
 		tableScrollPane.setViewportView(teachersTable);
 
 		deleteTeacherButton.setText("Borrar");
-		deleteTeacherButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				deleteTeacherButtonActionPerformed();
-			}
-		});
+		deleteTeacherButton.addActionListener(e -> deleteTeacherButtonActionPerformed());
 
 		editTeacherButton.setText("Modo edición");
-		editTeacherButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				editTeacherButtonActionPerformed();
-			}
-		});
+		editTeacherButton.addActionListener(e -> editTeacherButtonActionPerformed());
 
 		newTeacherButton.setText("Nuevo profesor");
-		newTeacherButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				newTeacherButtonActionPerformed();
-			}
-		});
+		newTeacherButton.addActionListener(e -> newTeacherButtonActionPerformed());
 
 		initComponentPostions();
 	}

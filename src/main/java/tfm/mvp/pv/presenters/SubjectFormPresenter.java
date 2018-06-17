@@ -12,7 +12,6 @@ public class SubjectFormPresenter implements ISubjectFormPresenter, ISubjectForm
 	private static final int NO_SUBJECT_SELECTED = -1;
 
 	private SubjectDao subjectDao;
-	private Subject subject;
 
 	private SubjectFormView subjectFormView;
 	private SubjectsCollectionPresenter subjectsCollectionPresenter;
@@ -33,7 +32,8 @@ public class SubjectFormPresenter implements ISubjectFormPresenter, ISubjectForm
 	public void editSubjectMode(int id) {
 		subjectFormView.setSubjectFormLabelValue(EDIT_SUBJECT_LABEL_TEXT);
 		subjectSelectedId = id;
-		subject = subjectDao.get(id);
+		
+		Subject subject = subjectDao.get(id);
 		subjectFormView.setTitleInputValue(subject.getTitle());
 		subjectFormView.setCourseInputValue(subject.getCourse().toString());
 	}

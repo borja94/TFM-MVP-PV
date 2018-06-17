@@ -1,7 +1,5 @@
 package tfm.mvp.pv.views;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
@@ -72,25 +70,13 @@ public class StudentFormView extends JPanel {
 		assignSubjectPane.setViewportView(assignSubjectCollection);
 
 		addSubjectButton.setText("-->");
-		addSubjectButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				addSubjectButtonActionPerformed();
-			}
-		});
+		addSubjectButton.addActionListener(e->addSubjectButtonActionPerformed());
 
 		removeSubjectButton.setText("<--");
-		removeSubjectButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				removeSubjectButtonActionPerformed();
-			}
-		});
+		removeSubjectButton.addActionListener(e->removeSubjectButtonActionPerformed());
 
 		saveFormButton.setText("Guardar");
-		saveFormButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				onSaveFormButtonActionPerformed();
-			}
-		});
+		saveFormButton.addActionListener(e->onSaveFormButtonActionPerformed());
 
 		initComponentsPosition();
 	}
@@ -177,7 +163,7 @@ public class StudentFormView extends JPanel {
 		iStudentFormPresenter.saveForm();
 	}
 
-	public void SetLabelFormText(String text) {
+	public void setLabelFormText(String text) {
 		studentFormLabel.setText(text);
 	}
 

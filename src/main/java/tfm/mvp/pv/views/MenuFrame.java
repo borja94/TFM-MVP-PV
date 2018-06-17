@@ -1,17 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tfm.mvp.pv.views;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-/**
- *
- * @author borja
- */
+
 public class MenuFrame extends javax.swing.JFrame {
 
 	private SubjectsFrame subjectsFrame;
@@ -27,22 +17,10 @@ public class MenuFrame extends javax.swing.JFrame {
 		teacherFrame = new TeachersFrame(this);
 		studentsFrame = new StudentsFrame(this);
 
-		menuPanel.getStudentFrameButton().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				studentFrameButtonAction();
-			}
-		});
+		menuPanel.getStudentFrameButton().addActionListener(e->studentFrameButtonAction());
 
-		menuPanel.getTeacherFrameButton().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				teacherFrameButtonAction();
-			}
-		});
-		menuPanel.getSubjectFrameButton().addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				subjectFrameButtonAction();
-			}
-		});
+		menuPanel.getTeacherFrameButton().addActionListener(e->teacherFrameButtonAction());
+		menuPanel.getSubjectFrameButton().addActionListener(e->subjectFrameButtonAction());
 
 	}
 

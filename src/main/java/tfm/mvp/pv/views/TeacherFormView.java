@@ -1,7 +1,5 @@
 package tfm.mvp.pv.views;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
@@ -71,29 +69,17 @@ public class TeacherFormView extends JPanel {
 		teacherFormLabel.setText("Nuevo profesor");
 
 		addSubjectButton.setText("-->");
-		addSubjectButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				onAddSubjectButtonActionPerformed();
-			}
-		});
+		addSubjectButton.addActionListener(e->onAddSubjectButtonActionPerformed());
 
 		removeSubjectButton.setText("<--");
-		removeSubjectButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				onRemoveSubjectButtonActionPerformed();
-			}
-		});
+		removeSubjectButton.addActionListener(e->onRemoveSubjectButtonActionPerformed());
 
 		unassignSubjectsInputLabel.setText("Asignaturas");
 
 		assignSubjectInputLabel.setText("Asignaturas seleccionadas");
 
 		saveFormButton.setText("Guardar");
-		saveFormButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				onSaveFormButtonActionPerformed();
-			}
-		});
+		saveFormButton.addActionListener(e->onSaveFormButtonActionPerformed());
 
 		unassignSubjectsScrollPane.setViewportView(unassignSubjectCollection);
 

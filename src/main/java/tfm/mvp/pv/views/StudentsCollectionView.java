@@ -1,8 +1,5 @@
 package tfm.mvp.pv.views;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -24,7 +21,7 @@ public class StudentsCollectionView extends JPanel {
 	public StudentsCollectionView(IStudentCollectionViewPresenter studentCollectionViewPresenter) {
 		iStudentCollectionPresenter = studentCollectionViewPresenter;
 		iStudentCollectionPresenter.setStudentCollectionView(this);
-		
+
 		initComponents();
 	}
 
@@ -41,25 +38,13 @@ public class StudentsCollectionView extends JPanel {
 		tableScrollPane.setViewportView(studentsTable);
 
 		deleteStudentButton.setText("Borrar");
-		deleteStudentButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				deleteStudentButtonActionPerformed();
-			}
-		});
+		deleteStudentButton.addActionListener(e -> deleteStudentButtonActionPerformed());
 
 		editStudentButton.setText("Modo edición");
-		editStudentButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				editStudentButtonActionPerformed();
-			}
-		});
+		editStudentButton.addActionListener(e -> editStudentButtonActionPerformed());
 
 		newStudentButton.setText("Nuevo alumno");
-		newStudentButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				newStudentButtonActionPerformed();
-			}
-		});
+		newStudentButton.addActionListener(e -> newStudentButtonActionPerformed());
 
 		initComponentsPosition();
 	}
@@ -106,11 +91,11 @@ public class StudentsCollectionView extends JPanel {
 	public void setTableModel(DefaultTableModel tableModel) {
 		studentsTable.setModel(tableModel);
 	}
-	
+
 	public int getTableSelectedRow() {
 		return studentsTable.getSelectedRow();
 	}
-	
+
 	public int getSelectedId() {
 		return Integer.parseInt(studentsTable.getModel().getValueAt(getTableSelectedRow(), 0).toString());
 	}

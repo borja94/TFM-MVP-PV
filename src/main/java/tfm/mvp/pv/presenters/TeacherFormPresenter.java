@@ -13,8 +13,6 @@ public class TeacherFormPresenter implements ITeacherFormPresenter , ITeacherFor
 
 	private TeacherDao teacherDao;
 	private SubjectDao subjectDao;
-	private Teacher teacher;
-	private List<Subject> subjectsCollection;
 	private TeacherFormView teacherFormView;
 	private int teacherSelectedId;
 	private static final String NEW_TEACHER_LABEL_TEXT = "Nuevo profesor";
@@ -78,7 +76,7 @@ public class TeacherFormPresenter implements ITeacherFormPresenter , ITeacherFor
 	public void editTeacherMode(int id) {
 		teacherFormView.setTeacherFormLabelText(EDIT_TEACHER_LABEL_TEXT);
 		teacherSelectedId = id;
-		teacher = teacherDao.get(id);
+		Teacher teacher = teacherDao.get(id);
 		teacherFormView.setNameInputValue(teacher.getName());
 		teacherFormView.setSurnameInputValue(teacher.getSurname());
 		List<String> subject = new ArrayList<>();
@@ -125,7 +123,7 @@ public class TeacherFormPresenter implements ITeacherFormPresenter , ITeacherFor
 	private void updateSubjectList(List<String> teacherSubjectCollection) {
 		teacherFormView.clearSubjectModels();
 
-		subjectsCollection = subjectDao.getAll();
+		List<Subject> subjectsCollection = subjectDao.getAll();
 
 		for (int i = 0; i < subjectsCollection.size(); i++) {
 			String subject = subjectsCollection.get(i).toString();

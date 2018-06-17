@@ -20,8 +20,8 @@ public class StudentFormPresenter implements IStudentFormPresenter, IStudentForm
 	private static final String NEW_STUDENT_LABEL_TEXT = "Nuevo alumno";
 	private static final String EDIT_STUDENT_LABEL_TEXT = "Editar alumno";
 	private static final int NO_STUDENT_SELECTED = -1;
-	public StudentFormView studentFormView;
-	public StudentsCollectionPresenter studentCollectionPresenter;
+	private StudentFormView studentFormView;
+	private StudentsCollectionPresenter studentCollectionPresenter;
 
 	public StudentFormPresenter() {
 		studentSelectedId = NO_STUDENT_SELECTED;
@@ -73,7 +73,7 @@ public class StudentFormPresenter implements IStudentFormPresenter, IStudentForm
 	}
 	
 	private void cleanForm() {
-		studentFormView.SetLabelFormText(NEW_STUDENT_LABEL_TEXT);
+		studentFormView.setLabelFormText(NEW_STUDENT_LABEL_TEXT);
 		studentFormView.setNameInputValue("");
 		studentFormView.setSurnameInputValue("");
 		updateSubjectList(null);
@@ -81,7 +81,7 @@ public class StudentFormPresenter implements IStudentFormPresenter, IStudentForm
 	}
 
 	public void notifyEditMode(int id) {
-		studentFormView.SetLabelFormText(EDIT_STUDENT_LABEL_TEXT);
+		studentFormView.setLabelFormText(EDIT_STUDENT_LABEL_TEXT);
 		studentSelectedId = id;
 		loadStudent(id);
 		studentFormView.setNameInputValue(getStudentName());

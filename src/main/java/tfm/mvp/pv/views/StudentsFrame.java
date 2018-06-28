@@ -12,13 +12,13 @@ import javax.swing.JButton;
 
 public class StudentsFrame extends javax.swing.JFrame {
 
-	private MenuFrame menuFrame;
+	private MainFrame menuFrame;
 	private StudentFormView studentFormView;
 	private StudentsCollectionView studentsCollectionView;
 
 
 
-	public StudentsFrame(MenuFrame menuFrame) {
+	public StudentsFrame(MainFrame menuFrame) {
 		this.menuFrame = menuFrame;
 	
 		StudentFormPresenter studentFormPresenter = new StudentFormPresenter();

@@ -1,16 +1,18 @@
 package tfm.mvp.pv.views;
 
+import tfm.mvp.pv.presenters.MainPresenter;
+import tfm.mvp.pv.views.MainView;
 
-
-public class MenuFrame extends javax.swing.JFrame {
+public class MainFrame extends javax.swing.JFrame {
 
 	private SubjectsFrame subjectsFrame;
 	private TeachersFrame teacherFrame;
 	private StudentsFrame studentsFrame;
 
 	
-	public MenuFrame() {
-		MenuPanel menuPanel = new MenuPanel();
+	public MainFrame() {
+		MainPresenter mainPresenter = new MainPresenter();
+		MainView menuPanel = new MainView(mainPresenter);
 		this.setContentPane(menuPanel);
 		initComponents();
 		subjectsFrame = new SubjectsFrame(this);

@@ -10,7 +10,7 @@ public interface IStudentCollectionViewPresenter {
 
 	public void notifyEditStudent();
 
-	public void notifyUpdateStudentTableData();
+	public void updateStudentTableData();
 
 	public void setStudentCollectionView(StudentsCollectionView studentsCollectionView);
 

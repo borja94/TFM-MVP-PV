@@ -7,7 +7,7 @@ import java.util.logging.*;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import tfm.mvp.pv.views.MenuFrame;
+import tfm.mvp.pv.views.MainFrame;
 
 public class App {
 
@@ -22,9 +22,9 @@ public class App {
 			}
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException ex) {
-			Logger.getLogger(MenuFrame.class.getName()).log(Level.SEVERE, null, ex);
+			Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
 		}
 
-		EventQueue.invokeLater(()->new MenuFrame().setVisible(true));
+		EventQueue.invokeLater(()->new MainFrame().setVisible(true));
 	}
 }

@@ -12,12 +12,12 @@ import tfm.mvp.pv.presenters.SubjectsCollectionPresenter;
 
 public class SubjectsFrame extends JFrame {
 
-	private MenuFrame menuFrame;
+	private MainFrame menuFrame;
 	private SubjectFormView subjectFormView;
 	private SubjectsCollectionView subjectCollectionView;
 
 
-	public SubjectsFrame(MenuFrame menuFrame) {
+	public SubjectsFrame(MainFrame menuFrame) {
 
 		
 		

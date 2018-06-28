@@ -61,7 +61,7 @@ public class StudentsCollectionPresenter implements IStudentCollectionViewPresen
 		}
 	}
 
-	public void notifyUpdateStudentTableData() {
+	public void updateStudentTableData() {
 		loadTableData();
 		String[] columns = new String[getNumColumns()];
 		String[][] tableData = new String[getNumRows()][getNumColumns()];
@@ -90,7 +90,7 @@ public class StudentsCollectionPresenter implements IStudentCollectionViewPresen
 			int dialogResult = JOptionPane.showConfirmDialog(null, "Estas seguro de eliminar al alumno");
 			if (dialogResult == JOptionPane.YES_OPTION) {
 				removeStudent(studentCollectionView.getSelectedId());
-				notifyUpdateStudentTableData();
+				updateStudentTableData();
 			}
 		}
 	}

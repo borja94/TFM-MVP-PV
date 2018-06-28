@@ -104,7 +104,7 @@ public class StudentFormPresenter implements IStudentFormPresenter, IStudentForm
 			else
 				insertNewStudent(name, surname);
 			
-			studentCollectionPresenter.notifyUpdateStudentTableData();
+			studentCollectionPresenter.updateStudentTableData();
 		}
 	}
 	

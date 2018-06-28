@@ -73,7 +73,7 @@ public class StudentsCollectionView extends JPanel {
 	}
 
 	public void updateStudentTableData() {
-		iStudentCollectionPresenter.notifyUpdateStudentTableData();
+		iStudentCollectionPresenter.updateStudentTableData();
 	}
 
 	private void deleteStudentButtonActionPerformed() {

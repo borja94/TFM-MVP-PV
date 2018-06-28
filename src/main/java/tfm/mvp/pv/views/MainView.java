@@ -2,19 +2,24 @@ package tfm.mvp.pv.views;
 
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle;
+
+import tfm.mvp.pv.presenters.MainPresenter;
+
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
-public class MenuPanel extends JPanel {
+public class MainView extends JPanel {
 
 	private JButton teacherFrameButton;
 	private JButton studentFrameButton;
 	private JButton subjectFrameButton;
 	private JLabel menuLabel;
+	private MainPresenter mainPresenter;
 
-	public MenuPanel() {
-
+	public MainView(MainPresenter mainPresenter) {
+		this.mainPresenter = mainPresenter;
+		mainPresenter.setMainView(this);
 		initComponents();
 	}
 
@@ -24,11 +29,10 @@ public class MenuPanel extends JPanel {
 		teacherFrameButton = new JButton();
 		studentFrameButton = new JButton();
 		subjectFrameButton = new JButton();
+		mainPresenter.loadEntitiesCounters();
 
 		menuLabel.setText("Menú");
-		teacherFrameButton.setText("Profesores");
-		studentFrameButton.setText("Alumnos");
-		subjectFrameButton.setText("Asignaturas");
+
 		initComponentsPosition();
 
 	}
@@ -40,8 +44,8 @@ public class MenuPanel extends JPanel {
 		layout.setHorizontalGroup(layout.createSequentialGroup().addGap(23, 23, 23)
 				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
 						.addComponent(menuLabel, GroupLayout.PREFERRED_SIZE, 148, GroupLayout.PREFERRED_SIZE)
-						.addComponent(teacherFrameButton, GroupLayout.Alignment.LEADING,
-								GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(teacherFrameButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
+								GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(studentFrameButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
 								GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(subjectFrameButton, GroupLayout.Alignment.LEADING, GroupLayout.DEFAULT_SIZE,
@@ -69,4 +73,15 @@ public class MenuPanel extends JPanel {
 		return subjectFrameButton;
 	}
 
+	public void SetTeacherButtonText(int numTeachers) {
+		teacherFrameButton.setText("Profesores --> Nº Profesores:" + numTeachers);
+	}
+
+	public void SetStudentButtonText(int numStudents) {
+		studentFrameButton.setText("Alumnos --> Nº Alumnos:" + numStudents);
+	}
+
+	public void SetSubjectButtonText(int numSubjects) {
+		subjectFrameButton.setText("Asignaturas --> Nº Asignaturas:"+numSubjects);
+	}
 }
